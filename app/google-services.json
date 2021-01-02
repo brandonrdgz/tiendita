@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "611507558162",
+    "project_id": "tiendita-f3f01",
+    "storage_bucket": "tiendita-f3f01.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:611507558162:android:57af5b4ef26729768ec5cb",
+        "android_client_info": {
+          "package_name": "com.example.tiendita"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "611507558162-b3g3vkpqsa72ca3fihnsq8eea3eg8n6i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tiendita",
+            "certificate_hash": "95fe0207cdc167c169f1c010f2ed65716b774fbf"
+          }
+        },
+        {
+          "client_id": "611507558162-v0kvv323kpbg9cl3u4a92dcvvaqgp5hh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEi13QU8Oo4aV1cg687dIQUM-Z3pc5iQs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "611507558162-v0kvv323kpbg9cl3u4a92dcvvaqgp5hh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

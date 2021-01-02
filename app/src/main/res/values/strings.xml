@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">tiendita</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    //String globales
+    <string name="iniciarSesion">INICIAR SESIÓN</string>
+    <string name="registro">REGISTRO</string>
+    <string name="usuario">Usuario</string>
+    <string name="contrasenia">Contraseña</string>
+    <string name="recuperar">Recuperar Contraseña</string>
+
+    //Strings para login
+    com.example.tiendita.ui.usuario
+    contraseña
+    <string name="olvidar_password">¿Ha olvidado su contraseña?</string>
+    <string name="ingresarBttn">Ingresar</string>
+    <string name="registrarBttn">Registrarse</string>
+
+    //Strings para signup
+    com.example.tiendita.ui.usuario
+    <string name="negocio">Negocio</string>
+    <string name="nombre">Nombre</string>
+    <string name="apellido">Apellido</string>
+    <string name="correo">Correo electrónico</string>
+    contraseña
+    <string name="nombreNegocio">Nombre del Negocio</string>
+
+    //String para recoverPassword
+    <string name="leyendaRecuperar">Si ha olvidado su contraseña, por favor, ingrese su correo
+    electrónico a continuación y si coincide con una cuenta activa, se enviará un enlace para poder
+    recuperar la contraseña</string>
+
+
+    //Strings para Drawers
+    <string name="pedidos">Pedidos</string>
+    <string name="perfil">Perfil</string>
+    //Strings para Drawer Usuario
+    <string name="mapa">Mapa de Tiendas</string>
+    //Strings para Drawer Negocio
+    <string name="sucursales">Sucursales</string>
+
+
+    //Strings para Usuario
+    //Strings para Perfil
+    <string name="editarBtn">Editar</string>
+    <string name="guardarBtn">Guardar</string>
+    <string name="descartarBtn">Descartar</string>
+    //Strings para Pedidos
+    <string name="listaPedidos">Lista de Pedidos</string>
+    <string name="cancelarBtn">Cancelar</string>
+    <string name="buscarProducto">Buscar Producto</string>
+    <string name="cantidad">Cantidad</string>
+    <string name="precio">Precio</string>
+    <string name="presentacion">Presentación</string>
+    //Strings para Negocio
+
+
+
+    <string name="masDetalles">Más Detalles</string>
+    <string name="generarPedido">Generar Pedido</string>
+
+</resources>
