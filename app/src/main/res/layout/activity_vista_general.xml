@@ -19,8 +19,8 @@
             android:orientation="horizontal">
 
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="700px"
-                android:layout_height="600px"
+                android:layout_width="260dp"
+                android:layout_height="230dp"
                 android:layout_margin="10dp"
                 android:background="@color/white">
                 <LinearLayout
@@ -31,29 +31,29 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/nombreNegocio"></TextView>
+                        android:text="@string/nombreNegocio"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                         android:gravity="bottom">
                         <Button
-                            android:layout_width="300px"
-                            android:layout_height="200px"
+                            android:layout_width="110dp"
+                            android:layout_height="80dp"
                             android:layout_margin="10dp"
-                            android:text="@string/masDetalles"></Button>
+                            android:text="@string/masDetalles"/>
                         <Button
-                            android:layout_width="300px"
-                            android:layout_height="200px"
+                            android:layout_width="110dp"
+                            android:layout_height="80dp"
                             android:layout_margin="10dp"
-                            android:text="@string/generarPedido"></Button>
+                            android:text="@string/generarPedido"/>
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="700px"
-                android:layout_height="600px"
+                android:layout_width="260dp"
+                android:layout_height="230dp"
                 android:layout_margin="10dp"
                 android:background="@color/white">
                 <LinearLayout
@@ -64,22 +64,22 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/nombreNegocio"></TextView>
+                        android:text="@string/nombreNegocio"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                         android:gravity="bottom">
                         <Button
-                            android:layout_width="300px"
-                            android:layout_height="200px"
+                            android:layout_width="110dp"
+                            android:layout_height="80dp"
                             android:layout_margin="10dp"
-                            android:text="@string/masDetalles"></Button>
+                            android:text="@string/masDetalles"/>
                         <Button
-                            android:layout_width="300px"
-                            android:layout_height="200px"
+                            android:layout_width="110dp"
+                            android:layout_height="80dp"
                             android:layout_margin="10dp"
-                            android:text="@string/generarPedido"></Button>
+                            android:text="@string/generarPedido"/>
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

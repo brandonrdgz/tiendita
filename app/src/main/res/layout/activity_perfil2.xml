@@ -18,11 +18,11 @@
             android:orientation="vertical">
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="680px"
+                android:layout_height="280dp"
                 android:layout_gravity="center"
-                android:layout_margin="20px"
-                android:padding="40px"
-                android:src="@drawable/img_businness"></ImageView>
+                android:layout_margin="5dp"
+                android:padding="20dp"
+                android:src="@drawable/img_businness"/>
 
             <TextView
                 android:id="@+id/textView2"
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical">
-                //Nombre
+                <!--Nombre-->
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -55,20 +55,24 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/ic_person"></ImageView>
+                        android:src="@drawable/ic_person"/>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/TextFieldInputTextNombre"
-                        android:layout_width="250dp"
-                        android:layout_height="50dp"
-                        android:background="@color/white"
-                        android:fontFamily="@font/myriadproregular"
-                        android:hint="@string/nombre"
-                        android:inputType="text"
-                        android:padding="15dp"
-                        android:textSize="15sp"></com.google.android.material.textfield.TextInputEditText>
+                    <com.google.android.material.textfield.TextInputLayout
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                           android:id="@+id/TextFieldInputTextNombre"
+                           android:layout_width="250dp"
+                           android:layout_height="50dp"
+                           android:background="@color/white"
+                           android:fontFamily="@font/myriadproregular"
+                           android:hint="@string/nombre"
+                           android:inputType="text"
+                           android:padding="15dp"
+                           android:textSize="15sp"/>
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
-                //Apellido
+                <!--Apellido-->
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -80,20 +84,24 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/ic_person"></ImageView>
+                        android:src="@drawable/ic_person"/>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/TextFieldInputTextApellido"
-                        android:layout_width="250dp"
-                        android:layout_height="50dp"
-                        android:background="@color/white"
-                        android:fontFamily="@font/myriadproregular"
-                        android:hint="@string/apellido"
-                        android:inputType="text"
-                        android:padding="15dp"
-                        android:textSize="15sp"></com.google.android.material.textfield.TextInputEditText>
+                    <com.google.android.material.textfield.TextInputLayout
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                           android:id="@+id/TextFieldInputTextApellido"
+                           android:layout_width="250dp"
+                           android:layout_height="50dp"
+                           android:background="@color/white"
+                           android:fontFamily="@font/myriadproregular"
+                           android:hint="@string/apellido"
+                           android:inputType="text"
+                           android:padding="15dp"
+                           android:textSize="15sp"/>
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
-                //Correo
+                <!--Correo-->
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -105,20 +113,24 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/ic_person"></ImageView>
+                        android:src="@drawable/ic_person"/>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/TextFieldInputTextCorreo"
-                        android:layout_width="250dp"
-                        android:layout_height="50dp"
-                        android:background="@color/white"
-                        android:fontFamily="@font/myriadproregular"
-                        android:hint="@string/correo"
-                        android:inputType="textEmailAddress"
-                        android:padding="15dp"
-                        android:textSize="15sp"></com.google.android.material.textfield.TextInputEditText>
+                    <com.google.android.material.textfield.TextInputLayout
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                           android:id="@+id/TextFieldInputTextCorreo"
+                           android:layout_width="250dp"
+                           android:layout_height="50dp"
+                           android:background="@color/white"
+                           android:fontFamily="@font/myriadproregular"
+                           android:hint="@string/correo"
+                           android:inputType="textEmailAddress"
+                           android:padding="15dp"
+                           android:textSize="15sp"/>
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
-                //Contraseña
+                <!--Contraseña-->
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -130,20 +142,25 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/ic_person"></ImageView>
+                        android:src="@drawable/ic_person"/>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/TextFieldInputTextPassword"
-                        android:layout_width="250dp"
-                        android:layout_height="50dp"
-                        android:background="@color/white"
-                        android:fontFamily="@font/myriadproregular"
-                        android:hint="@string/contrasenia"
-                        android:inputType="textPassword"
-                        android:padding="15dp"
-                        android:textSize="15sp"></com.google.android.material.textfield.TextInputEditText>
+                    <com.google.android.material.textfield.TextInputLayout
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                           android:id="@+id/TextFieldInputTextPassword"
+                           android:layout_width="250dp"
+                           android:layout_height="50dp"
+                           android:background="@color/white"
+                           android:fontFamily="@font/myriadproregular"
+                           android:hint="@string/contrasenia"
+                           android:inputType="textPassword"
+                           android:padding="15dp"
+                           android:textSize="15sp"/>
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
-                //Nombre Negocio
+
+                <!--Nombre Negocio-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -153,41 +170,45 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/ic_person"></ImageView>
+                        android:src="@drawable/ic_person"/>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/TextFieldInputTextNombreDelNegocio"
-                        android:layout_width="250dp"
-                        android:layout_height="50dp"
-                        android:background="@color/white"
-                        android:fontFamily="@font/myriadproregular"
-                        android:hint="@string/nombreNegocio"
-                        android:inputType="textPassword"
-                        android:padding="15dp"
-                        android:textSize="15sp"></com.google.android.material.textfield.TextInputEditText>
+                    <com.google.android.material.textfield.TextInputLayout
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                           android:id="@+id/TextFieldInputTextNombreDelNegocio"
+                           android:layout_width="250dp"
+                           android:layout_height="50dp"
+                           android:background="@color/white"
+                           android:fontFamily="@font/myriadproregular"
+                           android:hint="@string/nombreNegocio"
+                           android:inputType="textPassword"
+                           android:padding="15dp"
+                           android:textSize="15sp"/>
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
+
                 <com.google.android.material.button.MaterialButton
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:text="@string/editarBtn"
-                    app:cornerRadius="40dp"></com.google.android.material.button.MaterialButton>
+                    app:cornerRadius="40dp"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="@string/guardarBtn"
-                    app:cornerRadius="40dp"></com.google.android.material.button.MaterialButton>
+                    app:cornerRadius="40dp"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="@string/descartarBtn"
-                    app:cornerRadius="40dp"></com.google.android.material.button.MaterialButton>
+                    app:cornerRadius="40dp"/>
             </LinearLayout>
         </LinearLayout>
-
     </ScrollView>
 </LinearLayout>

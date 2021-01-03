@@ -19,14 +19,14 @@
                 android:orientation="horizontal"
                 android:padding="20dp">
                 <ImageButton
-                    android:layout_width="300px"
-                    android:layout_height="300px"></ImageButton>
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="20dp"
                     android:textSize="20sp"
-                    android:text="Nombre de tienda\nUbicación"></TextView>
+                    android:text="Nombre de tienda\nUbicación"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -34,29 +34,29 @@
                 android:background="@color/grey"
                 android:orientation="horizontal">
                 <TextView
-                    android:layout_width="500px"
+                    android:layout_width="200dp"
                     android:layout_height="match_parent"
                     android:paddingLeft="20dp"
                     android:textSize="18sp"
                     android:gravity="center_vertical"
-                    android:text="Pedido: #Pedido"></TextView>
+                    android:text="Pedido: #Pedido"/>
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="100px"
+                    android:layout_height="40dp"
                     android:layout_margin="5dp"
-                    android:text="@string/editarBtn"></Button>
+                    android:text="@string/editarBtn"/>
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="100px"
+                    android:layout_height="40dp"
                     android:layout_margin="5dp"
-                    android:text="@string/cancelarBtn"></Button>
+                    android:text="@string/cancelarBtn"/>
             </LinearLayout>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:padding="20dp"
-                android:text="Total: mxn"></TextView>
+                android:text="Total: mxn"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

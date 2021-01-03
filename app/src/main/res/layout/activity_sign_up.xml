@@ -15,11 +15,11 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="680px"
+            android:layout_height="280dp"
             android:layout_gravity="center"
-            android:layout_margin="20px"
-            android:padding="40px"
-            android:src="@drawable/img_logo"></ImageView>
+            android:layout_margin="5dp"
+            android:padding="20dp"
+            android:src="@drawable/img_logo"/>
 
         <TextView
             android:id="@+id/textView2"
@@ -44,30 +44,30 @@
             android:layout_height="wrap_content"
             android:text="@string/usuario"
             android:textSize="22sp"
-            android:layout_margin="10dp"></TextView>
+            android:layout_margin="10dp"/>
 
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switchUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:scaleX="1.8"
-            android:scaleY="1.8"></Switch>
+            android:scaleY="1.8"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/negocio"
             android:textSize="22sp"
-            android:layout_margin="10dp"></TextView>
+            android:layout_margin="10dp"/>
     </LinearLayout>
-    //Layout para inputs de registro com.example.tiendita.ui.usuario
+    <!--Layout para inputs de registro com.example.tiendita.ui.usuario-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:id="@+id/LayoutUsuario"
         android:gravity="center">
-        //Nombre
+        <!--Nombre-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_person"></ImageView>
+                android:src="@drawable/ic_person"/>
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/TextFieldInputTextNombre"
@@ -88,9 +88,9 @@
                 android:hint="@string/nombre"
                 android:inputType="text"
                 android:padding="15dp"
-                android:textSize="15sp"></com.google.android.material.textfield.TextInputEditText>
+                android:textSize="15sp"/>
         </LinearLayout>
-        //Apellido
+        <!--Apellido-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_person"></ImageView>
+                android:src="@drawable/ic_person"/>
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/TextFieldInputTextApellido"
@@ -111,9 +111,9 @@
                 android:hint="@string/apellido"
                 android:inputType="text"
                 android:padding="15dp"
-                android:textSize="15sp"></com.google.android.material.textfield.TextInputEditText>
+                android:textSize="15sp"/>
         </LinearLayout>
-        //Correo
+        <!--Correo-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -123,7 +123,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_person"></ImageView>
+                android:src="@drawable/ic_person"/>
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/TextFieldInputTextCorreo"
@@ -134,9 +134,9 @@
                 android:hint="@string/correo"
                 android:inputType="textEmailAddress"
                 android:padding="15dp"
-                android:textSize="15sp"></com.google.android.material.textfield.TextInputEditText>
+                android:textSize="15sp"/>
         </LinearLayout>
-        //Contraseña
+        <!--Contraseña-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_person"></ImageView>
+                android:src="@drawable/ic_person"/>
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/TextFieldInputTextPassword"
@@ -157,16 +157,16 @@
                 android:hint="@string/contrasenia"
                 android:inputType="textPassword"
                 android:padding="15dp"
-                android:textSize="15sp"></com.google.android.material.textfield.TextInputEditText>
+                android:textSize="15sp"/>
         </LinearLayout>
         <com.google.android.material.button.MaterialButton
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             app:cornerRadius="40dp"
             android:layout_margin="20dp"
-            android:text="@string/registrarBttn"></com.google.android.material.button.MaterialButton>
+            android:text="@string/registrarBttn"/>
     </LinearLayout>
-    //Layout para inputs de registro com.example.tiendita.ui.negocio
+    <!--Layout para inputs de registro com.example.tiendita.ui.negocio-->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -176,7 +176,7 @@
         android:orientation="vertical"
         android:id="@+id/LayoutNegocio"
         android:gravity="center">
-        //Nombre
+        <!--Nombre-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -186,7 +186,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_person"></ImageView>
+                android:src="@drawable/ic_person"/>
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/TextFieldInputTextNombreNegocio"
@@ -197,9 +197,9 @@
                 android:hint="@string/nombre"
                 android:inputType="text"
                 android:padding="15dp"
-                android:textSize="15sp"></com.google.android.material.textfield.TextInputEditText>
+                android:textSize="15sp"/>
         </LinearLayout>
-        //Apellido
+        <!--Apellido-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -209,7 +209,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_person"></ImageView>
+                android:src="@drawable/ic_person"/>
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/TextFieldInputTextApellidoNegocio"
@@ -220,9 +220,10 @@
                 android:hint="@string/apellido"
                 android:inputType="text"
                 android:padding="15dp"
-                android:textSize="15sp"></com.google.android.material.textfield.TextInputEditText>
+                android:textSize="15sp"/>
         </LinearLayout>
-        //Correo
+
+        <!--Correo-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -232,7 +233,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_person"></ImageView>
+                android:src="@drawable/ic_person"/>
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/TextFieldInputTextCorreoNegocio"
@@ -243,9 +244,9 @@
                 android:hint="@string/correo"
                 android:inputType="textEmailAddress"
                 android:padding="15dp"
-                android:textSize="15sp"></com.google.android.material.textfield.TextInputEditText>
+                android:textSize="15sp"/>
         </LinearLayout>
-        //Contraseña
+        <!--Contraseña-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -255,7 +256,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_person"></ImageView>
+                android:src="@drawable/ic_person"/>
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/TextFieldInputTextPasswordNegocio"
@@ -266,9 +267,9 @@
                 android:hint="@string/contrasenia"
                 android:inputType="textPassword"
                 android:padding="15dp"
-                android:textSize="15sp"></com.google.android.material.textfield.TextInputEditText>
+                android:textSize="15sp"/>
         </LinearLayout>
-        //Nombre Negocio
+        <!--Nombre Negocio-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -278,7 +279,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_person"></ImageView>
+                android:src="@drawable/ic_person"/>
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/TextFieldInputTextNombreDelNegocio"
@@ -289,14 +290,14 @@
                 android:hint="@string/nombreNegocio"
                 android:inputType="textPassword"
                 android:padding="15dp"
-                android:textSize="15sp"></com.google.android.material.textfield.TextInputEditText>
+                android:textSize="15sp"/>
         </LinearLayout>
         <com.google.android.material.button.MaterialButton
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             app:cornerRadius="40dp"
             android:layout_margin="20dp"
-            android:text="@string/registrarBttn"></com.google.android.material.button.MaterialButton>
+            android:text="@string/registrarBttn"/>
     </LinearLayout>
     </ScrollView>
 </LinearLayout>
