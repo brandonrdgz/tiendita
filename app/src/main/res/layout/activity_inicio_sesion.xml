@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background_color"
     android:orientation="vertical"
-    tools:context=".ui.login.Login">
+    tools:context=".ui.login.InicioSesion">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,10 +48,10 @@
             android:src="@drawable/ic_person"/>
 
         <com.google.android.material.textfield.TextInputLayout
+           android:id="@+id/til_correo_inicio_sesion"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
-               android:id="@+id/TextFieldInputTextUser"
                android:layout_width="250dp"
                android:layout_height="50dp"
                android:background="@color/white"
@@ -76,10 +76,10 @@
             android:src="@drawable/ic_passwordlock"/>
 
         <com.google.android.material.textfield.TextInputLayout
+           android:id="@+id/til_contrasenia_inicio_sesion"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
-               android:id="@+id/TextFieldInputTextPassword"
                android:layout_width="250dp"
                android:layout_height="50dp"
                android:background="@color/white"
@@ -92,7 +92,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/TextViewRecoverPwd"
+        android:id="@+id/tv_recupera_contrasenia"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
@@ -108,14 +108,14 @@
         android:orientation="vertical">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnIngresar"
+            android:id="@+id/mb_ingresar"
             android:layout_width="300dp"
             android:layout_height="65dp"
             android:text="@string/ingresarBttn"
             app:cornerRadius="40dp"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnRegistrarse"
+            android:id="@+id/mb_registrarse"
             android:layout_width="300dp"
             android:layout_height="65dp"
             android:text="@string/registrarBttn"

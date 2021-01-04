@@ -1,68 +1,109 @@
 package com.example.tiendita.ui.login;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.tiendita.MainActivity;
 import com.example.tiendita.R;
-import com.google.android.material.textfield.TextInputEditText;
+import com.example.tiendita.datos.firebase.AccionesFirebaseAuth;
+import com.example.tiendita.datos.firebase.FirebaseCallback;
+import com.example.tiendita.text_watcher.CampoTextWatcher;
+import com.example.tiendita.utilidades.Validaciones;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputLayout;
 
-public class Login extends AppCompatActivity {
-    //Firebase
-    //private FirebaseDatabase firebaseDatabase;
+public class InicioSesion extends AppCompatActivity {
     //Componentes
-    private Button btnRegistrarse, btnIngresar;
-    private TextInputEditText usuario, contrasenia;
-    private TextView recoverpwd;
+    private MaterialButton mbRegistrarse, mbIngresar;
+    private TextInputLayout tilCorreo, tilContrasenia;
+    private TextView tvRecuperaContrasenia;
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_inicio_sesion);
         iniComponentes();
-        btnRegistrarse.setOnClickListener(view -> {
-                startActivity(new Intent(Login.this, SignUp.class));
-            }
+    }
+
+    private void iniComponentes() {
+        mbIngresar = findViewById(R.id.mb_ingresar);
+        mbRegistrarse = findViewById(R.id.mb_registrarse);
+        tilCorreo = findViewById(R.id.til_correo_inicio_sesion);
+        tilContrasenia = findViewById(R.id.til_contrasenia_inicio_sesion);
+        tvRecuperaContrasenia = findViewById(R.id.tv_recupera_contrasenia);
+
+        tilCorreo.getEditText().addTextChangedListener(new CampoTextWatcher(this, tilCorreo));
+
+        mbRegistrarse.setOnClickListener(view -> {
+               startActivity(new Intent(InicioSesion.this, Registro.class));
+           }
         );
 
-        btnIngresar.setOnClickListener(view -> {
-            if(validarLogin(usuario.getText().toString(),contrasenia.getText().toString())){
-                toast("Ingresa a la bd a buscar com.example.tiendita.ui.usuario");
-            }
+        mbIngresar.setOnClickListener(view -> {
+            mbIngresarClic(view);
         });
 
-        recoverpwd.setOnClickListener(view -> {
-                startActivity(new Intent(Login.this, RecoverPassword.class))
-            }
+        tvRecuperaContrasenia.setOnClickListener(view -> {
+               startActivity(new Intent(InicioSesion.this, RecuperarContrasenia.class));
+           }
         );
     }
-    private void iniComponentes(){
-        btnRegistrarse = findViewById(R.id.btnRegistrarse);
-        btnIngresar = findViewById(R.id.btnIngresar);
-        usuario = findViewById(R.id.TextFieldInputTextUser);
-        contrasenia = findViewById(R.id.TextFieldInputTextPassword);
-        recoverpwd = findViewById(R.id.TextViewRecoverPwd);
-    }
-    private boolean validarLogin(String usuario, String contrasenia){
-        if(TextUtils.isEmpty(usuario) && TextUtils.isEmpty(contrasenia)){
-            toast("Por favor, llene ambos campos para poder continuar");
-            return false;
-        }else if(usuario.isEmpty()){
-            toast("El campo com.example.tiendita.ui.usuario está vacío, por favor, ingrese el com.example.tiendita.ui.usuario e intente nuevamente");
-            return false;
-        }else if(contrasenia.isEmpty()){
-            toast("El campo contraseña está vacío, por favor, ingrese la contraseña e intente nuevamente");
-            return false;
+
+    private void mbIngresarClic(View view) {
+        if(campoCorreoValido()) {
+            String correo = tilCorreo.getEditText().getText().toString();
+            String contrasenia = tilContrasenia.getEditText().getText().toString();
+
+            iniciarSesion(view, correo, contrasenia);
         }
-        return true;
     }
-    private void toast(String mensaje){
-        Toast.makeText(this,mensaje,Toast.LENGTH_LONG).show();
+
+    private boolean campoCorreoValido() {
+        Validaciones.validaCampo(this, tilCorreo);
+
+        return tilCorreo.getError() == null;
+    }
+
+    private void iniciarSesion(View view, String correo, String contrasenia) {
+        AccionesFirebaseAuth.inicioSesion(correo, contrasenia, new FirebaseCallback<Void>() {
+            @Override
+            public void enInicio() {
+                muestraDialogoProceso(view, R.string.msj_iniciando_sesion);
+            }
+
+            @Override
+            public void enExito(Void respuesta) {
+                ocultaDialogoProceso();
+                startActivity(new Intent(InicioSesion.this, MainActivity.class));
+            }
+
+            @Override
+            public void enFallo(Exception excepcion) {
+                ocultaDialogoProceso();
+            }
+        });
+    }
+
+    private void muestraDialogoProceso(View view, int idRecurso) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
+        View vDialogoProceso = LayoutInflater.from(InicioSesion.this)
+           .inflate(R.layout.dialogo_proceso, null);
+        TextView tv = vDialogoProceso.findViewById(R.id.tv_proceso);
+        tv.setText(idRecurso);
+
+        alertDialogBuilder.setView(vDialogoProceso);
+        alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private void ocultaDialogoProceso() {
+        alertDialog.dismiss();
     }
 }
