@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -24,29 +25,24 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        asignarComponentes();
-        this.btnRegistrarse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        iniComponentes();
+        btnRegistrarse.setOnClickListener(view -> {
                 startActivity(new Intent(Login.this, SignUp.class));
             }
-        });
-        this.btnIngresar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(validarLogin(usuario.getText().toString(),contrasenia.getText().toString())){
-                    toast("Ingresa a la bd a buscar com.example.tiendita.ui.usuario");
-                }
+        );
+
+        btnIngresar.setOnClickListener(view -> {
+            if(validarLogin(usuario.getText().toString(),contrasenia.getText().toString())){
+                toast("Ingresa a la bd a buscar com.example.tiendita.ui.usuario");
             }
         });
-        this.recoverpwd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Login.this, RecoverPassword.class));
+
+        recoverpwd.setOnClickListener(view -> {
+                startActivity(new Intent(Login.this, RecoverPassword.class))
             }
-        });
+        );
     }
-    private void asignarComponentes(){
+    private void iniComponentes(){
         btnRegistrarse = findViewById(R.id.btnRegistrarse);
         btnIngresar = findViewById(R.id.btnIngresar);
         usuario = findViewById(R.id.TextFieldInputTextUser);
@@ -54,7 +50,7 @@ public class Login extends AppCompatActivity {
         recoverpwd = findViewById(R.id.TextViewRecoverPwd);
     }
     private boolean validarLogin(String usuario, String contrasenia){
-        if(usuario.isEmpty()&&contrasenia.isEmpty()){
+        if(TextUtils.isEmpty(usuario) && TextUtils.isEmpty(contrasenia)){
             toast("Por favor, llene ambos campos para poder continuar");
             return false;
         }else if(usuario.isEmpty()){
