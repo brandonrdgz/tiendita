@@ -68,4 +68,17 @@
     <string name="masDetalles">Más Detalles</string>
     <string name="generarPedido">Generar Pedido</string>
 
+    <!--Mensaje de error-->
+    <string name="msj_error_campo_vacio">El campo no puede estar vacío</string>
+    <string name="msj_error_campo_correo">El correo electrónico no es válido</string>
+    <string name="msj_error_campo_contrasenia">La contraseña no es válida. Debe de contener letras mayúsculas,
+      minusculas, números, caracteres especiales (-_*%&amp;=!) y una longitud entre 8 y 30</string>
+    <string name="msj_error_campo_nombre">El nombre no es válido</string>
+    <string name="msj_error_apellido">El apellido no es válido</string>
+
+    <!--Mensajes-->
+    <string name="msj_registrando">Registrando</string>
+    <string name="msj_registro_exitoso">Registro Exitoso</string>
+    <string name="msj_iniciando_sesion">Iniciando sesión</string>
+
 </resources>

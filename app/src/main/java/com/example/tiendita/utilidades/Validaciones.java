@@ -17,7 +17,7 @@ public class Validaciones {
       String texto = textInputLayout.getEditText().toString();
 
       if(TextUtils.isEmpty(texto)) {
-         textInputLayout.setError(activity.getString());
+         textInputLayout.setError(activity.getString(R.string.msj_error_campo_vacio));
       }
       else {
          validaCampoEspecifico(activity, textInputLayout, texto);
