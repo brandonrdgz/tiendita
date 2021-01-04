@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.example.tiendita.R;
 
-public class RecoverPassword extends AppCompatActivity {
+public class RecuperarContrasenia extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recover_password);
+        setContentView(R.layout.activity_recuperar_contrasenia);
     }
 }
