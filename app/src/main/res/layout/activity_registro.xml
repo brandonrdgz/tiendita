@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.login.SignUp"
+    tools:context=".ui.login.Registro"
     android:background="@color/background_color"
     android:orientation="vertical">
 
@@ -47,7 +47,7 @@
             android:layout_margin="10dp"/>
 
         <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/switchUser"
+            android:id="@+id/sm_tipo_usuario"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -65,7 +65,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/LayoutUsuario"
         android:gravity="center">
         <!--Nombre-->
         <LinearLayout
@@ -79,16 +78,21 @@
                 android:layout_height="50dp"
                 android:src="@drawable/ic_person"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/TextFieldInputTextNombre"
-                android:layout_width="250dp"
-                android:layout_height="50dp"
-                android:background="@color/white"
-                android:fontFamily="@font/myriadproregular"
-                android:hint="@string/nombre"
-                android:inputType="text"
-                android:padding="15dp"
-                android:textSize="15sp"/>
+            <com.google.android.material.textfield.TextInputLayout
+               android:id="@+id/til_nombre_registro"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                   android:id="@+id/TextFieldInputTextNombre"
+                   android:layout_width="250dp"
+                   android:layout_height="50dp"
+                   android:background="@color/white"
+                   android:fontFamily="@font/myriadproregular"
+                   android:hint="@string/nombre"
+                   android:inputType="text"
+                   android:padding="15dp"
+                   android:textSize="15sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
         <!--Apellido-->
         <LinearLayout
@@ -102,16 +106,49 @@
                 android:layout_height="50dp"
                 android:src="@drawable/ic_person"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/TextFieldInputTextApellido"
-                android:layout_width="250dp"
-                android:layout_height="50dp"
-                android:background="@color/white"
-                android:fontFamily="@font/myriadproregular"
-                android:hint="@string/apellido"
-                android:inputType="text"
-                android:padding="15dp"
-                android:textSize="15sp"/>
+            <com.google.android.material.textfield.TextInputLayout
+               android:id="@+id/til_apellido_registro"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                   android:id="@+id/TextFieldInputTextApellido"
+                   android:layout_width="250dp"
+                   android:layout_height="50dp"
+                   android:background="@color/white"
+                   android:fontFamily="@font/myriadproregular"
+                   android:hint="@string/apellido"
+                   android:inputType="text"
+                   android:padding="15dp"
+                   android:textSize="15sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+           android:id="@+id/layout_nombre_negocio"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:gravity="center"
+           android:layout_margin="5dp">
+            <ImageView
+               android:layout_width="50dp"
+               android:layout_height="50dp"
+               android:src="@drawable/ic_person"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+               android:id="@+id/til_nombre_negocio_registro"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                   android:layout_width="250dp"
+                   android:layout_height="50dp"
+                   android:background="@color/white"
+                   android:fontFamily="@font/myriadproregular"
+                   android:hint="@string/nombreNegocio"
+                   android:inputType="textPassword"
+                   android:padding="15dp"
+                   android:textSize="15sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
         <!--Correo-->
         <LinearLayout
@@ -125,16 +162,21 @@
                 android:layout_height="50dp"
                 android:src="@drawable/ic_person"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/TextFieldInputTextCorreo"
-                android:layout_width="250dp"
-                android:layout_height="50dp"
-                android:background="@color/white"
-                android:fontFamily="@font/myriadproregular"
-                android:hint="@string/correo"
-                android:inputType="textEmailAddress"
-                android:padding="15dp"
-                android:textSize="15sp"/>
+            <com.google.android.material.textfield.TextInputLayout
+               android:id="@+id/til_correo_registro"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                   android:id="@+id/TextFieldInputTextCorreo"
+                   android:layout_width="250dp"
+                   android:layout_height="50dp"
+                   android:background="@color/white"
+                   android:fontFamily="@font/myriadproregular"
+                   android:hint="@string/correo"
+                   android:inputType="textEmailAddress"
+                   android:padding="15dp"
+                   android:textSize="15sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
         <!--Contraseña-->
         <LinearLayout
@@ -148,18 +190,25 @@
                 android:layout_height="50dp"
                 android:src="@drawable/ic_person"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/TextFieldInputTextPassword"
-                android:layout_width="250dp"
-                android:layout_height="50dp"
-                android:background="@color/white"
-                android:fontFamily="@font/myriadproregular"
-                android:hint="@string/contrasenia"
-                android:inputType="textPassword"
-                android:padding="15dp"
-                android:textSize="15sp"/>
+            <com.google.android.material.textfield.TextInputLayout
+               android:id="@+id/til_contrasenia_registro"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                   android:id="@+id/TextFieldInputTextPassword"
+                   android:layout_width="250dp"
+                   android:layout_height="50dp"
+                   android:background="@color/white"
+                   android:fontFamily="@font/myriadproregular"
+                   android:hint="@string/contrasenia"
+                   android:inputType="textPassword"
+                   android:padding="15dp"
+                   android:textSize="15sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
+
         <com.google.android.material.button.MaterialButton
+           android:id="@+id/mb_registrar"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             app:cornerRadius="40dp"
@@ -174,7 +223,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/LayoutNegocio"
         android:gravity="center">
         <!--Nombre-->
         <LinearLayout
@@ -188,16 +236,21 @@
                 android:layout_height="50dp"
                 android:src="@drawable/ic_person"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/TextFieldInputTextNombreNegocio"
-                android:layout_width="250dp"
-                android:layout_height="50dp"
-                android:background="@color/white"
-                android:fontFamily="@font/myriadproregular"
-                android:hint="@string/nombre"
-                android:inputType="text"
-                android:padding="15dp"
-                android:textSize="15sp"/>
+            <com.google.android.material.textfield.TextInputLayout
+               android:id="@+id/til_nombre_registro_negocio"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                   android:id="@+id/TextFieldInputTextNombreNegocio"
+                   android:layout_width="250dp"
+                   android:layout_height="50dp"
+                   android:background="@color/white"
+                   android:fontFamily="@font/myriadproregular"
+                   android:hint="@string/nombre"
+                   android:inputType="text"
+                   android:padding="15dp"
+                   android:textSize="15sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
         <!--Apellido-->
         <LinearLayout
@@ -211,16 +264,20 @@
                 android:layout_height="50dp"
                 android:src="@drawable/ic_person"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/TextFieldInputTextApellidoNegocio"
-                android:layout_width="250dp"
-                android:layout_height="50dp"
-                android:background="@color/white"
-                android:fontFamily="@font/myriadproregular"
-                android:hint="@string/apellido"
-                android:inputType="text"
-                android:padding="15dp"
-                android:textSize="15sp"/>
+            <com.google.android.material.textfield.TextInputLayout
+               android:id="@+id/til_apellido_registro_negocio"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                   android:layout_width="250dp"
+                   android:layout_height="50dp"
+                   android:background="@color/white"
+                   android:fontFamily="@font/myriadproregular"
+                   android:hint="@string/apellido"
+                   android:inputType="text"
+                   android:padding="15dp"
+                   android:textSize="15sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <!--Correo-->
@@ -235,16 +292,21 @@
                 android:layout_height="50dp"
                 android:src="@drawable/ic_person"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/TextFieldInputTextCorreoNegocio"
-                android:layout_width="250dp"
-                android:layout_height="50dp"
-                android:background="@color/white"
-                android:fontFamily="@font/myriadproregular"
-                android:hint="@string/correo"
-                android:inputType="textEmailAddress"
-                android:padding="15dp"
-                android:textSize="15sp"/>
+            <com.google.android.material.textfield.TextInputLayout
+               android:id="@+id/til_correo_registro_negocio"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                   android:id="@+id/TextFieldInputTextCorreoNegocio"
+                   android:layout_width="250dp"
+                   android:layout_height="50dp"
+                   android:background="@color/white"
+                   android:fontFamily="@font/myriadproregular"
+                   android:hint="@string/correo"
+                   android:inputType="textEmailAddress"
+                   android:padding="15dp"
+                   android:textSize="15sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
         <!--Contraseña-->
         <LinearLayout
@@ -258,40 +320,23 @@
                 android:layout_height="50dp"
                 android:src="@drawable/ic_person"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/TextFieldInputTextPasswordNegocio"
-                android:layout_width="250dp"
-                android:layout_height="50dp"
-                android:background="@color/white"
-                android:fontFamily="@font/myriadproregular"
-                android:hint="@string/contrasenia"
-                android:inputType="textPassword"
-                android:padding="15dp"
-                android:textSize="15sp"/>
+            <com.google.android.material.textfield.TextInputLayout
+               android:id="@+id/til_contrasenia_registro_negocio"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                   android:layout_width="250dp"
+                   android:layout_height="50dp"
+                   android:background="@color/white"
+                   android:fontFamily="@font/myriadproregular"
+                   android:hint="@string/contrasenia"
+                   android:inputType="textPassword"
+                   android:padding="15dp"
+                   android:textSize="15sp"/>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
         <!--Nombre Negocio-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_margin="5dp">
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/ic_person"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/TextFieldInputTextNombreDelNegocio"
-                android:layout_width="250dp"
-                android:layout_height="50dp"
-                android:background="@color/white"
-                android:fontFamily="@font/myriadproregular"
-                android:hint="@string/nombreNegocio"
-                android:inputType="textPassword"
-                android:padding="15dp"
-                android:textSize="15sp"/>
-        </LinearLayout>
         <com.google.android.material.button.MaterialButton
             android:layout_width="300dp"
             android:layout_height="wrap_content"
