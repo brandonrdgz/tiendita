@@ -87,5 +87,7 @@
     <string name="error_cargar_img">Ocurrio un error al cargar la imagen</string>
     <string name="action_ir">Ver Tienda</string>
     <string name="header_tiendita">TIenda</string>
+    <string name="action_aceptar">Aceptar</string>
+    <string name="localizacion">Localizacion</string>
 
 </resources>

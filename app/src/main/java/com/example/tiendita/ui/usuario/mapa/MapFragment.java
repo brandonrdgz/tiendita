@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +48,10 @@ import java.util.ArrayList;
 public class MapFragment extends Fragment implements OnMapReadyCallback,
                                                     GoogleMap.OnMarkerClickListener,
                                                     FirebaseCallback<DataSnapshot>,
-        DowloadCallback<Task<FileDownloadTask.TaskSnapshot>> {
+                                                    DowloadCallback<Task<FileDownloadTask.TaskSnapshot>>,
+                                                    View.OnClickListener,
+                                                    GoogleMap.OnMarkerDragListener
+{
 
     private MapViewModel mapViewModel;
     private Location currentLocation;
@@ -55,6 +59,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private ArrayList<SucursalModelo> list;
     private SucursalModelo sucursalModelo;
     private LatLng latLng;
+    private Boolean esNegocio;
+    private TextView tvLatitud,tvLongitud;
+    private Button bttnAceptar;
     private static final int REQUEST_CODE = 101;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -63,12 +70,26 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 new ViewModelProvider(this).get(MapViewModel.class);
         View root = inflater.inflate(R.layout.fragment_map, container, false);
 
+        Bundle data = this.getArguments();
+        if (data != null) {
+            initComps(root);
+            esNegocio=data.getBoolean(Constantes.CONST_MAPA_TYPE);
+        }else{
+            esNegocio=false;
+        }
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.getActivity());
         fetchLastLocation();
 
         return root;
     }
 
+    private void initComps(View root) {
+        tvLatitud=root.findViewById(R.id.text_latitud);
+        tvLongitud=root.findViewById(R.id.text_longitud);
+        bttnAceptar=root.findViewById(R.id.bttn_aceptar_localizacion);
+        bttnAceptar.setOnClickListener(this);
+    }
 
 
     private void fetchLastLocation() {
@@ -95,10 +116,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         latLng= new LatLng(19.265172, -99.634658);
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-
+        if(esNegocio){
+            negocioConfig(googleMap);
+        }else{
+            clientConfig(googleMap);
+        }
+    }
+    private void negocioConfig(GoogleMap googleMap){
+        Marker marker = googleMap.addMarker(new MarkerOptions().position(latLng).title("Localizacion").draggable(true));
+        googleMap.setOnMarkerDragListener(this);
+    }
+    private void clientConfig(GoogleMap googleMap){
         list= new ArrayList<>();
         AccionesFirebaseRTDataBase.getNearSucursales(this);
 
@@ -110,6 +142,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         }
 
         googleMap.setOnMarkerClickListener(this);
+
     }
 
 
@@ -174,9 +207,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     public void enExitoDesc(Task<FileDownloadTask.TaskSnapshot> respuesta,File localFile) {
         sucursalModelo.setLocalImg(localFile.getAbsolutePath());
         showDialog(sucursalModelo);
-
-
-
     }
 
     @Override
@@ -223,5 +253,33 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             }
         });
         dialogo.show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        //redirect creacion de sucursal view
+               /*
+                    Bundle data = new Bundle();
+                    data.putString(Constantes.CONST_SUCURSAL_LAT,tvLatitud.getText().toString());
+                    data.putString(Constantes.CONST_SUCURSAL_LONG,tvLongitud.getText().toString());
+                    NavHostFragment.findNavController(this)
+                                    .navigate(R.id.action_nav_listar_to_nav_editar, data);
+                                                    */
+    }
+
+    @Override
+    public void onMarkerDragStart(Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDrag(Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDragEnd(Marker marker) {
+        tvLatitud.setText(marker.getPosition().latitude+"");
+        tvLongitud.setText(marker.getPosition().longitude+"");
     }
 }
