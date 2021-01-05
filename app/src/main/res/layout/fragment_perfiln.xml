@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.negocio.perfil.PerfilNFragment"
+    android:background="@color/background_color">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/iv_perfil_negocio"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:padding="20dp"
+                android:src="@drawable/img_businness"/>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/myriadproregular"
+                android:gravity="center"
+                android:text="@string/registro"
+                android:textColor="@color/font_color"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/LayoutPerfil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+                <!--Nombre-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_person"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tf_perfil_nombre_duenio_negocio"
+                            android:layout_width="250dp"
+                            android:layout_height="50dp"
+                            android:background="@color/white"
+                            android:fontFamily="@font/myriadproregular"
+                            android:hint="@string/nombre"
+                            android:inputType="text"
+                            android:padding="15dp"
+                            android:textSize="15sp"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <!--Apellido-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_person"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tf_perfil_apellido_negocio"
+                            android:layout_width="250dp"
+                            android:layout_height="50dp"
+                            android:background="@color/white"
+                            android:fontFamily="@font/myriadproregular"
+                            android:hint="@string/apellido"
+                            android:inputType="text"
+                            android:padding="15dp"
+                            android:textSize="15sp"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <!--Correo-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_person"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tf_perfil_correo_negocio"
+                            android:layout_width="250dp"
+                            android:layout_height="50dp"
+                            android:background="@color/white"
+                            android:fontFamily="@font/myriadproregular"
+                            android:hint="@string/correo"
+                            android:inputType="textEmailAddress"
+                            android:padding="15dp"
+                            android:textSize="15sp"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <!--Contraseña-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_person"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tf_perfil_password_negocio"
+                            android:layout_width="250dp"
+                            android:layout_height="50dp"
+                            android:background="@color/white"
+                            android:fontFamily="@font/myriadproregular"
+                            android:hint="@string/contrasenia"
+                            android:inputType="textPassword"
+                            android:padding="15dp"
+                            android:textSize="15sp"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <!--Nombre Negocio-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_margin="5dp">
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_person"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tf_perfil_nombre_negocio"
+                            android:layout_width="250dp"
+                            android:layout_height="50dp"
+                            android:background="@color/white"
+                            android:fontFamily="@font/myriadproregular"
+                            android:hint="@string/nombreNegocio"
+                            android:inputType="textPassword"
+                            android:padding="15dp"
+                            android:textSize="15sp"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/bttn_edit_negocio"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/editarBtn"
+                    app:cornerRadius="40dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/bttn_save_negocio"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/guardarBtn"
+                    app:cornerRadius="40dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/bttn_discad_negocio"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/descartarBtn"
+                    app:cornerRadius="40dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>

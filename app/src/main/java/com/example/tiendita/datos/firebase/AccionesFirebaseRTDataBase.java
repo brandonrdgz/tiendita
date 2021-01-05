@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.tiendita.datos.modelos.NegocioModelo;
 import com.example.tiendita.datos.modelos.UsuarioModelo;
 import com.example.tiendita.utilidades.Constantes;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,6 +43,27 @@ public class AccionesFirebaseRTDataBase {
                 });
 
     }
+    public static void getNegocio(String UID,FirebaseCallback<DataSnapshot> firebaseCallback){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference
+                .child(Constantes.NODO_DATOS_NEGOCIOS)
+                .child(UID)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()) {
+                            firebaseCallback.enExito(snapshot);
+                        }else{
+                            firebaseCallback.enFallo(null);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+    }
     public static void updateUser(UsuarioModelo usuarioModelo, FirebaseCallback firebaseCallback){
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference
@@ -58,7 +80,23 @@ public class AccionesFirebaseRTDataBase {
                 }
             }
         });
-
+    }
+    public static void updateNegocio(NegocioModelo negocioModelo, FirebaseCallback firebaseCallback){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference
+                .child(Constantes.NODO_DATOS_NEGOCIOS)
+                .child(negocioModelo.getId())
+                .setValue(negocioModelo)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()) {
+                            firebaseCallback.enExito(null);
+                        }else {
+                            firebaseCallback.enFallo(null);
+                        }
+                    }
+                });
     }
     public static void getNearSucursales(FirebaseCallback<DataSnapshot> firebaseCallback){
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();

@@ -35,9 +35,12 @@ public class Constantes {
    public static final String CONST_BASE_LOCALIMG= "localImg";
    public static final String CONST_BASE_REMOTEIMG= "remoteImg";
 
+   //Atributos Negocio
+   public static final String CONST_NEGOCIO_NOMBRE= "nombreNegocio";
    //Constantes para control de flujo
    //Constantes para Tipo de vista
    public static final String CONST_MAPA_TYPE ="esNegocio";
+
 
    //Constantes para el tipo de actualizacion de la referencia local img
    public static int UPDATE_LOCALIMG_CLIENTE=1;

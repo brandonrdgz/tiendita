@@ -1,9 +1,17 @@
-package com.example.tiendita.ui.usuario.perfil;
+package com.example.tiendita.ui.negocio.perfil;
+
+import androidx.core.content.FileProvider;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -15,11 +23,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
 import com.example.tiendita.R;
 import com.example.tiendita.datos.firebase.AccionesFireStorage;
 import com.example.tiendita.datos.firebase.AccionesFirebaseAuth;
@@ -27,7 +30,9 @@ import com.example.tiendita.datos.firebase.AccionesFirebaseRTDataBase;
 import com.example.tiendita.datos.firebase.DownloadCallback;
 import com.example.tiendita.datos.firebase.FirebaseCallback;
 import com.example.tiendita.datos.firebase.UploadCallback;
+import com.example.tiendita.datos.modelos.NegocioModelo;
 import com.example.tiendita.datos.modelos.UsuarioModelo;
+import com.example.tiendita.ui.usuario.perfil.PerfilUViewModel;
 import com.example.tiendita.utilidades.Constantes;
 import com.example.tiendita.utilidades.ImageManager;
 import com.google.android.gms.tasks.Task;
@@ -40,76 +45,91 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class PerfilUFragment extends Fragment implements View.OnClickListener,
+public class PerfilNFragment extends Fragment implements View.OnClickListener,
         FirebaseCallback<DataSnapshot>,
         DownloadCallback,
-        UploadCallback<Task<Uri>> {
+        UploadCallback<Task<Uri>>  {
 
-    private PerfilUViewModel perfilUViewModel;
-    private TextView tvNombre,tvApellido,tvPassword,tvCorreo;
+    private PerfilNViewModel mViewModel;
+    private TextView tvNombre,tvApellido,tvPassword,tvCorreo,tvNombreNegocio;
     private Button bttnEdit,bttnSave,bttnDiscard;
-    private ImageView ivCliente;
-    private UsuarioModelo current;
+    private ImageView ivNegocio;
+    private NegocioModelo current;
     public static final int REQUEST_TAKE_PHOTO=1;
     public static  String currentPath;
     public static Uri photoUri;
     private boolean imgHasChange;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        perfilUViewModel =
-                new ViewModelProvider(this).get(PerfilUViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_perfilu, container, false);
+    public static PerfilNFragment newInstance() {
+        return new PerfilNFragment();
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        mViewModel =
+                new ViewModelProvider(this).get(PerfilNViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_perfiln, container, false);
         initComps(root);
         return root;
     }
 
     private void initComps(View root) {
-            tvNombre = root.findViewById(R.id.tf_perfil_nombre_user);
-            tvApellido = root.findViewById(R.id.tf_perfil_apellido_user);
-            tvPassword = root.findViewById(R.id.tf_perfil_password_user);
-            tvCorreo = root.findViewById(R.id.tf_perfil_correo_user);
-            bttnSave = root.findViewById(R.id.bttn_save_user);
-            bttnEdit = root.findViewById(R.id.bttn_edit_user);
-            bttnDiscard = root.findViewById(R.id.bttn_discard_user);
-            ivCliente=root.findViewById(R.id.iv_perfil_user);
+        tvNombre = root.findViewById(R.id.tf_perfil_nombre_negocio);
+        tvNombreNegocio = root.findViewById(R.id.tf_perfil_nombre_negocio);
+        tvApellido = root.findViewById(R.id.tf_perfil_apellido_negocio);
+        tvPassword = root.findViewById(R.id.tf_perfil_password_negocio);
+        tvCorreo = root.findViewById(R.id.tf_perfil_correo_negocio);
+        bttnSave = root.findViewById(R.id.bttn_save_negocio);
+        bttnEdit = root.findViewById(R.id.bttn_edit_negocio);
+        bttnDiscard = root.findViewById(R.id.bttn_discad_negocio);
+        ivNegocio=root.findViewById(R.id.iv_perfil_negocio);
 
-            tvCorreo.setEnabled(false);
-            tvPassword.setEnabled(false);
-            tvNombre.setEnabled(false);
-            tvApellido.setEnabled(false);
-            ivCliente.setEnabled(false);
-            bttnDiscard.setVisibility(View.GONE);
-            bttnSave.setVisibility(View.GONE);
+        tvCorreo.setEnabled(false);
+        tvNombreNegocio.setEnabled(false);
+        tvPassword.setEnabled(false);
+        tvNombre.setEnabled(false);
+        tvApellido.setEnabled(false);
+        ivNegocio.setEnabled(false);
+        bttnDiscard.setVisibility(View.GONE);
+        bttnSave.setVisibility(View.GONE);
 
-            bttnEdit.setOnClickListener(this);
-            bttnSave.setOnClickListener(this);
-            bttnDiscard.setOnClickListener(this);
-            ivCliente.setOnClickListener(this);
+        bttnEdit.setOnClickListener(this);
+        bttnSave.setOnClickListener(this);
+        bttnDiscard.setOnClickListener(this);
+        ivNegocio.setOnClickListener(this);
 
-            imgHasChange=false;
+        imgHasChange=false;
 
-        AccionesFirebaseRTDataBase.getUser(AccionesFirebaseAuth.getUID(),
+        AccionesFirebaseRTDataBase.getNegocio(AccionesFirebaseAuth.getUID(),
                 this);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mViewModel = new ViewModelProvider(this).get(PerfilNViewModel.class);
+        // TODO: Use the ViewModel
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.bttn_save_user:
+            case R.id.bttn_save_negocio:
                 onSave();
                 break;
-            case R.id.bttn_edit_user:
+            case R.id.bttn_edit_negocio:
                 onEdit();
                 break;
-            case R.id.bttn_discard_user:
+            case R.id.bttn_discad_negocio:
                 onDiscard();
                 break;
-            case R.id.iv_perfil_user:
+            case R.id.iv_perfil_negocio:
                 takePhoto();
                 break;
 
         }
+
     }
     //metodos  onClick
     private void onSave(){
@@ -126,7 +146,7 @@ public class PerfilUFragment extends Fragment implements View.OnClickListener,
                     this);
         }else{
             //si no se cambio la imagen se actualizan solo los datos de realtime
-            AccionesFirebaseRTDataBase.updateUser(current,this);
+            AccionesFirebaseRTDataBase.updateNegocio(current,this);
         }
     }
     private void onEdit(){
@@ -137,7 +157,8 @@ public class PerfilUFragment extends Fragment implements View.OnClickListener,
         tvPassword.setEnabled(true);
         tvNombre.setEnabled(true);
         tvApellido.setEnabled(true);
-        ivCliente.setEnabled(true);
+        tvNombreNegocio.setEnabled(true);
+        ivNegocio.setEnabled(true);
 
     }
     private void onDiscard(){
@@ -145,7 +166,8 @@ public class PerfilUFragment extends Fragment implements View.OnClickListener,
         tvPassword.setEnabled(false);
         tvNombre.setEnabled(false);
         tvApellido.setEnabled(false);
-        ivCliente.setEnabled(false);
+        tvNombreNegocio.setEnabled(false);
+        ivNegocio.setEnabled(false);
         bttnDiscard.setVisibility(View.GONE);
         bttnSave.setVisibility(View.GONE);
         bttnEdit.setVisibility(View.VISIBLE);
@@ -173,7 +195,7 @@ public class PerfilUFragment extends Fragment implements View.OnClickListener,
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode==REQUEST_TAKE_PHOTO && resultCode== Activity.RESULT_OK){
             current.setLocalImg(currentPath);
-            ImageManager.loadImage(currentPath,ivCliente,this.getContext());
+            ImageManager.loadImage(currentPath,ivNegocio,this.getContext());
             imgHasChange=true;
         }
     }
@@ -189,13 +211,13 @@ public class PerfilUFragment extends Fragment implements View.OnClickListener,
 
     //metodo para desplegar los datos
     private void showData() {
-        ImageManager.loadImage(current.getLocalImg(),ivCliente,this.getContext());
+        ImageManager.loadImage(current.getLocalImg(),ivNegocio,this.getContext());
         tvCorreo.setText(current.getCorreo());
         tvPassword.setText(current.getContrasenia());
         tvNombre.setText(current.getNombre());
         tvApellido.setText(current.getApellido());
+        tvNombreNegocio.setText(current.getNombreNegocio());
     }
-
 
     //metodos de callback
     //carga y guardado de datos
@@ -209,13 +231,14 @@ public class PerfilUFragment extends Fragment implements View.OnClickListener,
         //si se carga datos del cliente
         if(respuesta!=null) {
             HashMap cliente = (HashMap) respuesta.getValue();
-            current = new UsuarioModelo();
+            current = new NegocioModelo();
             current.setId(cliente.get(Constantes.CONST_BASE_ID).toString());
             current.setNombre(cliente.get(Constantes.CONST_BASE_NOMBRE).toString());
             current.setApellido(cliente.get(Constantes.CONST_BASE_APELLIDO).toString());
             current.setContrasenia(cliente.get(Constantes.CONST_BASE_CONTRASENIA).toString());
             current.setLocalImg(cliente.get(Constantes.CONST_BASE_LOCALIMG).toString());
             current.setRemoteImg(cliente.get(Constantes.CONST_BASE_REMOTEIMG).toString());
+            current.setNombreNegocio(cliente.get(Constantes.CONST_NEGOCIO_NOMBRE).toString());
 
             File filePhoto = new File(current.getLocalImg());
             if (filePhoto.exists()) {
@@ -235,7 +258,8 @@ public class PerfilUFragment extends Fragment implements View.OnClickListener,
             tvPassword.setEnabled(false);
             tvNombre.setEnabled(false);
             tvApellido.setEnabled(false);
-            ivCliente.setEnabled(false);
+            ivNegocio.setEnabled(false);
+            tvNombreNegocio.setEnabled(false);
             bttnDiscard.setVisibility(View.GONE);
             bttnSave.setVisibility(View.GONE);
             bttnEdit.setVisibility(View.VISIBLE);
@@ -278,7 +302,7 @@ public class PerfilUFragment extends Fragment implements View.OnClickListener,
         //se actualiza imagen remota y se actualiza el usuario
         List<String> segments=respuesta.getResult().getPathSegments();
         current.setRemoteImg( segments.get(segments.size()-1));
-        AccionesFirebaseRTDataBase.updateUser(current,this);
+        AccionesFirebaseRTDataBase.updateNegocio(current,this);
 
     }
 
