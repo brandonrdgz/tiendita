@@ -23,16 +23,24 @@ public class Constantes {
    public static final String CONST_SUCURSAL_DIRECCION="direccion";
    public static final String CONST_SUCURSAL_HORAAPER= "horaAper";
    public static final String CONST_SUCURSAL_HORACIERRE= "horaCierre";
-   public static final String CONST_SUCURSAL_LOCALIMG= "localImg";
-   public static final String CONST_SUCURSAL_REMOTEIMG= "remoteImg";
    public static final String CONST_SUCURSAL_LAT="latitud";
    public static final String CONST_SUCURSAL_LONG ="longitud";
+
+   //Atributos BASE
+   public static final String CONST_BASE_ID="id";
+   public static final String CONST_BASE_NOMBRE= "nombre";
+   public static final String CONST_BASE_APELLIDO= "apellido";
+   public static final String CONST_BASE_CORREO= "correo";
+   public static final String CONST_BASE_CONTRASENIA="contrasenia";
+   public static final String CONST_BASE_LOCALIMG= "localImg";
+   public static final String CONST_BASE_REMOTEIMG= "remoteImg";
+
    //Constantes para control de flujo
    //Constantes para Tipo de vista
    public static final String CONST_MAPA_TYPE ="esNegocio";
 
    //Constantes para el tipo de actualizacion de la referencia local img
-   public static int UPDATE_CLIENTE=1;
+   public static int UPDATE_LOCALIMG_CLIENTE=1;
    public static int UPDATE_LOCALIMG_PRODUCTO=2;
    public static int UPDATE_LOCALIMG_NEGOCIO=3;
    public static int UPDATE_LOCALIMG_SUCURSAL=4;

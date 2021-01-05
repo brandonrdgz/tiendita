@@ -89,5 +89,11 @@
     <string name="header_tiendita">TIenda</string>
     <string name="action_aceptar">Aceptar</string>
     <string name="localizacion">Localizacion</string>
+    <string name="error_datos">Error con la operacion de datos</string>
+    <string name="error_tomar_img">Error al tomar foto</string>
+    <string name="no_img">Error al Tomar imagen</string>
+    <string name="error_actualiza_img">Error al subir imagen</string>
+    <string name="actualizando_img">Subiendo imagen</string>
+    <string name="datos_actualizados">Actualizado</string>
 
 </resources>

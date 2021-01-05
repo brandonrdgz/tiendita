@@ -23,7 +23,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.tiendita.R;
 import com.example.tiendita.datos.firebase.AccionesFireStorage;
 import com.example.tiendita.datos.firebase.AccionesFirebaseRTDataBase;
-import com.example.tiendita.datos.firebase.DowloadCallback;
+import com.example.tiendita.datos.firebase.DownloadCallback;
 import com.example.tiendita.datos.firebase.FirebaseCallback;
 import com.example.tiendita.datos.modelos.SucursalModelo;
 import com.example.tiendita.utilidades.Constantes;
@@ -48,7 +48,7 @@ import java.util.ArrayList;
 public class MapFragment extends Fragment implements OnMapReadyCallback,
                                                     GoogleMap.OnMarkerClickListener,
                                                     FirebaseCallback<DataSnapshot>,
-                                                    DowloadCallback<Task<FileDownloadTask.TaskSnapshot>>,
+        DownloadCallback<Task<FileDownloadTask.TaskSnapshot>>,
                                                     View.OnClickListener,
                                                     GoogleMap.OnMarkerDragListener
 {
@@ -166,8 +166,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 sucursalModelo.setHoraCierre(dataSnapshot.child(Constantes.CONST_SUCURSAL_HORACIERRE).getValue().toString());
                 sucursalModelo.setSucursalID(dataSnapshot.child(Constantes.CONST_SUCURSAL_ID).getValue().toString());
                 sucursalModelo.setNegocioID(dataSnapshot.child(Constantes.CONST_NEGOCIO_ID).getValue().toString());
-                sucursalModelo.setLocalImg(dataSnapshot.child(Constantes.CONST_SUCURSAL_LOCALIMG).getValue().toString());
-                sucursalModelo.setRemoteImg(dataSnapshot.child(Constantes.CONST_SUCURSAL_REMOTEIMG).getValue().toString());
+                sucursalModelo.setLocalImg(dataSnapshot.child(Constantes.CONST_BASE_LOCALIMG).getValue().toString());
+                sucursalModelo.setRemoteImg(dataSnapshot.child(Constantes.CONST_BASE_REMOTEIMG).getValue().toString());
                 sucursalModelo.setLatitud(Double.parseDouble(dataSnapshot.child(Constantes.CONST_SUCURSAL_LAT).getValue().toString()));
                 sucursalModelo.setLongitud(Double.parseDouble(dataSnapshot.child(Constantes.CONST_SUCURSAL_LONG).getValue().toString()));
                 list.add(sucursalModelo);

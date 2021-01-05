@@ -19,7 +19,6 @@
         <activity android:name=".ui.producto.productoIndividual.productoIndividual" />
         <activity android:name=".ui.usuario.pedido.pedidos" />
         <activity android:name=".ui.negocio.perfil.perfil" />
-        <activity android:name=".ui.usuario.perfil.perfil" />
         <activity android:name=".ui.login.RecuperarContrasenia" />
         <activity android:name=".ui.login.Registro" />
         <activity android:name=".ui.login.InicioSesion">

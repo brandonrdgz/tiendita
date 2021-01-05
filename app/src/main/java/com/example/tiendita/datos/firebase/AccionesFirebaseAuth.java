@@ -9,6 +9,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class AccionesFirebaseAuth {
+    public static String getUID(){
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        return firebaseAuth.getUid();
+    }
 
    public static <T extends UsuarioBaseModelo> void registroUsuario(T usuario,
                                                                     FirebaseCallback<Task<AuthResult>> firebaseCallback) {
