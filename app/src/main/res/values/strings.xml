@@ -80,5 +80,12 @@
     <string name="msj_registrando">Registrando</string>
     <string name="msj_registro_exitoso">Registro Exitoso</string>
     <string name="msj_iniciando_sesion">Iniciando sesión</string>
+    <!--Constantes del Manifest-->
+    <string name="map_key" translatable="false">AIzaSyB_qsP8AOP_P0MdlPz-48TDaJYjTP3vbjo</string>
+    <string name="sin_sucursales">No hay sucuarsales cercanas</string>
+    <string name="imagen_desc">image</string>
+    <string name="error_cargar_img">Ocurrio un error al cargar la imagen</string>
+    <string name="action_ir">Ver Tienda</string>
+    <string name="header_tiendita">TIenda</string>
 
 </resources>
