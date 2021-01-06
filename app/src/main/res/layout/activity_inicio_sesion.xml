@@ -8,117 +8,130 @@
     android:orientation="vertical"
     tools:context=".ui.login.InicioSesion">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="280dp"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:padding="20dp"
-            android:src="@drawable/img_logo"/>
-
-        <TextView
-            android:id="@+id/textView2"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/myriadproregular"
-            android:gravity="center"
-            android:text="@string/iniciarSesion"
-            android:textColor="@color/font_color"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-    </LinearLayout>
+            android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:gravity="center"
-        android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_person"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="280dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:padding="20dp"
+                    android:src="@drawable/img_logo" />
 
-        <com.google.android.material.textfield.TextInputLayout
-           android:id="@+id/til_correo_inicio_sesion"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content">
-            <com.google.android.material.textfield.TextInputEditText
-               android:layout_width="250dp"
-               android:layout_height="50dp"
-               android:background="@color/white"
-               android:fontFamily="@font/myriadproregular"
-               android:hint="@string/usuario"
-               android:inputType="text"
-               android:padding="15dp"
-               android:textSize="15sp"/>
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/myriadproregular"
+                    android:gravity="center"
+                    android:text="@string/iniciarSesion"
+                    android:textColor="@color/font_color"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:gravity="center"
-        android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_passwordlock"/>
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_person" />
 
-        <com.google.android.material.textfield.TextInputLayout
-           android:id="@+id/til_contrasenia_inicio_sesion"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content">
-            <com.google.android.material.textfield.TextInputEditText
-               android:layout_width="250dp"
-               android:layout_height="50dp"
-               android:background="@color/white"
-               android:fontFamily="@font/myriadproregular"
-               android:hint="@string/contrasenia"
-               android:inputType="textPassword"
-               android:padding="15dp"
-               android:textSize="15sp"/>
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_correo_inicio_sesion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tv_recupera_contrasenia"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:gravity="center"
-        android:text="@string/olvidar_password"
-        android:textSize="18sp"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="250dp"
+                        android:layout_height="50dp"
+                        android:background="@color/white"
+                        android:fontFamily="@font/myriadproregular"
+                        android:hint="@string/usuario"
+                        android:inputType="text"
+                        android:padding="15dp"
+                        android:textSize="15sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:gravity="center"
-        android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/mb_ingresar"
-            android:layout_width="300dp"
-            android:layout_height="65dp"
-            android:text="@string/ingresarBttn"
-            app:cornerRadius="40dp"/>
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_passwordlock" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/mb_registrarse"
-            android:layout_width="300dp"
-            android:layout_height="65dp"
-            android:text="@string/registrarBttn"
-            app:cornerRadius="40dp"/>
-    </LinearLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_contrasenia_inicio_sesion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="250dp"
+                        android:layout_height="50dp"
+                        android:background="@color/white"
+                        android:fontFamily="@font/myriadproregular"
+                        android:hint="@string/contrasenia"
+                        android:inputType="textPassword"
+                        android:padding="15dp"
+                        android:textSize="15sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_recupera_contrasenia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:gravity="center"
+                android:text="@string/olvidar_password"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/mb_ingresar"
+                    android:layout_width="300dp"
+                    android:layout_height="65dp"
+                    android:text="@string/ingresarBttn"
+                    app:cornerRadius="40dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/mb_registrarse"
+                    android:layout_width="300dp"
+                    android:layout_height="65dp"
+                    android:text="@string/registrarBttn"
+                    app:cornerRadius="40dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
