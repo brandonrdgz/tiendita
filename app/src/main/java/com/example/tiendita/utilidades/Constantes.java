@@ -2,7 +2,7 @@ package com.example.tiendita.utilidades;
 
 public class Constantes {
    public static final String EXP_REG_NOMBRE = "^[A-ZÁÉÍÓÚÑ]+(\\s[A-ZÁÉÍÓÚÑ]+)*$";
-   public static final String EXP_REG_CORREO = "^[a-z]+([-_.][a-z]+)*@[a-z]+\\.[a-z]+(\\.[a-z]+)*$";
+   public static final String EXP_REG_CORREO = "^[a-z0-9]+([\\-_\\.][a-z0-9]+)*@[a-z0-9]+[\\.\\-][a-z0-9]+([\\.\\-][a-z]+)*$";
    public static final String EXP_REG_LETRAS_MAYUSCULAS = ".*[A-Z]+.*";
    public static final String EXP_REG_LETRAS_MINUSCULAS = ".*[a-z]+.*";
    public static final String EXP_REG_NUMEROS = ".*[0-9]+.*";
