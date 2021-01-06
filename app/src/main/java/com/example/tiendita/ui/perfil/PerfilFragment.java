@@ -148,7 +148,10 @@ public class PerfilFragment extends Fragment implements View.OnClickListener,
         if(esNegocio) {
             currentN.setNombre(tvNombre.getText().toString());
             currentN.setNombreNegocio(tvNombreNegocio.getText().toString());
-            currentN.setContrasenia(tvPassword.getText().toString());
+            if(!currentN.getContrasenia().equals(tvPassword.getText().toString())) {
+                currentN.setContrasenia(tvPassword.getText().toString());
+                AccionesFirebaseAuth.actualizaContrasenia(currentN.getContrasenia());
+            }
             currentN.setApellido(tvApellido.getText().toString());
             if (imgHasChange) {
                 //si se cambio la imagen de usuario se actualiza la referencia remota
@@ -164,7 +167,10 @@ public class PerfilFragment extends Fragment implements View.OnClickListener,
             }
         }else{
             currentU.setNombre(tvNombre.getText().toString());
-            currentU.setContrasenia(tvPassword.getText().toString());
+            if(!currentU.getContrasenia().equals(tvPassword.getText().toString())) {
+                currentU.setContrasenia(tvPassword.getText().toString());
+                AccionesFirebaseAuth.actualizaContrasenia(currentU.getContrasenia());
+            }
             currentU.setApellido(tvApellido.getText().toString());
             if (imgHasChange) {
                 //si se cambio la imagen de usuario se actualiza la referencia remota
