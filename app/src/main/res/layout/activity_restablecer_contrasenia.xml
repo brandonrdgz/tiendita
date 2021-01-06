@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background_color"
     android:orientation="vertical"
-    tools:context=".ui.login.RecuperarContrasenia">
+    tools:context=".ui.login.RestablecerContrasenia">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -46,6 +46,7 @@
             android:textStyle="bold"/>
 
         <com.google.android.material.textfield.TextInputLayout
+           android:id="@+id/til_correo_restablecer_contrasenia"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
@@ -58,6 +59,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
+           android:id="@+id/mb_enviar_recuperar_contrasenia"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:text="Enviar"

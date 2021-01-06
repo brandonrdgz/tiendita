@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.example.tiendita.ui.gallery.GalleryFragment"
+        android:name="com.example.tiendita.ui.usuario.perfil.PerfilUFragment"
         android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_perfilu" />
 
     <fragment
         android:id="@+id/nav_map"
-        android:name="com.example.tiendita.ui.usuario.mapa.MapFragment"
+        android:name="com.example.tiendita.ui.mapa.MapFragment"
         android:label="@string/mapa"
         tools:layout="@layout/fragment_map" />
 </navigation>

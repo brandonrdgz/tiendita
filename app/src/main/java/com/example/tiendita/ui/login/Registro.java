@@ -5,10 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tiendita.MainActivity;
@@ -19,6 +17,7 @@ import com.example.tiendita.datos.modelos.NegocioModelo;
 import com.example.tiendita.datos.modelos.UsuarioBaseModelo;
 import com.example.tiendita.datos.modelos.UsuarioModelo;
 import com.example.tiendita.text_watcher.CampoTextWatcher;
+import com.example.tiendita.utilidades.Dialogo;
 import com.example.tiendita.utilidades.Validaciones;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
@@ -92,19 +91,19 @@ public class Registro extends AppCompatActivity {
             AccionesFirebaseAuth.registroUsuario(usuario, new FirebaseCallback<Task<AuthResult>>() {
                 @Override
                 public void enInicio() {
-                    muestraDialogoProceso(view, R.string.msj_registrando);
+                    Dialogo.muestraDialogoProceso(view, alertDialog, R.string.msj_registrando);
                 }
 
                 @Override
-                public void enExito(Task<AuthResult> respuesta) {
-                    ocultaDialogoProceso();
+                public void enExito(Task<AuthResult> respuesta, int accion) {
+                    Dialogo.ocultaDialogoProceso(alertDialog);
                     Toast.makeText(view.getContext(), R.string.msj_registro_exitoso, Toast.LENGTH_LONG).show();
-                    inciarSesion(view, usuario.getCorreo(), usuario.getContrasenia());
+                    startActivity(new Intent(Registro.this, MainActivity.class));
                 }
 
                 @Override
                 public void enFallo(Exception excepcion) {
-                    ocultaDialogoProceso();
+                    Dialogo.ocultaDialogoProceso(alertDialog);
                 }
             });
         }
@@ -150,47 +149,5 @@ public class Registro extends AppCompatActivity {
         usuario.setContrasenia(contrasenia);
 
         return usuario;
-    }
-
-    private void muestraDialogoProceso(View view, int idRecurso) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
-        View vDialogoProceso = LayoutInflater.from(Registro.this)
-           .inflate(R.layout.dialogo_proceso, null);
-        TextView tv = vDialogoProceso.findViewById(R.id.tv_proceso);
-        tv.setText(idRecurso);
-
-        alertDialogBuilder.setView(vDialogoProceso);
-        alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
-
-    private void ocultaDialogoProceso() {
-        alertDialog.dismiss();
-    }
-
-    private void inciarSesion(View view, String correo, String contrasenia) {
-        AccionesFirebaseAuth.inicioSesion(correo, contrasenia, new FirebaseCallback<Void>() {
-            @Override
-            public void enInicio() {
-                muestraDialogoProceso(view, R.string.msj_iniciando_sesion);
-                Intent intent = new Intent(Registro.this, MainActivity.class);
-                startActivity(intent);
-            }
-
-            @Override
-            public void enExito(Void respuesta) {
-                ocultaDialogoProceso();
-            }
-
-            @Override
-            public void enFallo(Exception excepcion) {
-                ocultaDialogoProceso();
-            }
-        });
-    }
-
-    private void limpiaCamposError(){
-
-        tilNombreNegocio.setError(null);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.tiendita.ui.usuario.mapa;
+package com.example.tiendita.ui.mapa;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

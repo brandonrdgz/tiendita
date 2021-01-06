@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -14,6 +13,7 @@ import com.example.tiendita.R;
 import com.example.tiendita.datos.firebase.AccionesFirebaseAuth;
 import com.example.tiendita.datos.firebase.FirebaseCallback;
 import com.example.tiendita.text_watcher.CampoTextWatcher;
+import com.example.tiendita.utilidades.Dialogo;
 import com.example.tiendita.utilidades.Validaciones;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -51,7 +51,7 @@ public class InicioSesion extends AppCompatActivity {
         });
 
         tvRecuperaContrasenia.setOnClickListener(view -> {
-               startActivity(new Intent(InicioSesion.this, RecuperarContrasenia.class));
+               startActivity(new Intent(InicioSesion.this, RestablecerContrasenia.class));
            }
         );
     }
@@ -75,35 +75,19 @@ public class InicioSesion extends AppCompatActivity {
         AccionesFirebaseAuth.inicioSesion(correo, contrasenia, new FirebaseCallback<Void>() {
             @Override
             public void enInicio() {
-                muestraDialogoProceso(view, R.string.msj_iniciando_sesion);
+                Dialogo.muestraDialogoProceso(view, alertDialog, R.string.msj_iniciando_sesion);
             }
 
             @Override
-            public void enExito(Void respuesta) {
-                ocultaDialogoProceso();
+            public void enExito(Void respuesta, int accion) {
+                Dialogo.ocultaDialogoProceso(alertDialog);
                 startActivity(new Intent(InicioSesion.this, MainActivity.class));
             }
 
             @Override
             public void enFallo(Exception excepcion) {
-                ocultaDialogoProceso();
+                Dialogo.ocultaDialogoProceso(alertDialog);
             }
         });
-    }
-
-    private void muestraDialogoProceso(View view, int idRecurso) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
-        View vDialogoProceso = LayoutInflater.from(InicioSesion.this)
-           .inflate(R.layout.dialogo_proceso, null);
-        TextView tv = vDialogoProceso.findViewById(R.id.tv_proceso);
-        tv.setText(idRecurso);
-
-        alertDialogBuilder.setView(vDialogoProceso);
-        alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
-
-    private void ocultaDialogoProceso() {
-        alertDialog.dismiss();
     }
 }

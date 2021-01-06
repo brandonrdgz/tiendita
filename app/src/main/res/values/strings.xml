@@ -80,6 +80,10 @@
     <string name="msj_registrando">Registrando</string>
     <string name="msj_registro_exitoso">Registro Exitoso</string>
     <string name="msj_iniciando_sesion">Iniciando sesión</string>
+    <string name="msj_correo_enviado_restab_contra">El correo de restablecimiento de
+        contraseña ha sido enviado</string>
+    <string name="msj_enviando_correo_restab_contra">Enviando correo</string>
+
     <!--Constantes del Manifest-->
     <string name="map_key" translatable="false">AIzaSyB_qsP8AOP_P0MdlPz-48TDaJYjTP3vbjo</string>
     <string name="sin_sucursales">No hay sucuarsales cercanas</string>
@@ -89,5 +93,13 @@
     <string name="header_tiendita">TIenda</string>
     <string name="action_aceptar">Aceptar</string>
     <string name="localizacion">Localizacion</string>
+    <string name="error_datos">Error con la operacion de datos</string>
+    <string name="error_tomar_img">Error al tomar foto</string>
+    <string name="no_img">Error al Tomar imagen</string>
+    <string name="error_actualiza_img">Error al subir imagen</string>
+    <string name="actualizando_img">Subiendo imagen</string>
+    <string name="datos_actualizados">Actualizado</string>
+    <string name="sin_pedidos">Sin Pedidos</string>
+    <string name="fallo_pedido">Error al obtener los datos</string>
 
 </resources>

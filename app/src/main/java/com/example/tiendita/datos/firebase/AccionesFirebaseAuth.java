@@ -9,9 +9,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class AccionesFirebaseAuth {
+    public static String getUID(){
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        return firebaseAuth.getUid();
+    }
 
    public static <T extends UsuarioBaseModelo> void registroUsuario(T usuario,
                                                                     FirebaseCallback<Task<AuthResult>> firebaseCallback) {
+      firebaseCallback.enInicio();
+
       FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
       firebaseAuth.createUserWithEmailAndPassword(usuario.getCorreo(), usuario.getContrasenia())
@@ -26,9 +32,11 @@ public class AccionesFirebaseAuth {
                   }
 
                   @Override
-                  public void enExito(Void respuesta) {
-                     firebaseCallback.enExito(task);
+                  public void enExito(Void respuesta, int accion) {
+                     firebaseCallback.enExito(task, 0);
+
                   }
+
 
                   @Override
                   public void enFallo(Exception excepcion) {
@@ -44,13 +52,15 @@ public class AccionesFirebaseAuth {
 
    private static <T extends UsuarioBaseModelo> void registroDatosUsuario(T usuario,
                                                                           FirebaseCallback<Void> firebaseCallback) {
+       firebaseCallback.enInicio();
+
       FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
       String nodoTipoUsuaro = usuario instanceof UsuarioModelo ? Constantes.NODO_DATOS_USUARIOS :
          Constantes.NODO_DATOS_NEGOCIOS;
 
       firebaseDatabase.getReference().child(nodoTipoUsuaro).child(usuario.getId()).setValue(usuario)
          .addOnSuccessListener(aVoid -> {
-               firebaseCallback.enExito(null);
+               firebaseCallback.enExito(null,0);
             }
          )
          .addOnFailureListener(exception -> {
@@ -60,15 +70,32 @@ public class AccionesFirebaseAuth {
    }
 
    public static void inicioSesion(String correo, String contrasenia, FirebaseCallback<Void> firebaseCallback) {
-      FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+      firebaseCallback.enInicio();
+
+       FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
       firebaseAuth.signInWithEmailAndPassword(correo, contrasenia)
          .addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-               firebaseCallback.enExito(null);
+               firebaseCallback.enExito(null,0);
             }
             else {
                firebaseCallback.enFallo(task.getException());
             }
          });
+   }
+
+   public static void restableceContrasenia(String correo, FirebaseCallback firebaseCallback) {
+      firebaseCallback.enInicio();
+      FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+      firebaseAuth.useAppLanguage();
+
+      firebaseAuth.sendPasswordResetEmail(correo).addOnCompleteListener(task -> {
+         if (task.isSuccessful()) {
+            firebaseCallback.enExito(null, 0);
+         }
+         else {
+            firebaseCallback.enFallo(task.getException());
+         }
+      });
    }
 }
