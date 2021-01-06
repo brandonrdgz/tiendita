@@ -144,8 +144,14 @@ public class AccionesFirebaseRTDataBase {
                         .child(id);
                 break;
             case 2 :
+                ref = databaseReference
+                        .child(Constantes.NODO_PRODUCTOS)
+                        .child(id);
                 break;
             case 3 :
+                ref = databaseReference
+                        .child(Constantes.NODO_DATOS_NEGOCIOS)
+                        .child(id);
                 break;
             case 4 :
                 ref = databaseReference
