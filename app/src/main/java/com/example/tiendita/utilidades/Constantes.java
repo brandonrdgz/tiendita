@@ -9,12 +9,16 @@ public class Constantes {
    public static final String EXP_REG_CARAC_ESPECIALES = ".*[\\-_\\*%&=!]+.*";
    public static final String EXP_REG_CARACTERES_NO_VALIDOS = ".*[^a-zA-Z0-9\\-_\\*%&=!].*";
    public static final int LONGITUD_MIN_CONTRASENIA = 8;
+
    public static final String NODO_DATOS_USUARIOS = "usuarios";
    public static final String NODO_DATOS_NEGOCIOS = "negocios";
    public static final String NODO_PRODUCTOS = "productos";
    public static final String NODO_PRODUCTOS_DE_PEDIDOS = "productospedidos";
    public static final String NODO_PEDIDOS = "pedidos";
    public static final String NODO_SUCURSAL = "sucursal";
+
+   public static final String ETIQUETA_REGISTRO = "REGISTRO";
+   public static final String ETIQUETA_INICIO_SESION = "INICIO DE SESIÓN";
 
    //Constantes para atributos
    //Atributos Sucursal

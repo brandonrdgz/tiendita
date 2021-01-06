@@ -13,7 +13,9 @@ import com.example.tiendita.R;
 import com.example.tiendita.datos.firebase.AccionesFirebaseAuth;
 import com.example.tiendita.datos.firebase.FirebaseCallback;
 import com.example.tiendita.text_watcher.CampoTextWatcher;
+import com.example.tiendita.utilidades.Constantes;
 import com.example.tiendita.utilidades.Dialogo;
+import com.example.tiendita.utilidades.ExcepcionUtilidades;
 import com.example.tiendita.utilidades.Validaciones;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -91,6 +93,8 @@ public class InicioSesion extends AppCompatActivity {
             @Override
             public void enFallo(Exception excepcion) {
                 Dialogo.ocultaDialogoProceso(alertDialog);
+                ExcepcionUtilidades.muestraMensajeError(view, excepcion, R.string.msj_error_inicio_sesion,
+                   Constantes.ETIQUETA_INICIO_SESION);
             }
         });
     }

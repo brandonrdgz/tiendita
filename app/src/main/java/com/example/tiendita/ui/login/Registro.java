@@ -17,7 +17,9 @@ import com.example.tiendita.datos.modelos.NegocioModelo;
 import com.example.tiendita.datos.modelos.UsuarioBaseModelo;
 import com.example.tiendita.datos.modelos.UsuarioModelo;
 import com.example.tiendita.text_watcher.CampoTextWatcher;
+import com.example.tiendita.utilidades.Constantes;
 import com.example.tiendita.utilidades.Dialogo;
+import com.example.tiendita.utilidades.ExcepcionUtilidades;
 import com.example.tiendita.utilidades.TextInputUtilidades;
 import com.example.tiendita.utilidades.Validaciones;
 import com.google.android.gms.tasks.Task;
@@ -108,6 +110,8 @@ public class Registro extends AppCompatActivity {
                 @Override
                 public void enFallo(Exception excepcion) {
                     Dialogo.ocultaDialogoProceso(alertDialog);
+                    ExcepcionUtilidades.muestraMensajeError(view, excepcion, R.string.msj_error_registro,
+                       Constantes.ETIQUETA_REGISTRO);
                 }
             });
         }
@@ -135,9 +139,9 @@ public class Registro extends AppCompatActivity {
     private UsuarioBaseModelo modeloDatosUsuario() {
         String nombre = tilNombre.getEditText().getText().toString();
         String apellido = tilApellido.getEditText().getText().toString();
-        String nombreNegocio = tilNombreNegocio.getEditText().toString();
+        String nombreNegocio = tilNombreNegocio.getEditText().getText().toString();
         String correo = tilCorreo.getEditText().getText().toString();
-        String contrasenia = tilContrasenia.getEditText().toString();
+        String contrasenia = tilContrasenia.getEditText().getText().toString();
 
         UsuarioBaseModelo usuario = smTipoUsuario.isChecked() ? new NegocioModelo() :
                 new UsuarioModelo();
