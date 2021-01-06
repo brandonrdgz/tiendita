@@ -75,6 +75,10 @@
       minusculas, números, caracteres especiales (-_*%&amp;=!) y una longitud entre 8 y 30</string>
     <string name="msj_error_campo_nombre">El nombre no es válido</string>
     <string name="msj_error_apellido">El apellido no es válido</string>
+    <string name="msj_error_correo_registrado">El correo electrónico ya se encuentra registrado</string>
+    <string name="msj_error_credenciales_no_validas">Correo o constraseña no válidos</string>
+    <string name="msj_error_registro">Ocurrió un error durante el registro</string>
+    <string name="msj_error_inicio_sesion">Hubo un error al iniciar sesión</string>
 
     <!--Mensajes-->
     <string name="msj_registrando">Registrando</string>
