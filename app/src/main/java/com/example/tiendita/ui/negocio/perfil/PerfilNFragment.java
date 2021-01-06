@@ -75,6 +75,7 @@ public class PerfilNFragment extends Fragment implements View.OnClickListener,
     }
 
     private void initComps(View root) {
+
         tvNombre = root.findViewById(R.id.tf_perfil_nombre_negocio);
         tvNombreNegocio = root.findViewById(R.id.tf_perfil_nombre_negocio);
         tvApellido = root.findViewById(R.id.tf_perfil_apellido_negocio);
@@ -136,7 +137,6 @@ public class PerfilNFragment extends Fragment implements View.OnClickListener,
         current.setNombre(tvNombre.getText().toString());
         current.setContrasenia(tvPassword.getText().toString());
         current.setApellido(tvApellido.getText().toString());
-        current.setCorreo(tvCorreo.getText().toString());
         if(imgHasChange){
             //si se cambio la imagen de usuario se actualiza la referencia remota
             AccionesFirebaseRTDataBase.updateLocalImgRef(current.getId(),currentPath,this.getContext());
@@ -154,7 +154,6 @@ public class PerfilNFragment extends Fragment implements View.OnClickListener,
         bttnDiscard.setVisibility(View.VISIBLE);
         bttnSave.setVisibility(View.VISIBLE);
         bttnEdit.setVisibility(View.GONE);
-        tvCorreo.setEnabled(true);
         tvPassword.setEnabled(true);
         tvNombre.setEnabled(true);
         tvApellido.setEnabled(true);
@@ -163,7 +162,6 @@ public class PerfilNFragment extends Fragment implements View.OnClickListener,
 
     }
     private void onDiscard(){
-        tvCorreo.setEnabled(false);
         tvPassword.setEnabled(false);
         tvNombre.setEnabled(false);
         tvApellido.setEnabled(false);
@@ -195,7 +193,6 @@ public class PerfilNFragment extends Fragment implements View.OnClickListener,
 
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode==REQUEST_TAKE_PHOTO && resultCode== Activity.RESULT_OK){
-            AccionesFirebaseRTDataBase.updateLocalImgRef(current.getId(),currentPath,this.getContext());
             ImageManager.loadImage(currentPath,ivNegocio,this.getContext());
             imgHasChange=true;
         }
@@ -256,7 +253,6 @@ public class PerfilNFragment extends Fragment implements View.OnClickListener,
             case AccionesFirebaseRTDataBase.UPDATE_NEGOCIO_ACCTION:
                 //si se guardaron datos del cliente
                 Toast.makeText(this.getContext(), R.string.datos_actualizados, Toast.LENGTH_LONG).show();
-                tvCorreo.setEnabled(false);
                 tvPassword.setEnabled(false);
                 tvNombre.setEnabled(false);
                 tvApellido.setEnabled(false);

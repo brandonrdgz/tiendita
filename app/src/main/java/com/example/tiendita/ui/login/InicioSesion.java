@@ -42,15 +42,18 @@ public class InicioSesion extends AppCompatActivity {
         tilCorreo.getEditText().addTextChangedListener(new CampoTextWatcher(this, tilCorreo));
 
         mbRegistrarse.setOnClickListener(view -> {
+            limpiaCampos();
                startActivity(new Intent(InicioSesion.this, Registro.class));
            }
         );
 
         mbIngresar.setOnClickListener(view -> {
+            limpiaCampos();
             mbIngresarClic(view);
         });
 
         tvRecuperaContrasenia.setOnClickListener(view -> {
+            limpiaCampos();
                startActivity(new Intent(InicioSesion.this, RestablecerContrasenia.class));
            }
         );
@@ -67,8 +70,9 @@ public class InicioSesion extends AppCompatActivity {
 
     private boolean campoCorreoValido() {
         Validaciones.validaCampo(this, tilCorreo);
+        Validaciones.validaCampo(this, tilContrasenia);
 
-        return tilCorreo.getError() == null;
+        return (tilCorreo.getError() == null || tilContrasenia.getError() == null);
     }
 
     private void iniciarSesion(View view, String correo, String contrasenia) {
@@ -89,5 +93,10 @@ public class InicioSesion extends AppCompatActivity {
                 Dialogo.ocultaDialogoProceso(alertDialog);
             }
         });
+    }
+
+    private void limpiaCampos(){
+        tilCorreo.setError(null);
+        tilContrasenia.setError(null);
     }
 }

@@ -56,21 +56,21 @@ public class Registro extends AppCompatActivity {
         mbRegistrar = findViewById(R.id.mb_registrar);
 
         textInputLayouts = new TextInputLayout[]{
-           tilNombre,
-           tilApellido,
-           tilNombreNegocio,
-           tilCorreo,
-           tilContrasenia
+                tilNombre,
+                tilApellido,
+                tilNombreNegocio,
+                tilCorreo,
+                tilContrasenia
         };
 
         for (TextInputLayout textInputLayout : textInputLayouts) {
             textInputLayout.getEditText().addTextChangedListener(new CampoTextWatcher(this,
-               textInputLayout));
+                    textInputLayout));
         }
 
         layoutTILNombreNegocio.setVisibility(View.GONE);
         smTipoUsuario.setOnCheckedChangeListener((compoundButton, checked) -> {
-            tilNombreNegocio.setError(null);
+            limpiaCampos();
             if (checked) {
                 layoutTILNombreNegocio.setVisibility(View.VISIBLE);
             } else {
@@ -79,8 +79,8 @@ public class Registro extends AppCompatActivity {
         });
 
         mbRegistrar.setOnClickListener(view -> {
-               mbRegistrarClic(view);
-           }
+                    mbRegistrarClic(view);
+                }
         );
     }
 
@@ -111,7 +111,7 @@ public class Registro extends AppCompatActivity {
 
     private boolean camposValidos() {
         boolean camposValidos = true;
-        boolean registroDeUsuario = ! smTipoUsuario.isChecked();
+        boolean registroDeUsuario = !smTipoUsuario.isChecked();
         Validaciones.validaCampos(this, textInputLayouts);
 
         if (registroDeUsuario) {
@@ -119,7 +119,7 @@ public class Registro extends AppCompatActivity {
         }
 
         for (TextInputLayout textInputLayout : textInputLayouts) {
-            if(textInputLayout.getError() != null) {
+            if (textInputLayout.getError() != null) {
                 camposValidos = false;
                 break;
             }
@@ -136,7 +136,7 @@ public class Registro extends AppCompatActivity {
         String contrasenia = tilContrasenia.getEditText().toString();
 
         UsuarioBaseModelo usuario = smTipoUsuario.isChecked() ? new NegocioModelo() :
-           new UsuarioModelo();
+                new UsuarioModelo();
 
         usuario.setNombre(nombre);
         usuario.setApellido(apellido);
@@ -149,5 +149,13 @@ public class Registro extends AppCompatActivity {
         usuario.setContrasenia(contrasenia);
 
         return usuario;
+    }
+
+    private void limpiaCampos() {
+        tilNombre.setError(null);
+        tilApellido.setError(null);
+        tilNombreNegocio.setError(null);
+        tilCorreo.setError(null);
+        tilContrasenia.setError(null);
     }
 }
