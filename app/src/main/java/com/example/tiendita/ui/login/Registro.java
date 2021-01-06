@@ -18,6 +18,7 @@ import com.example.tiendita.datos.modelos.UsuarioBaseModelo;
 import com.example.tiendita.datos.modelos.UsuarioModelo;
 import com.example.tiendita.text_watcher.CampoTextWatcher;
 import com.example.tiendita.utilidades.Dialogo;
+import com.example.tiendita.utilidades.TextInputUtilidades;
 import com.example.tiendita.utilidades.Validaciones;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
@@ -54,6 +55,9 @@ public class Registro extends AppCompatActivity {
         tilCorreo = findViewById(R.id.til_correo_registro);
         tilContrasenia = findViewById(R.id.til_contrasenia_registro);
         mbRegistrar = findViewById(R.id.mb_registrar);
+
+        TextInputUtilidades.soloMayusculasTextInputLayout(tilNombre);
+        TextInputUtilidades.soloMayusculasTextInputLayout(tilApellido);
 
         textInputLayouts = new TextInputLayout[]{
                 tilNombre,

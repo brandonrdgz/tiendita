@@ -28,15 +28,14 @@ public class Validaciones {
       switch (textInputLayout.getId()) {
          case R.id.til_correo_inicio_sesion:
          case R.id.til_correo_registro:
-            if(texto.toUpperCase().matches(Constantes.EXP_REG_CORREO)) {
+            if(texto.matches(Constantes.EXP_REG_CORREO)) {
                textInputLayout.setError("");
             }
             else {
                textInputLayout.setError(activity.getString(R.string.msj_error_campo_correo));
             }
             break;
-
-         case R.id.til_contrasenia_inicio_sesion:
+            
          case R.id.til_contrasenia_registro:
             if(texto.matches(Constantes.EXP_REG_CARACTERES_NO_VALIDOS) ||
                texto.length() < Constantes.LONGITUD_MIN_CONTRASENIA) {
@@ -52,8 +51,7 @@ public class Validaciones {
             break;
 
          case R.id.til_nombre_registro:
-         case R.id.til_nombre_negocio_registro:
-            if (texto.matches(Constantes.EXP_REG_NOMBRE)) {
+            if (texto.toUpperCase().matches(Constantes.EXP_REG_NOMBRE)) {
                textInputLayout.setError("");
             }
             else {
@@ -62,7 +60,7 @@ public class Validaciones {
             break;
 
          case R.id.til_apellido_registro:
-            if (texto.matches(Constantes.EXP_REG_NOMBRE)) {
+            if (texto.toUpperCase().matches(Constantes.EXP_REG_NOMBRE)) {
                textInputLayout.setError("");
             }
             else {
