@@ -29,17 +29,18 @@
         android:label="@string/perfil"
         tools:layout="@layout/fragment_perfilu" />
 
+
     <fragment
-        android:id="@+id/nav_perdidos"
+        android:id="@+id/nav_pedidos"
         android:name="com.example.tiendita.ui.pedidos.PedidosFragment"
         android:label="@string/pedidos"
         tools:layout="@layout/fragment_pedidos" >
         <action
             android:id="@+id/action_nav_perdidos_to_nav_perdido"
-            app:destination="@id/nav_perdido" />
+            app:destination="@id/nav_pedido" />
     </fragment>
     <fragment
-        android:id="@+id/nav_perdido"
+        android:id="@+id/nav_pedido"
         android:name="com.example.tiendita.ui.pedidos.DetallePedidoFragment"
         android:label="@string/pedido"
         tools:layout="@layout/fragment_detalle_pedido" />

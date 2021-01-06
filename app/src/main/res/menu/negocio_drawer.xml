@@ -15,9 +15,5 @@
             android:id="@+id/nav_perdidos"
             android:icon="@drawable/ic_baseline_local_grocery_store_24"
             android:title="@string/pedidos" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/sucursales" />
     </group>
 </menu>

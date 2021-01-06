@@ -3,6 +3,7 @@ package com.example.tiendita;
 import android.os.Bundle;
 import android.view.Menu;
 
+import com.example.tiendita.utilidades.Constantes;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.navigation.NavController;
@@ -16,21 +17,35 @@ import androidx.appcompat.widget.Toolbar;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private boolean esNegocio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        esNegocio=savedInstanceState.getBoolean(Constantes.CONST_NEGOCIO_TYPE);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
-                .setDrawerLayout(drawer)
-                .build();
+        if(esNegocio) {
+            navigationView.inflateMenu(R.menu.negocio_drawer);
+            mAppBarConfiguration = new AppBarConfiguration.Builder(
+                    R.id.nav_home, R.id.nav_perfiln, R.id.nav_perdidos,R.id.nav_pedido)
+                    .setDrawerLayout(drawer)
+                    .build();
+        }else{
+            navigationView.inflateMenu(R.menu.usuario_drawer);
+            mAppBarConfiguration = new AppBarConfiguration.Builder(
+                    R.id.nav_home, R.id.nav_perfilu, R.id.nav_perdidos,R.id.nav_pedido,R.id.nav_map)
+                    .setDrawerLayout(drawer)
+                    .build();
+        }
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
