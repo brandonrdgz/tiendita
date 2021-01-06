@@ -227,45 +227,49 @@ public class PerfilNFragment extends Fragment implements View.OnClickListener,
     }
 
     @Override
-    public void enExito(DataSnapshot respuesta) {
-        //si se carga datos del cliente
-        if(respuesta!=null) {
-            HashMap cliente = (HashMap) respuesta.getValue();
-            current = new NegocioModelo();
-            current.setId(cliente.get(Constantes.CONST_BASE_ID).toString());
-            current.setNombre(cliente.get(Constantes.CONST_BASE_NOMBRE).toString());
-            current.setApellido(cliente.get(Constantes.CONST_BASE_APELLIDO).toString());
-            current.setContrasenia(cliente.get(Constantes.CONST_BASE_CONTRASENIA).toString());
-            current.setLocalImg(cliente.get(Constantes.CONST_BASE_LOCALIMG).toString());
-            current.setRemoteImg(cliente.get(Constantes.CONST_BASE_REMOTEIMG).toString());
-            current.setNombreNegocio(cliente.get(Constantes.CONST_NEGOCIO_NOMBRE).toString());
+    public void enExito(DataSnapshot respuesta, int accion) {
+        switch (accion){
+            case AccionesFirebaseRTDataBase.GET_NEGOCIO_ACCTION:
+                HashMap cliente = (HashMap) respuesta.getValue();
+                current = new NegocioModelo();
+                current.setId(cliente.get(Constantes.CONST_BASE_ID).toString());
+                current.setNombre(cliente.get(Constantes.CONST_BASE_NOMBRE).toString());
+                current.setApellido(cliente.get(Constantes.CONST_BASE_APELLIDO).toString());
+                current.setContrasenia(cliente.get(Constantes.CONST_BASE_CONTRASENIA).toString());
+                current.setLocalImg(cliente.get(Constantes.CONST_BASE_LOCALIMG).toString());
+                current.setRemoteImg(cliente.get(Constantes.CONST_BASE_REMOTEIMG).toString());
+                current.setNombreNegocio(cliente.get(Constantes.CONST_NEGOCIO_NOMBRE).toString());
 
-            File filePhoto = new File(current.getLocalImg());
-            if (filePhoto.exists()) {
-                showData();
-            } else {
-                AccionesFireStorage.downloadImg(current.getRemoteImg(),
-                        this.getActivity(),
-                        this.getContext(),
-                        this,
-                        current.getId(),
-                        Constantes.UPDATE_LOCALIMG_CLIENTE);
-            }
-        }else{
-            //si se guardaron datos del cliente
-            Toast.makeText(this.getContext(), R.string.datos_actualizados, Toast.LENGTH_LONG).show();
-            tvCorreo.setEnabled(false);
-            tvPassword.setEnabled(false);
-            tvNombre.setEnabled(false);
-            tvApellido.setEnabled(false);
-            ivNegocio.setEnabled(false);
-            tvNombreNegocio.setEnabled(false);
-            bttnDiscard.setVisibility(View.GONE);
-            bttnSave.setVisibility(View.GONE);
-            bttnEdit.setVisibility(View.VISIBLE);
+                File filePhoto = new File(current.getLocalImg());
+                if (filePhoto.exists()) {
+                    showData();
+                } else {
+                    AccionesFireStorage.downloadImg(current.getRemoteImg(),
+                            this.getActivity(),
+                            this.getContext(),
+                            this,
+                            current.getId(),
+                            Constantes.UPDATE_LOCALIMG_CLIENTE);
+                }
+                break;
+            case AccionesFirebaseRTDataBase.UPDATE_NEGOCIO_ACCTION:
+                //si se guardaron datos del cliente
+                Toast.makeText(this.getContext(), R.string.datos_actualizados, Toast.LENGTH_LONG).show();
+                tvCorreo.setEnabled(false);
+                tvPassword.setEnabled(false);
+                tvNombre.setEnabled(false);
+                tvApellido.setEnabled(false);
+                ivNegocio.setEnabled(false);
+                tvNombreNegocio.setEnabled(false);
+                bttnDiscard.setVisibility(View.GONE);
+                bttnSave.setVisibility(View.GONE);
+                bttnEdit.setVisibility(View.VISIBLE);
+                break;
         }
 
     }
+
+
 
     @Override
     public void enFallo(Exception excepcion) {

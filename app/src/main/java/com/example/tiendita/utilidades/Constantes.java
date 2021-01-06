@@ -12,6 +12,7 @@ public class Constantes {
    public static final String NODO_DATOS_USUARIOS = "usuarios";
    public static final String NODO_DATOS_NEGOCIOS = "negocios";
    public static final String NODO_PRODUCTOS = "productos";
+   public static final String NODO_PRODUCTOS_DE_PEDIDOS = "productospedidos";
    public static final String NODO_PEDIDOS = "pedidos";
    public static final String NODO_SUCURSAL = "sucursal";
 
@@ -37,9 +38,25 @@ public class Constantes {
 
    //Atributos Negocio
    public static final String CONST_NEGOCIO_NOMBRE= "nombreNegocio";
+   //Atributos Pedido
+   public static final String CONST_PEDIDO_ID= "pedidoID";
+   public static final String CONST_PEDIDO_CLIENTE_ID="clienteID";
+   public static final String CONST_PEDIDO_SUCURSAL_ID="sucursalID";
+   public static final String CONST_PEDIDO_NEGOCIO_ID="negocioID";
+   public static final String CONST_PEDIDO_FECHA="fecha";
+   public static final String CONST_PEDIDO_HORA="hora";
+   public static final String CONST_PEDIDO_PAGO="pago";
+   public static final String CONST_PEDIDO_TOTAL_PROD="totalProductos";
+   //Atributos Producto
+   public static final String CONST_PRODUCTO_ID="productoId";
+   public static final String CONST_PRODUCTO_SUCURSAL_ID="sucursalId";
+   public static final String CONST_PRODUCTO_NOMBRE="nombreProducto";
+   public static final String CONST_PRODUCTO_DESCRIPCION="descripcion";
+   public static final String CONST_PRODUCTO_PRECIO="precio";
+   public static final String CONST_PRODUCTO_CANTIDAD="cantidad";
    //Constantes para control de flujo
    //Constantes para Tipo de vista
-   public static final String CONST_MAPA_TYPE ="esNegocio";
+   public static final String CONST_NEGOCIO_TYPE ="esNegocio";
 
 
    //Constantes para el tipo de actualizacion de la referencia local img

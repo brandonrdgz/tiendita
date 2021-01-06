@@ -8,6 +8,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.File;
+
 public class AccionesFirebaseAuth {
     public static String getUID(){
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -29,12 +31,14 @@ public class AccionesFirebaseAuth {
 
                   }
 
-                  @Override
-                  public void enExito(Void respuesta) {
-                     firebaseCallback.enExito(task);
-                  }
+                   @Override
+                   public void enExito(Void respuesta, int accion) {
+                       firebaseCallback.enExito(task,0);
 
-                  @Override
+                   }
+
+
+                   @Override
                   public void enFallo(Exception excepcion) {
                      firebaseCallback.enFallo(excepcion);
                   }
@@ -54,7 +58,7 @@ public class AccionesFirebaseAuth {
 
       firebaseDatabase.getReference().child(nodoTipoUsuaro).child(usuario.getId()).setValue(usuario)
          .addOnSuccessListener(aVoid -> {
-               firebaseCallback.enExito(null);
+               firebaseCallback.enExito(null,0);
             }
          )
          .addOnFailureListener(exception -> {
@@ -68,7 +72,7 @@ public class AccionesFirebaseAuth {
       firebaseAuth.signInWithEmailAndPassword(correo, contrasenia)
          .addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-               firebaseCallback.enExito(null);
+               firebaseCallback.enExito(null,0);
             }
             else {
                firebaseCallback.enFallo(task.getException());

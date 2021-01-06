@@ -1,4 +1,4 @@
-package com.example.tiendita.ui.usuario.mapa;
+package com.example.tiendita.ui.mapa;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -58,6 +58,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private FusedLocationProviderClient fusedLocationProviderClient;
     private ArrayList<SucursalModelo> list;
     private SucursalModelo sucursalModelo;
+    private GoogleMap googleMap;
     private LatLng latLng;
     private Boolean esNegocio;
     private TextView tvLatitud,tvLongitud;
@@ -66,14 +67,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        mapViewModel =
-                new ViewModelProvider(this).get(MapViewModel.class);
         View root = inflater.inflate(R.layout.fragment_map, container, false);
 
         Bundle data = this.getArguments();
         if (data != null) {
             initComps(root);
-            esNegocio=data.getBoolean(Constantes.CONST_MAPA_TYPE);
+            esNegocio=data.getBoolean(Constantes.CONST_NEGOCIO_TYPE);
         }else{
             esNegocio=false;
         }
@@ -132,16 +131,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     }
     private void clientConfig(GoogleMap googleMap){
         list= new ArrayList<>();
+        this.googleMap=googleMap;
         AccionesFirebaseRTDataBase.getNearSucursales(this);
 
-        for (SucursalModelo sucursal: list) {
-            LatLng latLng = new LatLng(sucursal.getLatitud()
-                    ,sucursal.getLongitud());
-            Marker marker = googleMap.addMarker(new MarkerOptions().position(latLng).title(sucursal.getNombre()));
-            marker.setTag(sucursal);
-        }
 
-        googleMap.setOnMarkerClickListener(this);
 
     }
 
@@ -152,13 +145,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     }
 
-
-
     @Override
-    public void enExito(DataSnapshot respuesta) {
+    public void enExito(DataSnapshot respuesta, int accion) {
         for (DataSnapshot dataSnapshot : respuesta.getChildren()) {
             if(isInRange(Double.parseDouble(dataSnapshot.child(Constantes.CONST_SUCURSAL_LAT).getValue().toString()),
-            Double.parseDouble(dataSnapshot.child(Constantes.CONST_SUCURSAL_LONG).getValue().toString()))) {
+                    Double.parseDouble(dataSnapshot.child(Constantes.CONST_SUCURSAL_LONG).getValue().toString()))) {
                 SucursalModelo sucursalModelo = new SucursalModelo();
                 sucursalModelo.setNombre(dataSnapshot.child(Constantes.CONST_SUCURSAL_NOMBRE).getValue().toString());
                 sucursalModelo.setDireccion(dataSnapshot.child(Constantes.CONST_SUCURSAL_DIRECCION).getValue().toString());
@@ -174,7 +165,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             }
 
         }
+
+        for (SucursalModelo sucursal: list) {
+            LatLng latLng = new LatLng(sucursal.getLatitud()
+                    ,sucursal.getLongitud());
+            Marker marker = this.googleMap.addMarker(new MarkerOptions().position(latLng).title(sucursal.getNombre()));
+            marker.setTag(sucursal);
+        }
+
+        this.googleMap.setOnMarkerClickListener(this);
     }
+
+
+
 
     private boolean isInRange(double lat, double lon) {
         double distancia= 6371*Math.acos(

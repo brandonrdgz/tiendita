@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.pedidos.DetallePedidoFragment"
+    android:background="@color/background_color">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="20dp">
+                <ImageView
+                    android:id="@+id/iv_imagen_detalle"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_direccion_detalle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="20dp"
+                        android:textSize="20sp"
+                        android:text="Ubicación"/>
+
+                <TextView
+                    android:id="@+id/tv_nombre_detalle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="20dp"
+                    android:textSize="20sp"
+                    android:text="Nombre de tienda\nUbicación"/>
+                <TextView
+                    android:id="@+id/tv_fecha_detalle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="20dp"
+                    android:textSize="20sp"
+                    android:text="Fecha"/>
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/grey"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_id_pedido_detalle"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="20dp"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"
+                    android:text="Pedido: #Pedido"/>
+                <Button
+                    android:id="@+id/bttn_editar_detalle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:text="@string/editarBtn"/>
+                <Button
+                    android:id="@+id/bttn_cancelar_detalle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:text="@string/cancelarBtn"/>
+            </LinearLayout>
+            <ListView
+                android:id="@+id/lv_productos_detalle"
+                android:layout_width="match_parent"
+                android:layout_height="482dp" />
+            <TextView
+                android:id="@+id/tv_total_detalle"
+                android:layout_gravity="bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:padding="20dp"
+                android:text="Total: mxn"/>
+        </LinearLayout>
+
+</ScrollView>

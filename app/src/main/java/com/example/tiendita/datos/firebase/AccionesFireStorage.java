@@ -25,7 +25,8 @@ import java.util.List;
 public class AccionesFireStorage {
     public static void downloadImg(String remoteImage,
                                    Activity activity,
-                                   Context context, DownloadCallback<Task<FileDownloadTask.TaskSnapshot>> downloadCallback,
+                                   Context context,
+                                   DownloadCallback<Task<FileDownloadTask.TaskSnapshot>> downloadCallback,
                                    String id,
                                    int UPDATE_TYPE)  {
         downloadCallback.enInicioDesc();

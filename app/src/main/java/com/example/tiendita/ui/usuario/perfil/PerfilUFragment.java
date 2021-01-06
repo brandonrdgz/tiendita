@@ -205,9 +205,10 @@ public class PerfilUFragment extends Fragment implements View.OnClickListener,
     }
 
     @Override
-    public void enExito(DataSnapshot respuesta) {
+    public void enExito(DataSnapshot respuesta,int tipo) {
         //si se carga datos del cliente
-        if(respuesta!=null) {
+        switch (tipo){
+            case AccionesFirebaseRTDataBase.GET_USER_ACCTION:
             HashMap cliente = (HashMap) respuesta.getValue();
             current = new UsuarioModelo();
             current.setId(cliente.get(Constantes.CONST_BASE_ID).toString());
@@ -228,7 +229,8 @@ public class PerfilUFragment extends Fragment implements View.OnClickListener,
                         current.getId(),
                         Constantes.UPDATE_LOCALIMG_CLIENTE);
             }
-        }else{
+            break;
+            case AccionesFirebaseRTDataBase.UPDATE_USER_ACCTION:
             //si se guardaron datos del cliente
             Toast.makeText(this.getContext(), R.string.datos_actualizados, Toast.LENGTH_LONG).show();
             tvCorreo.setEnabled(false);
@@ -239,6 +241,7 @@ public class PerfilUFragment extends Fragment implements View.OnClickListener,
             bttnDiscard.setVisibility(View.GONE);
             bttnSave.setVisibility(View.GONE);
             bttnEdit.setVisibility(View.VISIBLE);
+            break;
         }
 
     }

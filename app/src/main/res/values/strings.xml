@@ -95,5 +95,7 @@
     <string name="error_actualiza_img">Error al subir imagen</string>
     <string name="actualizando_img">Subiendo imagen</string>
     <string name="datos_actualizados">Actualizado</string>
+    <string name="sin_pedidos">Sin Pedidos</string>
+    <string name="fallo_pedido">Error al obtener los datos</string>
 
 </resources>

@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/nav_map"
-        android:name="com.example.tiendita.ui.usuario.mapa.MapFragment"
+        android:name="com.example.tiendita.ui.mapa.MapFragment"
         android:label="@string/mapa"
         tools:layout="@layout/fragment_map" />
 </navigation>
