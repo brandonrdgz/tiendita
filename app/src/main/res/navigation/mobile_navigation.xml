@@ -19,9 +19,9 @@
 
     <fragment
         android:id="@+id/nav_perfiln"
-        android:name="com.example.tiendita.ui.negocio.perfil.PerfilNFragment"
+        android:name="com.example.tiendita.ui.perfil.PerfilFragment"
         android:label="@string/perfil"
-        tools:layout="@layout/fragment_perfiln" >
+        tools:layout="@layout/fragment_perfil" >
         <argument
             android:name="esNegocio"
             app:argType="boolean"
@@ -81,9 +81,9 @@
 
     <fragment
         android:id="@+id/nav_perfilu"
-        android:name="com.example.tiendita.ui.usuario.perfil.PerfilUFragment"
+        android:name="com.example.tiendita.ui.perfil.PerfilFragment"
         android:label="@string/perfil"
-        tools:layout="@layout/fragment_perfilu" >
+        tools:layout="@layout/fragment_perfil" >
         <argument
             android:name="esNegocio"
             app:argType="boolean"

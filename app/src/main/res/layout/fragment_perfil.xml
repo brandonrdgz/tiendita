@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.usuario.perfil.PerfilUFragment"
+    tools:context=".ui.perfil.PerfilFragment"
     android:background="@color/background_color">
 
         <LinearLayout
@@ -13,13 +14,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <ImageView
-                android:id="@+id/iv_perfil_user"
+                android:id="@+id/iv_perfil"
                 android:layout_width="match_parent"
                 android:layout_height="280dp"
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
                 android:padding="20dp"
-                android:src="@drawable/img_profile"/>
+                android:src="@drawable/img_businness"/>
 
             <TextView
                 android:id="@+id/textView2"
@@ -58,7 +59,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/tf_perfil_nombre_user"
+                            android:id="@+id/tf_perfil_nombre"
                             android:layout_width="250dp"
                             android:layout_height="50dp"
                             android:background="@color/white"
@@ -87,7 +88,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/tf_perfil_apellido_user"
+                            android:id="@+id/tf_perfil_apellido"
                             android:layout_width="250dp"
                             android:layout_height="50dp"
                             android:background="@color/white"
@@ -116,7 +117,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/tf_perfil_correo_user"
+                            android:id="@+id/tf_perfil_correo"
                             android:layout_width="250dp"
                             android:layout_height="50dp"
                             android:background="@color/white"
@@ -141,20 +142,52 @@
                         android:layout_height="50dp"
                         android:src="@drawable/ic_person"/>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tf_perfil_password_user"
-                        android:layout_width="250dp"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tf_perfil_password"
+                            android:layout_width="250dp"
+                            android:layout_height="50dp"
+                            android:background="@color/white"
+                            android:fontFamily="@font/myriadproregular"
+                            android:hint="@string/contrasenia"
+                            android:inputType="textPassword"
+                            android:padding="15dp"
+                            android:textSize="15sp"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <!--Nombre Negocio-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_margin="5dp">
+                    <ImageView
+                        android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:background="@color/white"
-                        android:fontFamily="@font/myriadproregular"
-                        android:hint="@string/contrasenia"
-                        android:inputType="textPassword"
-                        android:padding="15dp"
-                        android:textSize="15sp"/>
+                        android:src="@drawable/ic_person"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tf_perfil_nombre_negocio"
+                            android:layout_width="250dp"
+                            android:layout_height="50dp"
+                            android:background="@color/white"
+                            android:fontFamily="@font/myriadproregular"
+                            android:hint="@string/nombreNegocio"
+                            android:inputType="textPassword"
+                            android:padding="15dp"
+                            android:textSize="15sp"/>
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/bttn_edit_user"
+                    android:id="@+id/bttn_edit_perfil"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -162,7 +195,7 @@
                     app:cornerRadius="40dp"/>
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/bttn_save_user"
+                    android:id="@+id/bttn_save_perfil"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -170,7 +203,7 @@
                     app:cornerRadius="40dp"/>
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/bttn_discard_user"
+                    android:id="@+id/bttn_discad_perfil"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -178,5 +211,4 @@
                     app:cornerRadius="40dp"/>
             </LinearLayout>
         </LinearLayout>
-
-</ScrollView>
+    </ScrollView>
