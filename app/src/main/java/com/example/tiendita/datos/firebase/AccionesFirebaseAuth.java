@@ -8,8 +8,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.File;
-
 public class AccionesFirebaseAuth {
     public static String getUID(){
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -18,6 +16,8 @@ public class AccionesFirebaseAuth {
 
    public static <T extends UsuarioBaseModelo> void registroUsuario(T usuario,
                                                                     FirebaseCallback<Task<AuthResult>> firebaseCallback) {
+      firebaseCallback.enInicio();
+
       FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
       firebaseAuth.createUserWithEmailAndPassword(usuario.getCorreo(), usuario.getContrasenia())
@@ -31,14 +31,14 @@ public class AccionesFirebaseAuth {
 
                   }
 
-                   @Override
-                   public void enExito(Void respuesta, int accion) {
-                       firebaseCallback.enExito(task,0);
+                  @Override
+                  public void enExito(Void respuesta, int accion) {
+                     firebaseCallback.enExito(task, 0);
 
-                   }
+                  }
 
 
-                   @Override
+                  @Override
                   public void enFallo(Exception excepcion) {
                      firebaseCallback.enFallo(excepcion);
                   }
@@ -52,6 +52,8 @@ public class AccionesFirebaseAuth {
 
    private static <T extends UsuarioBaseModelo> void registroDatosUsuario(T usuario,
                                                                           FirebaseCallback<Void> firebaseCallback) {
+       firebaseCallback.enInicio();
+
       FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
       String nodoTipoUsuaro = usuario instanceof UsuarioModelo ? Constantes.NODO_DATOS_USUARIOS :
          Constantes.NODO_DATOS_NEGOCIOS;
@@ -68,7 +70,9 @@ public class AccionesFirebaseAuth {
    }
 
    public static void inicioSesion(String correo, String contrasenia, FirebaseCallback<Void> firebaseCallback) {
-      FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+      firebaseCallback.enInicio();
+
+       FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
       firebaseAuth.signInWithEmailAndPassword(correo, contrasenia)
          .addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -78,5 +82,20 @@ public class AccionesFirebaseAuth {
                firebaseCallback.enFallo(task.getException());
             }
          });
+   }
+
+   public static void restableceContrasenia(String correo, FirebaseCallback firebaseCallback) {
+      firebaseCallback.enInicio();
+      FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+      firebaseAuth.useAppLanguage();
+
+      firebaseAuth.sendPasswordResetEmail(correo).addOnCompleteListener(task -> {
+         if (task.isSuccessful()) {
+            firebaseCallback.enExito(null, 0);
+         }
+         else {
+            firebaseCallback.enFallo(task.getException());
+         }
+      });
    }
 }

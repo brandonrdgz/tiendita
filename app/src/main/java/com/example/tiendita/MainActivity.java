@@ -36,19 +36,25 @@ public class MainActivity extends AppCompatActivity {
         if(esNegocio) {
             navigationView.inflateMenu(R.menu.negocio_drawer);
             mAppBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.nav_home, R.id.nav_perfiln, R.id.nav_perdidos,R.id.nav_pedido)
+                    R.id.nav_homen, R.id.nav_perfiln, R.id.nav_perdidosn,R.id.nav_pedidon)
                     .setDrawerLayout(drawer)
                     .build();
+            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+            navController.getGraph().setStartDestination(R.id.nav_homen);
+            NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+            NavigationUI.setupWithNavController(navigationView, navController);
         }else{
             navigationView.inflateMenu(R.menu.usuario_drawer);
             mAppBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.nav_home, R.id.nav_perfilu, R.id.nav_perdidos,R.id.nav_pedido,R.id.nav_map)
+                    R.id.nav_homeu, R.id.nav_perfilu, R.id.nav_perdidosu,R.id.nav_pedidou,R.id.nav_mapu)
                     .setDrawerLayout(drawer)
                     .build();
+            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+            navController.getGraph().setStartDestination(R.id.nav_homeu);
+            NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+            NavigationUI.setupWithNavController(navigationView, navController);
         }
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+
     }
 
     @Override

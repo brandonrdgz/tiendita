@@ -2,46 +2,130 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    android:id="@+id/mobile_navigation">
+    <!--app:startDestination="@+id/nav_home"-->
+
 
     <fragment
-        android:id="@+id/nav_home"
+        android:id="@+id/nav_homen"
         android:name="com.example.tiendita.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <argument
+            android:name="esNegocio"
+            app:argType="boolean"
+            android:defaultValue="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_perfiln"
         android:name="com.example.tiendita.ui.negocio.perfil.PerfilNFragment"
         android:label="@string/perfil"
-        tools:layout="@layout/fragment_perfiln" />
+        tools:layout="@layout/fragment_perfiln" >
+        <argument
+            android:name="esNegocio"
+            app:argType="boolean"
+            android:defaultValue="true" />
+    </fragment>
 
     <fragment
-        android:id="@+id/nav_map"
+        android:id="@+id/nav_mapn"
         android:name="com.example.tiendita.ui.mapa.MapFragment"
         android:label="@string/mapa"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map">
+        <argument
+            android:name="esNegocio"
+            app:argType="boolean"
+            android:defaultValue="true" />
+    </fragment>
+
+
+
+
+    <fragment
+        android:id="@+id/nav_pedidosn"
+        android:name="com.example.tiendita.ui.pedidos.PedidosFragment"
+        android:label="@string/pedidos"
+        tools:layout="@layout/fragment_pedidos" >
+        <argument
+            android:name="esNegocio"
+            app:argType="boolean"
+            android:defaultValue="true" />
+        <action
+            android:id="@+id/action_nav_perdidos_to_nav_perdido"
+            app:destination="@id/nav_pedidon"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_pedidon"
+        android:name="com.example.tiendita.ui.pedidos.DetallePedidoFragment"
+        android:label="@string/pedido"
+        tools:layout="@layout/fragment_detalle_pedido" >
+        <argument
+            android:name="esNegocio"
+            app:argType="boolean"
+            android:defaultValue="true" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_homeu"
+        android:name="com.example.tiendita.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" >
+        <argument
+            android:name="esNegocio"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_perfilu"
         android:name="com.example.tiendita.ui.usuario.perfil.PerfilUFragment"
         android:label="@string/perfil"
-        tools:layout="@layout/fragment_perfilu" />
+        tools:layout="@layout/fragment_perfilu" >
+        <argument
+            android:name="esNegocio"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_mapu"
+        android:name="com.example.tiendita.ui.mapa.MapFragment"
+        android:label="@string/mapa"
+        tools:layout="@layout/fragment_map">
+        <argument
+            android:name="esNegocio"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
+
+
 
 
     <fragment
-        android:id="@+id/nav_pedidos"
+        android:id="@+id/nav_pedidosu"
         android:name="com.example.tiendita.ui.pedidos.PedidosFragment"
         android:label="@string/pedidos"
         tools:layout="@layout/fragment_pedidos" >
+        <argument
+            android:name="esNegocio"
+            app:argType="boolean"
+            android:defaultValue="false" />
         <action
             android:id="@+id/action_nav_perdidos_to_nav_perdido"
-            app:destination="@id/nav_pedido" />
+            app:destination="@id/nav_pedidou"/>
     </fragment>
+
     <fragment
-        android:id="@+id/nav_pedido"
+        android:id="@+id/nav_pedidou"
         android:name="com.example.tiendita.ui.pedidos.DetallePedidoFragment"
         android:label="@string/pedido"
-        tools:layout="@layout/fragment_detalle_pedido" />
+        tools:layout="@layout/fragment_detalle_pedido" >
+        <argument
+            android:name="esNegocio"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
 </navigation>

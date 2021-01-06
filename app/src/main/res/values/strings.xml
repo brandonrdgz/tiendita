@@ -80,6 +80,10 @@
     <string name="msj_registrando">Registrando</string>
     <string name="msj_registro_exitoso">Registro Exitoso</string>
     <string name="msj_iniciando_sesion">Iniciando sesión</string>
+    <string name="msj_correo_enviado_restab_contra">El correo de restablecimiento de
+        contraseña ha sido enviado</string>
+    <string name="msj_enviando_correo_restab_contra">Enviando correo</string>
+
     <!--Constantes del Manifest-->
     <string name="map_key" translatable="false">AIzaSyB_qsP8AOP_P0MdlPz-48TDaJYjTP3vbjo</string>
     <string name="sin_sucursales">No hay sucuarsales cercanas</string>
