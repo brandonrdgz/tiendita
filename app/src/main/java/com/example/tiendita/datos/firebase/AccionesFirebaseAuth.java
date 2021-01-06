@@ -71,7 +71,7 @@ public class AccionesFirebaseAuth {
 
    public static void inicioSesion(String correo, String contrasenia, FirebaseCallback<Void> firebaseCallback) {
       firebaseCallback.enInicio();
-      
+
        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
       firebaseAuth.signInWithEmailAndPassword(correo, contrasenia)
          .addOnCompleteListener(task -> {
@@ -82,5 +82,20 @@ public class AccionesFirebaseAuth {
                firebaseCallback.enFallo(task.getException());
             }
          });
+   }
+
+   public static void restableceContrasenia(String correo, FirebaseCallback firebaseCallback) {
+      firebaseCallback.enInicio();
+      FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+      firebaseAuth.useAppLanguage();
+
+      firebaseAuth.sendPasswordResetEmail(correo).addOnCompleteListener(task -> {
+         if (task.isSuccessful()) {
+            firebaseCallback.enExito(null, 0);
+         }
+         else {
+            firebaseCallback.enFallo(task.getException());
+         }
+      });
    }
 }
