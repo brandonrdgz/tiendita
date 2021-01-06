@@ -49,7 +49,7 @@ public class Registro extends AppCompatActivity {
         smTipoUsuario = findViewById(R.id.sm_tipo_usuario);
         tilNombre = findViewById(R.id.til_nombre_registro);
         tilApellido = findViewById(R.id.til_apellido_registro);
-        layoutTILNombreNegocio = findViewById(R.id.layout_nombre_negocio);
+        layoutTILNombreNegocio = findViewById(R.id.TextFieldInputTextNombreDelNegocio);
         tilNombreNegocio = findViewById(R.id.til_nombre_negocio_registro);
         tilCorreo = findViewById(R.id.til_correo_registro);
         tilContrasenia = findViewById(R.id.til_contrasenia_registro);
@@ -68,11 +68,13 @@ public class Registro extends AppCompatActivity {
                textInputLayout));
         }
 
+        layoutTILNombreNegocio.setVisibility(View.GONE);
         smTipoUsuario.setOnCheckedChangeListener((compoundButton, checked) -> {
+            tilNombreNegocio.setError(null);
             if (checked) {
                 layoutTILNombreNegocio.setVisibility(View.VISIBLE);
             } else {
-                layoutTILNombreNegocio.setVisibility(View.INVISIBLE);
+                layoutTILNombreNegocio.setVisibility(View.GONE);
             }
         });
 
