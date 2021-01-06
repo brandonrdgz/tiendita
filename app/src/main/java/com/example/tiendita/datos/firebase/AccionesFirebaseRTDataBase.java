@@ -35,6 +35,7 @@ public class AccionesFirebaseRTDataBase {
     public static final int GET_SUCURSAL_ACCTION=9;
 
     public static void getUser(String UID,FirebaseCallback<DataSnapshot> firebaseCallback){
+        firebaseCallback.enInicio();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference
                 .child(Constantes.NODO_DATOS_USUARIOS)
@@ -56,6 +57,7 @@ public class AccionesFirebaseRTDataBase {
 
     }
     public static void getNegocio(String UID,FirebaseCallback<DataSnapshot> firebaseCallback){
+        firebaseCallback.enInicio();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference
                 .child(Constantes.NODO_DATOS_NEGOCIOS)
@@ -77,6 +79,7 @@ public class AccionesFirebaseRTDataBase {
 
     }
     public static void updateUser(UsuarioModelo usuarioModelo, FirebaseCallback firebaseCallback){
+        firebaseCallback.enInicio();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference
                 .child(Constantes.NODO_DATOS_USUARIOS)
@@ -94,6 +97,7 @@ public class AccionesFirebaseRTDataBase {
         });
     }
     public static void updateNegocio(NegocioModelo negocioModelo, FirebaseCallback firebaseCallback){
+        firebaseCallback.enInicio();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference
                 .child(Constantes.NODO_DATOS_NEGOCIOS)
@@ -111,6 +115,7 @@ public class AccionesFirebaseRTDataBase {
                 });
     }
     public static void getNearSucursales(FirebaseCallback<DataSnapshot> firebaseCallback){
+        firebaseCallback.enInicio();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference.child(Constantes.NODO_SUCURSAL)
                 .orderByKey()
@@ -149,6 +154,7 @@ public class AccionesFirebaseRTDataBase {
         return ref;
     }
     public static void getListaPedidos(String UID,boolean esNegocio,FirebaseCallback<DataSnapshot> firebaseCallback){
+        firebaseCallback.enInicio();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         DatabaseReference ref ;
         if(esNegocio) {
@@ -182,6 +188,7 @@ public class AccionesFirebaseRTDataBase {
                 });
     }
     public static void getPedido(String UID,FirebaseCallback<DataSnapshot> firebaseCallback){
+        firebaseCallback.enInicio();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference
                 .child(Constantes.NODO_PEDIDOS)
@@ -203,6 +210,7 @@ public class AccionesFirebaseRTDataBase {
 
     }
     public static void getListaProductosPedido(String UID,FirebaseCallback<DataSnapshot> firebaseCallback){
+        firebaseCallback.enInicio();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
          databaseReference
                     .child(Constantes.NODO_PRODUCTOS_DE_PEDIDOS)
@@ -225,6 +233,7 @@ public class AccionesFirebaseRTDataBase {
         });
     }
     public static void getSucursal(String UID,FirebaseCallback<DataSnapshot> firebaseCallback){
+        firebaseCallback.enInicio();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference
                 .child(Constantes.NODO_SUCURSAL)
