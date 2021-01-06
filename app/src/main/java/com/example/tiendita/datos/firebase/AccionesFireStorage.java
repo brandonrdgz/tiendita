@@ -27,8 +27,7 @@ public class AccionesFireStorage {
                                    Activity activity,
                                    Context context,
                                    DownloadCallback<Task<FileDownloadTask.TaskSnapshot>> downloadCallback,
-                                   String id,
-                                   int UPDATE_TYPE)  {
+                                   String id)  {
         downloadCallback.enInicioDesc();
         StorageReference imgRef = FirebaseStorage.getInstance().getReference().child(remoteImage);
         try {
@@ -40,7 +39,7 @@ public class AccionesFireStorage {
                 @Override
                 public void onComplete(@NonNull Task<FileDownloadTask.TaskSnapshot> task) {
                         downloadCallback.enExitoDesc(task, localFile);
-                        AccionesFirebaseRTDataBase.updateLocalImgRef(id,localFile.getAbsolutePath(),UPDATE_TYPE);
+                        AccionesFirebaseRTDataBase.updateLocalImgRef(id,localFile.getAbsolutePath(),context);
                 }
             });
         } catch (IOException e) {

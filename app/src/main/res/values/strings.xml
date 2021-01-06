@@ -97,5 +97,9 @@
     <string name="datos_actualizados">Actualizado</string>
     <string name="sin_pedidos">Sin Pedidos</string>
     <string name="fallo_pedido">Error al obtener los datos</string>
+    <string name="header_producto">Producto</string>
+    <string name="updated_ref">Referencia Actualizada</string>
+    <string name="error_ref">Error al actualizar referencia</string>
+    <string name="pedido">Pedido</string>
 
 </resources>

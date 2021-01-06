@@ -2,6 +2,8 @@ package com.example.tiendita.ui.pedidos;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -50,10 +52,11 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
     private TextView tvNombre,tvID,tvTotal,tvFecha,tvDireccion;
     private ListView listView;
     private Button bttnEditar,bttnCancelar;
-    private Boolean esNegocio;
+    private Boolean esNegocio,banDialogo;
     private  String currentId;
     private PedidoModelo currentPedido;
     private SucursalModelo currentSucursal;
+    private ProductosPedidoModelo currentProductosPedidoModelo;
     private UsuarioModelo currentUser;
     private ArrayList<ProductosPedidoModelo> lista;
 
@@ -78,6 +81,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
     }
 
     private void init(View root) {
+        banDialogo=false;
         ivImagen=root.findViewById(R.id.iv_imagen_detalle);
         tvNombre=root.findViewById(R.id.tv_nombre_detalle);
         tvID=root.findViewById(R.id.tv_id_pedido_detalle);
@@ -136,10 +140,9 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
                 currentUser.setNombre(cliente.get(Constantes.CONST_BASE_NOMBRE).toString());
                 currentUser.setApellido(cliente.get(Constantes.CONST_BASE_APELLIDO).toString());
                 currentUser.setContrasenia(cliente.get(Constantes.CONST_BASE_CONTRASENIA).toString());
-                currentUser.setLocalImg(cliente.get(Constantes.CONST_BASE_LOCALIMG).toString());
                 currentUser.setRemoteImg(cliente.get(Constantes.CONST_BASE_REMOTEIMG).toString());
-
-                File filePhoto = new File(currentUser.getLocalImg());
+                String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentUser.getId(),getContext());
+                File filePhoto = new File(localRef);
                 if (filePhoto.exists()) {
                     AccionesFirebaseRTDataBase.getListaProductosPedido(currentId,this);
                 } else {
@@ -147,8 +150,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
                             this.getActivity(),
                             this.getContext(),
                             this,
-                            currentUser.getId(),
-                            Constantes.UPDATE_LOCALIMG_CLIENTE);
+                            currentUser.getId());
                 }
             }
                 break;
@@ -156,7 +158,6 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
                 HashMap cliente = (HashMap) respuesta.getValue();
                 currentSucursal = new SucursalModelo();
                 currentSucursal.setSucursalID(cliente.get(Constantes.CONST_SUCURSAL_ID).toString());
-                currentSucursal.setLocalImg(cliente.get(Constantes.CONST_BASE_LOCALIMG).toString());
                 currentSucursal.setRemoteImg(cliente.get(Constantes.CONST_BASE_REMOTEIMG).toString());
                 currentSucursal.setNegocioID(cliente.get(Constantes.CONST_NEGOCIO_ID).toString());
                 currentSucursal.setHoraCierre(cliente.get(Constantes.CONST_SUCURSAL_HORACIERRE).toString());
@@ -166,8 +167,8 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
                 currentSucursal.setLongitud(Double.parseDouble(cliente.get(Constantes.CONST_SUCURSAL_LONG).toString()));
                 currentSucursal.setNombre(cliente.get(Constantes.CONST_SUCURSAL_NOMBRE).toString());
 
-
-                File filePhoto = new File(currentSucursal.getLocalImg());
+                String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentSucursal.getSucursalID(),getContext());
+                File filePhoto = new File(localRef);
                 if (filePhoto.exists()) {
                     AccionesFirebaseRTDataBase.getListaProductosPedido(currentId,this);
                 } else {
@@ -175,8 +176,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
                             this.getActivity(),
                             this.getContext(),
                             this,
-                            currentSucursal.getSucursalID(),
-                            Constantes.UPDATE_LOCALIMG_SUCURSAL);
+                            currentSucursal.getSucursalID());
                 }
 
 
@@ -190,8 +190,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
                     ProductosPedidoModelo productosPedidoModelo=new ProductosPedidoModelo();
                     productosPedidoModelo.setCantidad(Integer.parseInt(dataSnapshot.child(Constantes.CONST_PRODUCTO_CANTIDAD).getValue().toString()));
                     productosPedidoModelo.setDescripcion(dataSnapshot.child(Constantes.CONST_PRODUCTO_DESCRIPCION).getValue().toString());
-                    productosPedidoModelo.setLocalImg(dataSnapshot.child(Constantes.CONST_BASE_LOCALIMG).getValue().toString());
-                    productosPedidoModelo.setNombreProducto(dataSnapshot.child(Constantes.CONST_PRODUCTO_NOMBRE).getValue().toString());
+                     productosPedidoModelo.setNombreProducto(dataSnapshot.child(Constantes.CONST_PRODUCTO_NOMBRE).getValue().toString());
                     productosPedidoModelo.setPedidoID(dataSnapshot.child(Constantes.CONST_PEDIDO_ID).getValue().toString());
                     productosPedidoModelo.setPrecio(Float.parseFloat(dataSnapshot.child(Constantes.CONST_PRODUCTO_PRECIO).getValue().toString()));
                     productosPedidoModelo.setRemoteImg(dataSnapshot.child(Constantes.CONST_BASE_REMOTEIMG).getValue().toString());
@@ -209,14 +208,16 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
 
     private void showData() {
         if(esNegocio){
-            ImageManager.loadImage(currentUser.getLocalImg(),ivImagen,this.getContext());
+            String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentUser.getId(),getContext());
+            ImageManager.loadImage(localRef,ivImagen,this.getContext());
             tvNombre.setText("Cliente: "+currentUser.getNombre()+" "+currentUser.getApellido());
             tvID.setText("ID:"+currentId);
             tvFecha.setText(currentPedido.getFecha()+"\n"+currentPedido.getHora());
             tvDireccion.setText("Sucursal:"+currentSucursal.getNombre());
             tvTotal.setText("Total:" +currentPedido.getPago());
         }else{
-            ImageManager.loadImage(currentSucursal.getLocalImg(),ivImagen,this.getContext());
+            String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentSucursal.getSucursalID(),getContext());
+            ImageManager.loadImage(localRef,ivImagen,this.getContext());
             tvNombre.setText("Negocio: "+currentSucursal.getNombre());
             tvID.setText("ID:"+currentId);
             tvTotal.setText("Total:" +currentPedido.getPago());
@@ -232,24 +233,41 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view,  int i, long l) {
-                //redirect vista de pedido
-                /*
-                    Bundle data = new Bundle();
-                    data.putString(Constantes.CONST_PEDIDO_ID,listaPedidos.get(i).getPedidoID());
-                    data.putBoolean(Constantes.CONST_NEGOCIO_TYPE,esNegocio);
-                    if(esNegocio){
-                    NavHostFragment.findNavController(this)
-                                    .navigate(R.id.action_nav_listar_to_nav_editar, data);
-                    }else{
-                    NavHostFragment.findNavController(this)
-                                    .navigate(R.id.action_nav_listar_to_nav_editar, data);
-                    }
-                                    */
+                initDialog(i);
             }
 
         });
 
 
+    }
+
+    private void initDialog(int i) {
+        banDialogo=true;
+        currentProductosPedidoModelo=lista.get(i);
+        String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentProductosPedidoModelo.getProductoId(),getContext());
+        File filePhoto = new File(localRef);
+        if (filePhoto.exists()) {
+            showDialog(currentProductosPedidoModelo);
+        } else {
+            AccionesFireStorage.downloadImg(currentProductosPedidoModelo.getRemoteImg(),
+                    getActivity(),
+                    getContext(),
+                    this,
+                    currentProductosPedidoModelo.getProductoId());
+        }
+    }
+
+    private void showDialog(ProductosPedidoModelo productosPedidoModelo) {
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialogo_layout,null);
+        ((TextView) dialogView.findViewById(R.id.info_producto_lista)).setText(productosPedidoModelo.getDescripcion());
+        ImageView imagen = dialogView.findViewById(R.id.foto_producto_lista);
+        String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(productosPedidoModelo.getProductoId(),getContext());
+
+        ImageManager.loadImage(localRef,imagen,this.getContext());
+        AlertDialog.Builder dialogo= new AlertDialog.Builder(getContext());
+        dialogo.setTitle(R.string.header_producto);
+        dialogo.setView(dialogView);
+        dialogo.show();
     }
 
 
@@ -268,14 +286,13 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
     public void enExitoDesc(Object respuesta, File localFile) {
         //se guarda la nueva direccion local
         //y se muestran los datos
-        if(esNegocio){
-            currentUser.setLocalImg(localFile.getAbsolutePath());
-
-        }else {
-            currentSucursal.setLocalImg(localFile.getAbsolutePath());
+        if(banDialogo){
+            showDialog(currentProductosPedidoModelo);
+        }else{
+            AccionesFirebaseRTDataBase.getListaProductosPedido(currentId,this);
 
         }
-        AccionesFirebaseRTDataBase.getListaProductosPedido(currentId,this);
+
     }
 
     @Override

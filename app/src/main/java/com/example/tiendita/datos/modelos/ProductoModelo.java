@@ -7,7 +7,6 @@ public class ProductoModelo {
     private String descripcion;
     private String precio;
     private int cantidad;
-    private String localImg;
     private String remoteImg;
 
     public String getProductoId() {
@@ -56,14 +55,6 @@ public class ProductoModelo {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
-    }
-
-    public String getLocalImg() {
-        return localImg;
-    }
-
-    public void setLocalImg(String localImg) {
-        this.localImg = localImg;
     }
 
     public String getRemoteImg() {

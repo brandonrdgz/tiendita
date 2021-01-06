@@ -6,7 +6,6 @@ public abstract class UsuarioBaseModelo {
    protected String apellido;
    protected String correo;
    protected String contrasenia;
-   private String localImg;
    private String remoteImg;
 
    public String getId() {
@@ -49,13 +48,6 @@ public abstract class UsuarioBaseModelo {
       this.contrasenia = contrasenia;
    }
 
-   public String getLocalImg() {
-      return localImg;
-   }
-
-   public void setLocalImg(String localImg) {
-      this.localImg = localImg;
-   }
 
    public String getRemoteImg() {
       return remoteImg;

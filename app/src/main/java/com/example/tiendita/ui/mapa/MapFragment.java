@@ -157,7 +157,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 sucursalModelo.setHoraCierre(dataSnapshot.child(Constantes.CONST_SUCURSAL_HORACIERRE).getValue().toString());
                 sucursalModelo.setSucursalID(dataSnapshot.child(Constantes.CONST_SUCURSAL_ID).getValue().toString());
                 sucursalModelo.setNegocioID(dataSnapshot.child(Constantes.CONST_NEGOCIO_ID).getValue().toString());
-                sucursalModelo.setLocalImg(dataSnapshot.child(Constantes.CONST_BASE_LOCALIMG).getValue().toString());
                 sucursalModelo.setRemoteImg(dataSnapshot.child(Constantes.CONST_BASE_REMOTEIMG).getValue().toString());
                 sucursalModelo.setLatitud(Double.parseDouble(dataSnapshot.child(Constantes.CONST_SUCURSAL_LAT).getValue().toString()));
                 sucursalModelo.setLongitud(Double.parseDouble(dataSnapshot.child(Constantes.CONST_SUCURSAL_LONG).getValue().toString()));
@@ -208,7 +207,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void enExitoDesc(Task<FileDownloadTask.TaskSnapshot> respuesta,File localFile) {
-        sucursalModelo.setLocalImg(localFile.getAbsolutePath());
         showDialog(sucursalModelo);
     }
 
@@ -221,7 +219,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public boolean onMarkerClick(final Marker marker) {
            sucursalModelo=(SucursalModelo)marker.getTag();
-            File filePhoto= new File(sucursalModelo.getLocalImg());
+        String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(sucursalModelo.getSucursalID(),getContext());
+
+        File filePhoto= new File(localRef);
             if(filePhoto.exists()) {
                 showDialog(sucursalModelo);
             }else{
@@ -229,8 +229,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                         this.getActivity(),
                         this.getContext(),
                         this,
-                        sucursalModelo.getSucursalID(),
-                        Constantes.UPDATE_LOCALIMG_SUCURSAL);
+                        sucursalModelo.getSucursalID());
             }
         return false;
     }
@@ -239,7 +238,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.marker_layout,null);
         ((TextView) dialogView.findViewById(R.id.info_tiendita)).setText(sucursalModelo.getNombre()+"\nDireccion:"+sucursalModelo.getDireccion());
         ImageView imagen = dialogView.findViewById(R.id.foto_tiendita);
-        ImageManager.loadImage(sucursalModelo.getLocalImg(),imagen,this.getContext());
+        String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(sucursalModelo.getSucursalID(),getContext());
+
+        ImageManager.loadImage(localRef,imagen,this.getContext());
         AlertDialog.Builder dialogo= new AlertDialog.Builder(getContext());
         dialogo.setTitle(R.string.header_tiendita);
         dialogo.setView(dialogView);

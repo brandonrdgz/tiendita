@@ -8,7 +8,6 @@ public class ProductosPedidoModelo {
     private String descripcion;
     private float precio;
     private int cantidad;
-    private String localImg;
     private String remoteImg;
 
     public String getProductoId() {
@@ -51,16 +50,6 @@ public class ProductosPedidoModelo {
         this.precio = precio;
     }
 
-
-
-    public String getLocalImg() {
-        return localImg;
-    }
-
-    public void setLocalImg(String localImg) {
-        this.localImg = localImg;
-    }
-
     public String getRemoteImg() {
         return remoteImg;
     }
@@ -92,5 +81,14 @@ public class ProductosPedidoModelo {
                  nombreProducto+ " \n"+
                 "precio=$" + precio+ " \n"+
                 "cantidad="+cantidad+"";
+    }
+    public String getDetalle(){
+        return "Producto:"+nombreProducto+ "\n"+
+                "descripcion:"+descripcion+"\n"+
+                "precio:$" + precio+ "\n"+
+                "cantidad:"+cantidad+"\n"+
+                "subtotal:$"+precio*cantidad;
+
+
     }
 }

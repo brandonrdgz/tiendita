@@ -64,6 +64,7 @@ public class Constantes {
    public static int UPDATE_LOCALIMG_PRODUCTO=2;
    public static int UPDATE_LOCALIMG_NEGOCIO=3;
    public static int UPDATE_LOCALIMG_SUCURSAL=4;
+   public static int UPDATE_LOCALIMG_PRODUCTO_PEDIDO=5;
 
 
 }

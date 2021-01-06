@@ -139,9 +139,10 @@ public class PerfilNFragment extends Fragment implements View.OnClickListener,
         current.setCorreo(tvCorreo.getText().toString());
         if(imgHasChange){
             //si se cambio la imagen de usuario se actualiza la referencia remota
+            AccionesFirebaseRTDataBase.updateLocalImgRef(current.getId(),currentPath,this.getContext());
             AccionesFireStorage.updateImage(AccionesFirebaseAuth.getUID(),
                     current.getRemoteImg(),
-                    current.getLocalImg(),
+                    currentPath,
                     this.getContext(),
                     this);
         }else{
@@ -194,7 +195,7 @@ public class PerfilNFragment extends Fragment implements View.OnClickListener,
 
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode==REQUEST_TAKE_PHOTO && resultCode== Activity.RESULT_OK){
-            current.setLocalImg(currentPath);
+            AccionesFirebaseRTDataBase.updateLocalImgRef(current.getId(),currentPath,this.getContext());
             ImageManager.loadImage(currentPath,ivNegocio,this.getContext());
             imgHasChange=true;
         }
@@ -211,7 +212,8 @@ public class PerfilNFragment extends Fragment implements View.OnClickListener,
 
     //metodo para desplegar los datos
     private void showData() {
-        ImageManager.loadImage(current.getLocalImg(),ivNegocio,this.getContext());
+        String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(current.getId(),getContext());
+        ImageManager.loadImage(localRef,ivNegocio,this.getContext());
         tvCorreo.setText(current.getCorreo());
         tvPassword.setText(current.getContrasenia());
         tvNombre.setText(current.getNombre());
@@ -236,11 +238,11 @@ public class PerfilNFragment extends Fragment implements View.OnClickListener,
                 current.setNombre(cliente.get(Constantes.CONST_BASE_NOMBRE).toString());
                 current.setApellido(cliente.get(Constantes.CONST_BASE_APELLIDO).toString());
                 current.setContrasenia(cliente.get(Constantes.CONST_BASE_CONTRASENIA).toString());
-                current.setLocalImg(cliente.get(Constantes.CONST_BASE_LOCALIMG).toString());
                 current.setRemoteImg(cliente.get(Constantes.CONST_BASE_REMOTEIMG).toString());
                 current.setNombreNegocio(cliente.get(Constantes.CONST_NEGOCIO_NOMBRE).toString());
+                String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(current.getId(),getContext());
 
-                File filePhoto = new File(current.getLocalImg());
+                File filePhoto = new File(localRef);
                 if (filePhoto.exists()) {
                     showData();
                 } else {
@@ -248,8 +250,7 @@ public class PerfilNFragment extends Fragment implements View.OnClickListener,
                             this.getActivity(),
                             this.getContext(),
                             this,
-                            current.getId(),
-                            Constantes.UPDATE_LOCALIMG_CLIENTE);
+                            current.getId());
                 }
                 break;
             case AccionesFirebaseRTDataBase.UPDATE_NEGOCIO_ACCTION:
@@ -285,7 +286,6 @@ public class PerfilNFragment extends Fragment implements View.OnClickListener,
     public void enExitoDesc(Object respuesta, File localFile) {
         //se guarda la nueva direccion local
         //y se muestran los datos
-        current.setLocalImg(localFile.getAbsolutePath());
         showData();
     }
 

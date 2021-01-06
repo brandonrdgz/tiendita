@@ -7,7 +7,6 @@ public class SucursalModelo {
     private String direccion;
     private String horaAper;
     private String horaCierre;
-    private String localImg;
     private String remoteImg;
     private Double latitud;
     private Double longitud;
@@ -58,14 +57,6 @@ public class SucursalModelo {
 
     public void setHoraCierre(String horaCierre) {
         this.horaCierre = horaCierre;
-    }
-
-    public String getLocalImg() {
-        return localImg;
-    }
-
-    public void setLocalImg(String localImg) {
-        this.localImg = localImg;
     }
 
     public String getRemoteImg() {
