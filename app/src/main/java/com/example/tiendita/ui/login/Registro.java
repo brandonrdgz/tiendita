@@ -139,9 +139,9 @@ public class Registro extends AppCompatActivity {
     private UsuarioBaseModelo modeloDatosUsuario() {
         String nombre = tilNombre.getEditText().getText().toString();
         String apellido = tilApellido.getEditText().getText().toString();
-        String nombreNegocio = tilNombreNegocio.getEditText().toString();
+        String nombreNegocio = tilNombreNegocio.getEditText().getText().toString();
         String correo = tilCorreo.getEditText().getText().toString();
-        String contrasenia = tilContrasenia.getEditText().toString();
+        String contrasenia = tilContrasenia.getEditText().getText().toString();
 
         UsuarioBaseModelo usuario = smTipoUsuario.isChecked() ? new NegocioModelo() :
                 new UsuarioModelo();

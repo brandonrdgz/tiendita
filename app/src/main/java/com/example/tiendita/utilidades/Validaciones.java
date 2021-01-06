@@ -14,7 +14,7 @@ public class Validaciones {
    }
 
    public static void validaCampo(Activity activity, TextInputLayout textInputLayout) {
-      String texto = textInputLayout.getEditText().toString();
+      String texto = textInputLayout.getEditText().getText().toString();
 
       if(TextUtils.isEmpty(texto)) {
          textInputLayout.setError(activity.getString(R.string.msj_error_campo_vacio));
@@ -35,7 +35,7 @@ public class Validaciones {
                textInputLayout.setError(activity.getString(R.string.msj_error_campo_correo));
             }
             break;
-            
+
          case R.id.til_contrasenia_registro:
             if(texto.matches(Constantes.EXP_REG_CARACTERES_NO_VALIDOS) ||
                texto.length() < Constantes.LONGITUD_MIN_CONTRASENIA) {
