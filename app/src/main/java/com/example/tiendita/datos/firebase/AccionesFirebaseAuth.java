@@ -69,6 +69,7 @@ public class AccionesFirebaseAuth {
          );
    }
 
+
    public static void inicioSesion(String correo, String contrasenia, FirebaseCallback<Void> firebaseCallback) {
       firebaseCallback.enInicio();
 
