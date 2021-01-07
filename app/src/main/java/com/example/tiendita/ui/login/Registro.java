@@ -105,7 +105,11 @@ public class Registro extends AppCompatActivity {
                 public void enExito(Task<AuthResult> respuesta, int accion) {
                     Dialogo.ocultaDialogoProceso(alertDialog);
                     Toast.makeText(view.getContext(), R.string.msj_registro_exitoso, Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(Registro.this, MainActivity.class));
+
+                    Intent intent = new Intent(Registro.this, MainActivity.class);
+                    intent.putExtra(Constantes.CONST_NEGOCIO_TYPE, smTipoUsuario.isChecked());
+
+                    startActivity(intent);
                 }
 
                 @Override

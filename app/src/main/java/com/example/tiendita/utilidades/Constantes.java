@@ -19,6 +19,8 @@ public class Constantes {
 
    public static final String ETIQUETA_REGISTRO = "REGISTRO";
    public static final String ETIQUETA_INICIO_SESION = "INICIO DE SESIÓN";
+   public static final String ETIQUETA_INICIO_SESION_USUARIO = "INICIO DE SESIÓN_USUARIO";
+   public static final String ETIQUETA_INICIO_SESION_NEGOCIO = "INICIO DE SESIÓN_NEGOCIO";
 
    //Constantes para atributos
    //Atributos Sucursal

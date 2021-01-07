@@ -46,7 +46,7 @@ public class AccionesFirebaseRTDataBase {
                         if(snapshot.exists()) {
                             firebaseCallback.enExito(snapshot,GET_USER_ACCTION);
                         }else{
-                            firebaseCallback.enFallo(null);
+                            firebaseCallback.enFallo(new Exception("El usuario no existe"));
                         }
                     }
                     @Override
@@ -68,7 +68,7 @@ public class AccionesFirebaseRTDataBase {
                         if(snapshot.exists()) {
                             firebaseCallback.enExito(snapshot,GET_NEGOCIO_ACCTION);
                         }else{
-                            firebaseCallback.enFallo(null);
+                            firebaseCallback.enFallo(new Exception("El usuario no existe"));
                         }
                     }
                     @Override

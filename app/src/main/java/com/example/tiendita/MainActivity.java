@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        esNegocio=savedInstanceState.getBoolean(Constantes.CONST_NEGOCIO_TYPE);
+        esNegocio = getIntent().getBooleanExtra(Constantes.CONST_NEGOCIO_TYPE, false);
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
