@@ -99,4 +99,9 @@ public class AccionesFirebaseAuth {
          }
       });
    }
+
+   public static void actualizaContrasenia(String contrasenia){
+       FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+       firebaseAuth.getCurrentUser().updatePassword(contrasenia);
+   }
 }

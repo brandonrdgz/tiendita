@@ -114,7 +114,7 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_person" />
+                    android:src="@drawable/ic_people" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_apellido_registro"
@@ -143,7 +143,7 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_person" />
+                    android:src="@drawable/ic_business" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_nombre_negocio_registro"
@@ -171,7 +171,7 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_person" />
+                    android:src="@drawable/ic_message" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_correo_registro"
@@ -200,7 +200,7 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_person" />
+                    android:src="@drawable/ic_passwordlock" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_contrasenia_registro"
