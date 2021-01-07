@@ -82,7 +82,7 @@ public class InicioSesion extends AppCompatActivity {
             @Override
             public void enInicio() {
                 alertDialog = Dialogo.dialogoProceso(view, R.string.msj_iniciando_sesion);
-                alertDialog.show();
+                Dialogo.muestraDialogoProceso(alertDialog);
             }
 
             @Override

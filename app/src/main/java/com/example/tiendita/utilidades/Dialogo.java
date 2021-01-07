@@ -14,11 +14,16 @@ public class Dialogo {
       View vDialogoProceso = LayoutInflater.from(view.getContext())
          .inflate(R.layout.dialogo_proceso, null);
       TextView tv = vDialogoProceso.findViewById(R.id.tv_proceso);
-      tv.setText(idRecursoMensaje);
 
+      tv.setText(idRecursoMensaje);
       alertDialogBuilder.setView(vDialogoProceso);
+      alertDialogBuilder.setCancelable(false);
 
       return alertDialogBuilder.create();
+   }
+
+   public static void muestraDialogoProceso(AlertDialog alertDialog) {
+      alertDialog.show();
    }
 
    public static void ocultaDialogoProceso(AlertDialog alertDialog) {

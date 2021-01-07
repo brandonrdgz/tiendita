@@ -46,7 +46,7 @@ public class RestablecerContrasenia extends AppCompatActivity {
             @Override
             public void enInicio() {
                alertDialog = Dialogo.dialogoProceso(view, R.string.msj_enviando_correo_restab_contra);
-               alertDialog.show();
+               Dialogo.muestraDialogoProceso(alertDialog);
             }
 
             @Override

@@ -98,7 +98,7 @@ public class Registro extends AppCompatActivity {
                 @Override
                 public void enInicio() {
                     alertDialog = Dialogo.dialogoProceso(view, R.string.msj_registrando);
-                    alertDialog.show();
+                    Dialogo.muestraDialogoProceso(alertDialog);
                 }
 
                 @Override
