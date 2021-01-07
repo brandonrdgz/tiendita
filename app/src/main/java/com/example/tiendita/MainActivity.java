@@ -1,10 +1,14 @@
 package com.example.tiendita;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 
+import com.example.tiendita.datos.firebase.AccionesFirebaseAuth;
 import com.example.tiendita.utilidades.Constantes;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -58,6 +62,16 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupWithNavController(navigationView, navController);
         }
 
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_logout: {
+                AccionesFirebaseAuth.cerrarSesion(this);
+            }
+            break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

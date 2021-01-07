@@ -1,12 +1,23 @@
 package com.example.tiendita.datos.firebase;
 
+import android.app.Activity;
+import android.content.Intent;
+
+import androidx.annotation.NonNull;
+
 import com.example.tiendita.datos.modelos.UsuarioBaseModelo;
 import com.example.tiendita.datos.modelos.UsuarioModelo;
+import com.example.tiendita.ui.login.InicioSesion;
 import com.example.tiendita.utilidades.Constantes;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.sql.SQLOutput;
 
 public class AccionesFirebaseAuth {
     public static String getUID(){
@@ -101,7 +112,14 @@ public class AccionesFirebaseAuth {
    }
 
    public static void actualizaContrasenia(String contrasenia){
-       FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-       firebaseAuth.getCurrentUser().updatePassword(contrasenia);
-   }
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth.getCurrentUser().updatePassword(contrasenia);
+    }
+
+    public static void cerrarSesion(Activity activity){
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(activity, InicioSesion.class);
+        activity.startActivity(intent);
+        activity.finish();
+    }
 }

@@ -111,5 +111,6 @@
     <string name="pedido">Pedido</string>
     <string name="disponible">Disponible</string>
     <string name="agregar">Agregar</string>
+    <string name="action_cerrar_session">Cerrar Sesion</string>
 
 </resources>

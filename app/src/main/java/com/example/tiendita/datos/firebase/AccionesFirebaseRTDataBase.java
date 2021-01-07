@@ -137,6 +137,16 @@ public class AccionesFirebaseRTDataBase {
                 });
 
     }
+    public static void insertLocalImgRef(String id, String newLocalImg, Context context){
+        SQLite base= new SQLite(context);
+        base.abrir();
+        if(base.insertRef(id,newLocalImg)){
+            Toast.makeText(context, R.string.updated_ref,Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(context, R.string.error_ref,Toast.LENGTH_LONG).show();
+        }
+        base.cerrar();
+    }
     public static void updateLocalImgRef(String id, String newLocalImg, Context context){
         SQLite base= new SQLite(context);
         base.abrir();

@@ -46,7 +46,13 @@ public boolean insertRef(
          }
 
          public String getImgRef(String id){
-            return db.rawQuery("SELECT * FROM LOCALIMG WHERE ID="+id,null).getString(1);
+             String[] args = new String[] {id};
+             Cursor cursor = db.rawQuery("SELECT IMAGEN FROM LOCALIMG WHERE ID=?",args);
+             if(cursor.moveToFirst()) {
+                 return cursor.getString(0);
+             }else{
+                 return null;
+             }
          }
 
          public int deleteRef(String id){
