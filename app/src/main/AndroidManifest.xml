@@ -16,9 +16,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tiendita">
         <activity android:name=".ui.producto.productoAgregar.productoAgregar" />
-        <activity android:name=".ui.login.RestablecerContrasenia" />
-        <activity android:name=".ui.login.Registro" />
-        <activity android:name=".ui.login.InicioSesion">
+        <activity
+           android:name=".ui.login.RestablecerContrasenia"
+           android:theme="@style/Theme.Tiendita.NoActionBar"/>
+        <activity
+           android:name=".ui.login.Registro"
+           android:theme="@style/Theme.Tiendita.NoActionBar"/>
+        <activity
+           android:name=".ui.login.InicioSesion"
+           android:theme="@style/Theme.Tiendita.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

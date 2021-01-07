@@ -47,21 +47,20 @@
 
         <ImageView
             android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:src="@drawable/ic_person"/>
 
         <com.google.android.material.textfield.TextInputLayout
            android:id="@+id/til_correo_inicio_sesion"
-           android:layout_width="wrap_content"
+           android:layout_width="250dp"
            android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
-               android:layout_width="250dp"
-               android:layout_height="50dp"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
                android:background="@color/white"
                android:fontFamily="@font/myriadproregular"
-               android:hint="@string/usuario"
+               android:hint="@string/correo"
                android:inputType="text"
-               android:padding="15dp"
                android:textSize="15sp"/>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
@@ -75,21 +74,20 @@
 
         <ImageView
             android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:src="@drawable/ic_passwordlock"/>
 
         <com.google.android.material.textfield.TextInputLayout
            android:id="@+id/til_contrasenia_inicio_sesion"
-           android:layout_width="wrap_content"
+           android:layout_width="250dp"
            android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
-               android:layout_width="250dp"
-               android:layout_height="50dp"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
                android:background="@color/white"
                android:fontFamily="@font/myriadproregular"
                android:hint="@string/contrasenia"
                android:inputType="textPassword"
-               android:padding="15dp"
                android:textSize="15sp"/>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
