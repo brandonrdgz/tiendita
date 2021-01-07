@@ -52,8 +52,8 @@
             app:argType="boolean"
             android:defaultValue="true" />
         <action
-            android:id="@+id/action_nav_perdidos_to_nav_perdido"
-            app:destination="@id/nav_pedidon"/>
+            android:id="@+id/action_nav_pedidosn_to_nav_pedidon"
+            app:destination="@id/nav_pedidon" />
     </fragment>
 
     <fragment
@@ -117,8 +117,8 @@
             app:argType="boolean"
             android:defaultValue="false" />
         <action
-            android:id="@+id/action_nav_perdidos_to_nav_perdido"
-            app:destination="@id/nav_pedidou"/>
+            android:id="@+id/action_nav_pedidosu_to_nav_pedidou"
+            app:destination="@id/nav_pedidou" />
     </fragment>
 
     <fragment

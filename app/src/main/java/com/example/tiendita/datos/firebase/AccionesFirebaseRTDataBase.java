@@ -33,6 +33,7 @@ public class AccionesFirebaseRTDataBase {
     public static final int GET_PEDIDO_ACCTION=7;
     public static final int GET_LISTA_PRODUCTOS_PEDIDO_ACCTION=8;
     public static final int GET_SUCURSAL_ACCTION=9;
+    public static final int GET_PRODUCTOS_ACCTION=10;
 
     public static void getUser(String UID,FirebaseCallback<DataSnapshot> firebaseCallback){
         firebaseCallback.enInicio();
@@ -243,6 +244,30 @@ public class AccionesFirebaseRTDataBase {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()) {
                             firebaseCallback.enExito(snapshot,GET_PEDIDO_ACCTION);
+                        }else{
+                            firebaseCallback.enFallo(null);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+    }
+    public static void getProductos(String UID,FirebaseCallback<DataSnapshot> firebaseCallback){
+        firebaseCallback.enInicio();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference
+                .child(Constantes.NODO_PRODUCTOS)
+                .orderByChild(Constantes.CONST_PRODUCTO_SUCURSAL_ID)
+                .equalTo(UID)
+                .orderByKey()
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()) {
+                            firebaseCallback.enExito(snapshot,GET_PRODUCTOS_ACCTION);
                         }else{
                             firebaseCallback.enFallo(null);
                         }
