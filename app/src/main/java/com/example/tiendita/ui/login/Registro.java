@@ -97,7 +97,8 @@ public class Registro extends AppCompatActivity {
             AccionesFirebaseAuth.registroUsuario(usuario, new FirebaseCallback<Task<AuthResult>>() {
                 @Override
                 public void enInicio() {
-                    Dialogo.muestraDialogoProceso(view, alertDialog, R.string.msj_registrando);
+                    alertDialog = Dialogo.dialogoProceso(view, R.string.msj_registrando);
+                    alertDialog.show();
                 }
 
                 @Override

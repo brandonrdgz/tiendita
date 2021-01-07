@@ -9,7 +9,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.example.tiendita.R;
 
 public class Dialogo {
-   public static void muestraDialogoProceso(View view, AlertDialog alertDialog, int idRecursoMensaje) {
+   public static AlertDialog dialogoProceso(View view, int idRecursoMensaje) {
       AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
       View vDialogoProceso = LayoutInflater.from(view.getContext())
          .inflate(R.layout.dialogo_proceso, null);
@@ -17,8 +17,8 @@ public class Dialogo {
       tv.setText(idRecursoMensaje);
 
       alertDialogBuilder.setView(vDialogoProceso);
-      alertDialog = alertDialogBuilder.create();
-      alertDialog.show();
+
+      return alertDialogBuilder.create();
    }
 
    public static void ocultaDialogoProceso(AlertDialog alertDialog) {

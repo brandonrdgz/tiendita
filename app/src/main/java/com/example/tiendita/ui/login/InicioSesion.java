@@ -81,7 +81,8 @@ public class InicioSesion extends AppCompatActivity {
         AccionesFirebaseAuth.inicioSesion(correo, contrasenia, new FirebaseCallback<Void>() {
             @Override
             public void enInicio() {
-                Dialogo.muestraDialogoProceso(view, alertDialog, R.string.msj_iniciando_sesion);
+                alertDialog = Dialogo.dialogoProceso(view, R.string.msj_iniciando_sesion);
+                alertDialog.show();
             }
 
             @Override
