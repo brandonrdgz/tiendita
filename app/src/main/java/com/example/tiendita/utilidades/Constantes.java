@@ -19,6 +19,8 @@ public class Constantes {
 
    public static final String ETIQUETA_REGISTRO = "REGISTRO";
    public static final String ETIQUETA_INICIO_SESION = "INICIO DE SESIÓN";
+   public static final String ETIQUETA_INICIO_SESION_USUARIO = "INICIO DE SESIÓN_USUARIO";
+   public static final String ETIQUETA_INICIO_SESION_NEGOCIO = "INICIO DE SESIÓN_NEGOCIO";
 
    //Constantes para atributos
    //Atributos Sucursal
@@ -61,6 +63,7 @@ public class Constantes {
    //Constantes para control de flujo
    //Constantes para Tipo de vista
    public static final String CONST_NEGOCIO_TYPE ="esNegocio";
+   public static final String CONST_EDICION_TYPE ="esEdicion";
 
 
    //Constantes para el tipo de actualizacion de la referencia local img

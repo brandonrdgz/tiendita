@@ -1,13 +1,18 @@
 package com.example.tiendita;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 
+import com.example.tiendita.datos.firebase.AccionesFirebaseAuth;
 import com.example.tiendita.utilidades.Constantes;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -23,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        esNegocio=savedInstanceState.getBoolean(Constantes.CONST_NEGOCIO_TYPE);
+        esNegocio = getIntent().getBooleanExtra(Constantes.CONST_NEGOCIO_TYPE, false);
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -36,25 +41,37 @@ public class MainActivity extends AppCompatActivity {
         if(esNegocio) {
             navigationView.inflateMenu(R.menu.negocio_drawer);
             mAppBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.nav_homen, R.id.nav_perfiln, R.id.nav_perdidosn,R.id.nav_pedidon)
+                    R.id.nav_homen, R.id.nav_perfiln, R.id.nav_pedidosn,R.id.nav_pedidon,R.id.nav_mapn)
                     .setDrawerLayout(drawer)
                     .build();
-            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+            NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+            NavController navController = navHostFragment.getNavController();
             navController.getGraph().setStartDestination(R.id.nav_homen);
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
             NavigationUI.setupWithNavController(navigationView, navController);
         }else{
             navigationView.inflateMenu(R.menu.usuario_drawer);
             mAppBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.nav_homeu, R.id.nav_perfilu, R.id.nav_perdidosu,R.id.nav_pedidou,R.id.nav_mapu)
+                    R.id.nav_homeu, R.id.nav_perfilu, R.id.nav_pedidosu, R.id.nav_pedidon, R.id.nav_mapu)
                     .setDrawerLayout(drawer)
                     .build();
-            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+            NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+            NavController navController = navHostFragment.getNavController();
             navController.getGraph().setStartDestination(R.id.nav_homeu);
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
             NavigationUI.setupWithNavController(navigationView, navController);
         }
 
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_logout: {
+                AccionesFirebaseAuth.cerrarSesion(this);
+            }
+            break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

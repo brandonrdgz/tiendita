@@ -33,6 +33,7 @@ public class AccionesFirebaseRTDataBase {
     public static final int GET_PEDIDO_ACCTION=7;
     public static final int GET_LISTA_PRODUCTOS_PEDIDO_ACCTION=8;
     public static final int GET_SUCURSAL_ACCTION=9;
+    public static final int GET_PRODUCTOS_ACCTION=10;
 
     public static void getUser(String UID,FirebaseCallback<DataSnapshot> firebaseCallback){
         firebaseCallback.enInicio();
@@ -46,7 +47,7 @@ public class AccionesFirebaseRTDataBase {
                         if(snapshot.exists()) {
                             firebaseCallback.enExito(snapshot,GET_USER_ACCTION);
                         }else{
-                            firebaseCallback.enFallo(null);
+                            firebaseCallback.enFallo(new Exception("El usuario no existe"));
                         }
                     }
                     @Override
@@ -68,7 +69,7 @@ public class AccionesFirebaseRTDataBase {
                         if(snapshot.exists()) {
                             firebaseCallback.enExito(snapshot,GET_NEGOCIO_ACCTION);
                         }else{
-                            firebaseCallback.enFallo(null);
+                            firebaseCallback.enFallo(new Exception("El usuario no existe"));
                         }
                     }
                     @Override
@@ -136,6 +137,16 @@ public class AccionesFirebaseRTDataBase {
                 });
 
     }
+    public static void insertLocalImgRef(String id, String newLocalImg, Context context){
+        SQLite base= new SQLite(context);
+        base.abrir();
+        if(base.insertRef(id,newLocalImg)){
+            Toast.makeText(context, R.string.updated_ref,Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(context, R.string.error_ref,Toast.LENGTH_LONG).show();
+        }
+        base.cerrar();
+    }
     public static void updateLocalImgRef(String id, String newLocalImg, Context context){
         SQLite base= new SQLite(context);
         base.abrir();
@@ -162,14 +173,12 @@ public class AccionesFirebaseRTDataBase {
                     .child(Constantes.NODO_PEDIDOS)
                     .orderByChild(Constantes.CONST_PEDIDO_NEGOCIO_ID)
                     .equalTo(UID)
-                    .orderByKey()
                     .getRef();
         }else {
             ref = databaseReference
                     .child(Constantes.NODO_PEDIDOS)
                     .orderByChild(Constantes.CONST_PEDIDO_CLIENTE_ID)
                     .equalTo(UID)
-                    .orderByKey()
                     .getRef();
         }
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -216,7 +225,6 @@ public class AccionesFirebaseRTDataBase {
                     .child(Constantes.NODO_PRODUCTOS_DE_PEDIDOS)
                     .orderByChild(Constantes.CONST_PEDIDO_NEGOCIO_ID)
                     .equalTo(UID)
-                    .orderByKey()
                     .getRef().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -243,6 +251,29 @@ public class AccionesFirebaseRTDataBase {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()) {
                             firebaseCallback.enExito(snapshot,GET_PEDIDO_ACCTION);
+                        }else{
+                            firebaseCallback.enFallo(null);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+    }
+    public static void getProductos(String UID,FirebaseCallback<DataSnapshot> firebaseCallback){
+        firebaseCallback.enInicio();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference
+                .child(Constantes.NODO_PRODUCTOS)
+                .orderByChild(Constantes.CONST_PRODUCTO_SUCURSAL_ID)
+                .equalTo(UID)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()) {
+                            firebaseCallback.enExito(snapshot,GET_PRODUCTOS_ACCTION);
                         }else{
                             firebaseCallback.enFallo(null);
                         }

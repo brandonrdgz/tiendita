@@ -38,8 +38,12 @@ public class AccionesFireStorage {
             imgRef.getFile(localFile).addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<FileDownloadTask.TaskSnapshot> task) {
+                        if(AccionesFirebaseRTDataBase.getLocalImgRef(id,context)!=null) {
+                            AccionesFirebaseRTDataBase.updateLocalImgRef(id, localFile.getAbsolutePath(), context);
+                        }else{
+                            AccionesFirebaseRTDataBase.insertLocalImgRef(id, localFile.getAbsolutePath(), context);
+                        }
                         downloadCallback.enExitoDesc(task, localFile);
-                        AccionesFirebaseRTDataBase.updateLocalImgRef(id,localFile.getAbsolutePath(),context);
                 }
             });
         } catch (IOException e) {
@@ -84,4 +88,31 @@ public class AccionesFireStorage {
             }
         });
     }
+    public static void loadImage(String UID,  String localImg, Context context, UploadCallback<Task<Uri>> uploadCallback) {
+        uploadCallback.enInicioCar();
+        Uri file =Uri.fromFile(new File(localImg));
+        StorageReference imgRef = FirebaseStorage.getInstance().getReference();
+        final StorageReference ref = imgRef
+                .child(UID+"/"+file.getLastPathSegment());
+        StorageTask<UploadTask.TaskSnapshot> uploadTask = ref.putFile(file);
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    uploadCallback.enFalloCar(null);
+                }
+                return ref.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    uploadCallback.enExitoCar(task);
+                } else {
+                    uploadCallback.enFalloCar(null);
+                }
+            }
+        });
+    }
+
 }

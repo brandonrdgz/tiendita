@@ -45,7 +45,8 @@ public class RestablecerContrasenia extends AppCompatActivity {
          AccionesFirebaseAuth.restableceContrasenia(correo, new FirebaseCallback() {
             @Override
             public void enInicio() {
-               Dialogo.muestraDialogoProceso(view, alertDialog, R.string.msj_enviando_correo_restab_contra);
+               alertDialog = Dialogo.dialogoProceso(view, R.string.msj_enviando_correo_restab_contra);
+               Dialogo.muestraDialogoProceso(alertDialog);
             }
 
             @Override

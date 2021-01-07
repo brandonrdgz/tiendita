@@ -2,8 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation">
-    <!--app:startDestination="@+id/nav_home"-->
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_homeu">
 
 
     <fragment
@@ -52,8 +52,8 @@
             app:argType="boolean"
             android:defaultValue="true" />
         <action
-            android:id="@+id/action_nav_perdidos_to_nav_perdido"
-            app:destination="@id/nav_pedidon"/>
+            android:id="@+id/action_nav_pedidosn_to_nav_pedidon"
+            app:destination="@id/nav_pedidon" />
     </fragment>
 
     <fragment
@@ -99,6 +99,9 @@
             android:name="esNegocio"
             app:argType="boolean"
             android:defaultValue="false" />
+        <action
+            android:id="@+id/action_nav_mapu_to_nav_editpedido"
+            app:destination="@id/nav_editpedido" />
     </fragment>
 
 
@@ -114,8 +117,8 @@
             app:argType="boolean"
             android:defaultValue="false" />
         <action
-            android:id="@+id/action_nav_perdidos_to_nav_perdido"
-            app:destination="@id/nav_pedidou"/>
+            android:id="@+id/action_nav_pedidosu_to_nav_pedidou"
+            app:destination="@id/nav_pedidou" />
     </fragment>
 
     <fragment
@@ -127,5 +130,14 @@
             android:name="esNegocio"
             app:argType="boolean"
             android:defaultValue="false" />
+        <action
+            android:id="@+id/action_nav_pedidou_to_nav_editpedido"
+            app:destination="@id/nav_editpedido" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_editpedido"
+        android:name="com.example.tiendita.ui.pedidos.EditarPedidoFragment"
+        android:label="@string/pedido"
+        tools:layout="@layout/fragment_editar_pedido" >
     </fragment>
 </navigation>

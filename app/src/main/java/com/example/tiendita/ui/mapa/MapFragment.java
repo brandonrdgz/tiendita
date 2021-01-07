@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.tiendita.R;
 import com.example.tiendita.datos.firebase.AccionesFireStorage;
@@ -50,7 +51,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                                                     FirebaseCallback<DataSnapshot>,
         DownloadCallback<Task<FileDownloadTask.TaskSnapshot>>,
                                                     View.OnClickListener,
-                                                    GoogleMap.OnMarkerDragListener
+                                                    GoogleMap.OnMarkerDragListener,
+        DialogInterface.OnClickListener,
+        OnSuccessListener<Location>
 {
 
     private MapViewModel mapViewModel;
@@ -71,8 +74,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
         Bundle data = this.getArguments();
         if (data != null) {
-            initComps(root);
+
             esNegocio=data.getBoolean(Constantes.CONST_NEGOCIO_TYPE);
+            initComps(root);
         }else{
             esNegocio=false;
         }
@@ -84,10 +88,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void initComps(View root) {
+
         tvLatitud=root.findViewById(R.id.text_latitud);
         tvLongitud=root.findViewById(R.id.text_longitud);
         bttnAceptar=root.findViewById(R.id.bttn_aceptar_localizacion);
-        bttnAceptar.setOnClickListener(this);
+        if(esNegocio) {
+            bttnAceptar.setOnClickListener(this);
+        }else{
+            tvLatitud.setVisibility(View.GONE);
+            tvLongitud.setVisibility(View.GONE);
+            bttnAceptar.setVisibility(View.GONE);
+        }
     }
 
 
@@ -98,25 +109,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             return;
         }
         Task<Location> task = fusedLocationProviderClient.getLastLocation();
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if(location!=null){
-                    currentLocation= location;
-                    SupportMapFragment supportMapFragment=(SupportMapFragment)
-                            getActivity().getSupportFragmentManager().findFragmentById(R.id.google_map);
-                    supportMapFragment.getMapAsync(MapFragment.this::onMapReady);
-
-
-                }
-            }
-        });
+        task.addOnSuccessListener(this);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        latLng= new LatLng(19.265172, -99.634658);
+        //latLng= new LatLng(19.265172, -99.634658);
+        latLng= new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
         if(esNegocio){
@@ -239,23 +239,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         ((TextView) dialogView.findViewById(R.id.info_tiendita)).setText(sucursalModelo.getNombre()+"\nDireccion:"+sucursalModelo.getDireccion());
         ImageView imagen = dialogView.findViewById(R.id.foto_tiendita);
         String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(sucursalModelo.getSucursalID(),getContext());
-
         ImageManager.loadImage(localRef,imagen,this.getContext());
         AlertDialog.Builder dialogo= new AlertDialog.Builder(getContext());
         dialogo.setTitle(R.string.header_tiendita);
         dialogo.setView(dialogView);
-        dialogo.setPositiveButton(R.string.action_ir, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //redirect sucursal view
-                /*
-                    Bundle data = new Bundle();
-                    data.putString("id",id);
-                    NavHostFragment.findNavController(this)
-                                    .navigate(R.id.action_nav_listar_to_nav_editar, data);
-                */
-            }
-        });
+        dialogo.setPositiveButton(R.string.action_ir, this);
         dialogo.show();
     }
 
@@ -273,6 +261,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onMarkerDragStart(Marker marker) {
+        tvLatitud.setVisibility(View.GONE);
+        tvLongitud.setVisibility(View.GONE);
+        bttnAceptar.setVisibility(View.GONE);
 
     }
 
@@ -283,7 +274,31 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onMarkerDragEnd(Marker marker) {
+        tvLatitud.setVisibility(View.VISIBLE);
+        tvLongitud.setVisibility(View.VISIBLE);
+        bttnAceptar.setVisibility(View.VISIBLE);
+
         tvLatitud.setText(marker.getPosition().latitude+"");
         tvLongitud.setText(marker.getPosition().longitude+"");
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        Bundle data = new Bundle();
+        data.putBoolean(Constantes.CONST_EDICION_TYPE,false);
+        data.putString(Constantes.CONST_SUCURSAL_ID,sucursalModelo.getSucursalID());
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_nav_mapu_to_nav_editpedido, data);
+    }
+
+
+    @Override
+    public void onSuccess(Location location) {
+        if(location!=null){
+            currentLocation= location;
+            SupportMapFragment supportMapFragment=(SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.google_map);
+            supportMapFragment.getMapAsync(MapFragment.this);
+        }
+
     }
 }
