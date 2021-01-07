@@ -61,6 +61,7 @@ public class Constantes {
    //Constantes para control de flujo
    //Constantes para Tipo de vista
    public static final String CONST_NEGOCIO_TYPE ="esNegocio";
+   public static final String CONST_EDICION_TYPE ="esEdicion";
 
 
    //Constantes para el tipo de actualizacion de la referencia local img

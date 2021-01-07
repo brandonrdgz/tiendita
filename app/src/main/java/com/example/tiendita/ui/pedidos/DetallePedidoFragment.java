@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,7 +46,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class DetallePedidoFragment extends Fragment implements FirebaseCallback<DataSnapshot>,
-        DownloadCallback{
+        DownloadCallback,
+        View.OnClickListener {
 
     private DetallePedidoViewModel mViewModel;
     private ImageView ivImagen;
@@ -91,6 +93,12 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
         tvDireccion=root.findViewById(R.id.tv_direccion_detalle);
         bttnCancelar=root.findViewById(R.id.bttn_cancelar_detalle);
         bttnEditar=root.findViewById(R.id.bttn_editar_detalle);
+        bttnCancelar.setOnClickListener(this);
+        if(esNegocio){
+            bttnEditar.setVisibility(View.GONE);
+        }else{
+            bttnEditar.setOnClickListener(this);
+        }
 
         AccionesFirebaseRTDataBase.getPedido(currentId,
                                             this);
@@ -302,6 +310,21 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.bttn_editar_detalle:
+                Bundle data = new Bundle();
+                data.putBoolean(Constantes.CONST_EDICION_TYPE,true);
+                data.putString(Constantes.CONST_PEDIDO_ID,currentId);
+                data.putString(Constantes.CONST_SUCURSAL_ID,currentSucursal.getSucursalID());
+                    NavHostFragment.findNavController(this)
+                            .navigate(R.id.action_nav_pedidou_to_nav_editpedido, data);
+                break;
+            case R.id.bttn_cancelar_detalle:
+                break;
 
+        }
 
+    }
 }

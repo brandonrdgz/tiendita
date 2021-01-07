@@ -99,6 +99,9 @@
             android:name="esNegocio"
             app:argType="boolean"
             android:defaultValue="false" />
+        <action
+            android:id="@+id/action_nav_mapu_to_nav_editpedido"
+            app:destination="@id/nav_editpedido" />
     </fragment>
 
 
