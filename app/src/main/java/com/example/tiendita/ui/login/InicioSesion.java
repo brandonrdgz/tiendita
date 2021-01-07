@@ -35,6 +35,12 @@ public class InicioSesion extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio_sesion);
         iniComponentes();
+
+        if (AccionesFirebaseAuth.getUID() != null) {
+            alertDialog = Dialogo.dialogoProceso(mbIngresar, R.string.msj_iniciando_sesion);
+            Dialogo.muestraDialogoProceso(alertDialog);
+            iniciaSesionUsuario(mbIngresar);
+        }
     }
 
     private void iniComponentes() {
