@@ -1,7 +1,6 @@
 package com.example.tiendita.ui.mapa;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -28,6 +28,7 @@ import com.example.tiendita.datos.firebase.DownloadCallback;
 import com.example.tiendita.datos.firebase.FirebaseCallback;
 import com.example.tiendita.datos.modelos.SucursalModelo;
 import com.example.tiendita.utilidades.Constantes;
+import com.example.tiendita.utilidades.Dialogo;
 import com.example.tiendita.utilidades.ImageManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -67,6 +68,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     private TextView tvLatitud,tvLongitud;
     private Button bttnAceptar;
     private static final int REQUEST_CODE = 101;
+    private AlertDialog alertDialog;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -88,19 +90,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void initComps(View root) {
-
         tvLatitud=root.findViewById(R.id.text_latitud);
         tvLongitud=root.findViewById(R.id.text_longitud);
         bttnAceptar=root.findViewById(R.id.bttn_aceptar_localizacion);
         if(esNegocio) {
             bttnAceptar.setOnClickListener(this);
-        }else{
+        }
+        else {
             tvLatitud.setVisibility(View.GONE);
             tvLongitud.setVisibility(View.GONE);
             bttnAceptar.setVisibility(View.GONE);
         }
     }
-
 
     private void fetchLastLocation() {
         if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -114,7 +115,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         //latLng= new LatLng(19.265172, -99.634658);
         latLng= new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -125,24 +125,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             clientConfig(googleMap);
         }
     }
+
     private void negocioConfig(GoogleMap googleMap){
         Marker marker = googleMap.addMarker(new MarkerOptions().position(latLng).title("Localizacion").draggable(true));
         googleMap.setOnMarkerDragListener(this);
     }
+
     private void clientConfig(GoogleMap googleMap){
         list= new ArrayList<>();
         this.googleMap=googleMap;
         AccionesFirebaseRTDataBase.getNearSucursales(this);
-
-
-
     }
-
-
 
     @Override
     public void enInicio() {
-
+        alertDialog = Dialogo.dialogoProceso(getView(), R.string.msj_cargando_tiendas);
+        Dialogo.muestraDialogoProceso(alertDialog);
     }
 
     @Override
@@ -162,7 +160,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 sucursalModelo.setLongitud(Double.parseDouble(dataSnapshot.child(Constantes.CONST_SUCURSAL_LONG).getValue().toString()));
                 list.add(sucursalModelo);
             }
-
         }
 
         for (SucursalModelo sucursal: list) {
@@ -172,11 +169,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
             marker.setTag(sucursal);
         }
 
+        Dialogo.ocultaDialogoProceso(alertDialog);
         this.googleMap.setOnMarkerClickListener(this);
     }
-
-
-
 
     private boolean isInRange(double lat, double lon) {
         double distancia= 6371*Math.acos(
@@ -188,30 +183,27 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         return distancia<1.0;
     }
 
-
     @Override
     public void enFallo(Exception excepcion) {
+        Dialogo.ocultaDialogoProceso(alertDialog);
         Toast.makeText(this.getContext(), R.string.sin_sucursales, Toast.LENGTH_LONG).show();
-
     }
-
-
-
-
-
 
     @Override
     public void enInicioDesc() {
-
+        alertDialog = Dialogo.dialogoProceso(getView(), R.string.msj_descargando_datos_tienda);
+        Dialogo.muestraDialogoProceso(alertDialog);
     }
 
     @Override
     public void enExitoDesc(Task<FileDownloadTask.TaskSnapshot> respuesta,File localFile) {
+        Dialogo.ocultaDialogoProceso(alertDialog);
         showDialog(sucursalModelo);
     }
 
     @Override
     public void enFalloDesc(Exception excepcion) {
+        Dialogo.ocultaDialogoProceso(alertDialog);
         Toast.makeText(this.getContext(), R.string.error_cargar_img,Toast.LENGTH_LONG).show();
         Log.d("Descargar imagen","Error al descargar imagen\n Causa: "+excepcion.getCause());
     }
@@ -224,7 +216,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         File filePhoto= new File(localRef);
             if(filePhoto.exists()) {
                 showDialog(sucursalModelo);
-            }else{
+            }
+            else {
                 AccionesFireStorage.downloadImg(sucursalModelo.getRemoteImg(),
                         this.getActivity(),
                         this.getContext(),
@@ -290,7 +283,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_nav_mapu_to_nav_editpedido, data);
     }
-
 
     @Override
     public void onSuccess(Location location) {

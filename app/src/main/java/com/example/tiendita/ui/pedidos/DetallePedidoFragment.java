@@ -2,11 +2,9 @@ package com.example.tiendita.ui.pedidos;
 
 import androidx.lifecycle.ViewModelProvider;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -29,21 +27,18 @@ import com.example.tiendita.datos.firebase.AccionesFireStorage;
 import com.example.tiendita.datos.firebase.AccionesFirebaseRTDataBase;
 import com.example.tiendita.datos.firebase.DownloadCallback;
 import com.example.tiendita.datos.firebase.FirebaseCallback;
-import com.example.tiendita.datos.firebase.UploadCallback;
-import com.example.tiendita.datos.modelos.NegocioModelo;
 import com.example.tiendita.datos.modelos.PedidoModelo;
 import com.example.tiendita.datos.modelos.ProductosPedidoModelo;
 import com.example.tiendita.datos.modelos.SucursalModelo;
 import com.example.tiendita.datos.modelos.UsuarioModelo;
 import com.example.tiendita.utilidades.Constantes;
+import com.example.tiendita.utilidades.Dialogo;
 import com.example.tiendita.utilidades.ImageManager;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class DetallePedidoFragment extends Fragment implements FirebaseCallback<DataSnapshot>,
         DownloadCallback,
@@ -61,6 +56,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
     private ProductosPedidoModelo currentProductosPedidoModelo;
     private UsuarioModelo currentUser;
     private ArrayList<ProductosPedidoModelo> lista;
+    private AlertDialog alertDialog;
 
     public static DetallePedidoFragment newInstance() {
         return new DetallePedidoFragment();
@@ -114,11 +110,14 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
 
     @Override
     public void enInicio() {
-
+        alertDialog = Dialogo.dialogoProceso(getView(), R.string.msj_cargando_detalles_pedido);
+        Dialogo.muestraDialogoProceso(alertDialog);
     }
 
     @Override
     public void enExito(DataSnapshot respuesta, int tipo) {
+        Dialogo.ocultaDialogoProceso(alertDialog);
+
         switch (tipo) {
             case AccionesFirebaseRTDataBase.GET_PEDIDO_ACCTION: {
                 HashMap pedidoHash = (HashMap) respuesta.getValue();
@@ -186,9 +185,6 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
                             this,
                             currentSucursal.getSucursalID());
                 }
-
-
-
                 showData();
 
             }
@@ -281,30 +277,34 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
 
     @Override
     public void enFallo(Exception excepcion) {
+        Dialogo.ocultaDialogoProceso(alertDialog);
         Toast.makeText(this.getContext(), R.string.fallo_pedido, Toast.LENGTH_LONG).show();
 
     }
     //descarga de imagen remota
     @Override
     public void enInicioDesc() {
-
+        alertDialog = Dialogo.dialogoProceso(getView(), R.string.msj_descargando_datos_pedido);
+        Dialogo.muestraDialogoProceso(alertDialog);
     }
 
     @Override
     public void enExitoDesc(Object respuesta, File localFile) {
         //se guarda la nueva direccion local
         //y se muestran los datos
+        Dialogo.ocultaDialogoProceso(alertDialog);
+
         if(banDialogo){
             showDialog(currentProductosPedidoModelo);
         }else{
             AccionesFirebaseRTDataBase.getListaProductosPedido(currentId,this);
-
         }
 
     }
 
     @Override
     public void enFalloDesc(Exception excepcion) {
+        Dialogo.ocultaDialogoProceso(alertDialog);
         Toast.makeText(this.getContext(), R.string.error_cargar_img,Toast.LENGTH_LONG).show();
         Log.d("Descargar imagen","Error al descargar imagen\n Causa: "+excepcion.getCause());
     }

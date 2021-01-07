@@ -50,10 +50,16 @@
 
 
     //Strings para Usuario
+    <string name="msj_cargando_tiendas">Cargando tiendas</string>
+    <string name="msj_descargando_datos_tienda">Descargando datos de la tienda</string>
+
     //Strings para Perfil
     <string name="editarBtn">Editar</string>
     <string name="guardarBtn">Guardar</string>
     <string name="descartarBtn">Descartar</string>
+    <string name="msj_cargando_datos_perfil">Cargando datos del perfil</string>
+    <string name="msj_descargando_datos_perfil">Descargando datos del perfil</string>
+
     //Strings para Pedidos
     <string name="listaPedidos">Lista de Pedidos</string>
     <string name="cancelarBtn">Cancelar</string>
@@ -61,6 +67,10 @@
     <string name="cantidad">Cantidad</string>
     <string name="precio">Precio</string>
     <string name="presentacion">Presentación</string>
+    <string name="msj_cargando_detalles_pedido">Cargando detalles del pedido</string>
+    <string name="msj_descargando_datos_pedido">Descargando datos del pedido</string>
+    <string name="msj_cargando_lista_pedidos">Cargando lista de pedidos</string>
+
     //Strings para Negocio
 
 
