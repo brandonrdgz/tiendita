@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tiendita.R;
@@ -37,6 +38,7 @@ public class PedidosFragment extends Fragment implements FirebaseCallback<DataSn
 
     private PedidosViewModel mViewModel;
     private ListView listView;
+    private TextView tvSinPedidos;
     private Boolean esNegocio;
     private ArrayList<PedidoModelo> listaPedidos;
 
@@ -61,6 +63,8 @@ public class PedidosFragment extends Fragment implements FirebaseCallback<DataSn
     private void initComps(View root) {
         listaPedidos=new ArrayList<>();
         listView=root.findViewById(R.id.lv_pedidos);
+        tvSinPedidos=root.findViewById(R.id.tv_sin_pedidos_label);
+
         AccionesFirebaseRTDataBase.getListaPedidos(AccionesFirebaseAuth.getUID(),
                                                 esNegocio,
                                                 this);
@@ -99,6 +103,7 @@ public class PedidosFragment extends Fragment implements FirebaseCallback<DataSn
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(this);
+        tvSinPedidos.setVisibility(View.GONE);
 
     }
 
@@ -107,7 +112,7 @@ public class PedidosFragment extends Fragment implements FirebaseCallback<DataSn
     @Override
     public void enFallo(Exception excepcion) {
         Toast.makeText(this.getContext(), R.string.sin_pedidos, Toast.LENGTH_LONG).show();
-
+        listView.setVisibility(View.GONE);
     }
 
     @Override

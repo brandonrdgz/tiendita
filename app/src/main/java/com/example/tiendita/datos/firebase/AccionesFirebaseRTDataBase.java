@@ -173,14 +173,12 @@ public class AccionesFirebaseRTDataBase {
                     .child(Constantes.NODO_PEDIDOS)
                     .orderByChild(Constantes.CONST_PEDIDO_NEGOCIO_ID)
                     .equalTo(UID)
-                    .orderByKey()
                     .getRef();
         }else {
             ref = databaseReference
                     .child(Constantes.NODO_PEDIDOS)
                     .orderByChild(Constantes.CONST_PEDIDO_CLIENTE_ID)
                     .equalTo(UID)
-                    .orderByKey()
                     .getRef();
         }
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -227,7 +225,6 @@ public class AccionesFirebaseRTDataBase {
                     .child(Constantes.NODO_PRODUCTOS_DE_PEDIDOS)
                     .orderByChild(Constantes.CONST_PEDIDO_NEGOCIO_ID)
                     .equalTo(UID)
-                    .orderByKey()
                     .getRef().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -272,7 +269,6 @@ public class AccionesFirebaseRTDataBase {
                 .child(Constantes.NODO_PRODUCTOS)
                 .orderByChild(Constantes.CONST_PRODUCTO_SUCURSAL_ID)
                 .equalTo(UID)
-                .orderByKey()
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {

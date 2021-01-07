@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         if(esNegocio) {
             navigationView.inflateMenu(R.menu.negocio_drawer);
             mAppBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.nav_homen, R.id.nav_perfiln, R.id.nav_perdidosn,R.id.nav_pedidon)
+                    R.id.nav_homen, R.id.nav_perfiln, R.id.nav_pedidosn,R.id.nav_pedidon,R.id.nav_mapn)
                     .setDrawerLayout(drawer)
                     .build();
             NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         }else{
             navigationView.inflateMenu(R.menu.usuario_drawer);
             mAppBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.nav_homeu, R.id.nav_perfilu, R.id.nav_perdidosu,R.id.nav_pedidou,R.id.nav_mapu)
+                    R.id.nav_homeu, R.id.nav_perfilu, R.id.nav_pedidosu, R.id.nav_pedidon, R.id.nav_mapu)
                     .setDrawerLayout(drawer)
                     .build();
             NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
