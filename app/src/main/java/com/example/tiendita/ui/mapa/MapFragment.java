@@ -139,7 +139,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void enInicio() {
-        alertDialog = Dialogo.dialogoProceso(getView(), R.string.msj_cargando_tiendas);
+        alertDialog = Dialogo.dialogoProceso(getContext(), R.string.msj_cargando_tiendas);
         Dialogo.muestraDialogoProceso(alertDialog);
     }
 
@@ -191,7 +191,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void enInicioDesc() {
-        alertDialog = Dialogo.dialogoProceso(getView(), R.string.msj_descargando_datos_tienda);
+        alertDialog = Dialogo.dialogoProceso(getContext(), R.string.msj_descargando_datos_tienda);
         Dialogo.muestraDialogoProceso(alertDialog);
     }
 

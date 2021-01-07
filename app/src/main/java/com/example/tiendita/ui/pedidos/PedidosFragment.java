@@ -80,7 +80,7 @@ public class PedidosFragment extends Fragment implements FirebaseCallback<DataSn
 
     @Override
     public void enInicio() {
-        alertDialog = Dialogo.dialogoProceso(getView(), R.string.msj_cargando_lista_pedidos);
+        alertDialog = Dialogo.dialogoProceso(getContext(), R.string.msj_cargando_lista_pedidos);
         Dialogo.muestraDialogoProceso(alertDialog);
     }
 

@@ -110,7 +110,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
 
     @Override
     public void enInicio() {
-        alertDialog = Dialogo.dialogoProceso(getView(), R.string.msj_cargando_detalles_pedido);
+        alertDialog = Dialogo.dialogoProceso(getContext(), R.string.msj_cargando_detalles_pedido);
         Dialogo.muestraDialogoProceso(alertDialog);
     }
 
@@ -284,7 +284,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
     //descarga de imagen remota
     @Override
     public void enInicioDesc() {
-        alertDialog = Dialogo.dialogoProceso(getView(), R.string.msj_descargando_datos_pedido);
+        alertDialog = Dialogo.dialogoProceso(getContext(), R.string.msj_descargando_datos_pedido);
         Dialogo.muestraDialogoProceso(alertDialog);
     }
 

@@ -323,7 +323,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener,
     //carga y guardado de datos
     @Override
     public void enInicio() {
-        alertDialog = Dialogo.dialogoProceso(getView(), R.string.msj_cargando_datos_perfil);
+        alertDialog = Dialogo.dialogoProceso(getContext(), R.string.msj_cargando_datos_perfil);
         Dialogo.muestraDialogoProceso(alertDialog);
     }
 
@@ -445,7 +445,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener,
     //descarga de imagen remota
     @Override
     public void enInicioDesc() {
-        alertDialog = Dialogo.dialogoProceso(getView(), R.string.msj_descargando_datos_perfil);
+        alertDialog = Dialogo.dialogoProceso(getContext(), R.string.msj_descargando_datos_perfil);
         Dialogo.muestraDialogoProceso(alertDialog);
     }
 
