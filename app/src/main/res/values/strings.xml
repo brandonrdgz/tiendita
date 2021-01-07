@@ -74,9 +74,14 @@
     //Strings para Negocio
 
 
-
     <string name="masDetalles">Más Detalles</string>
     <string name="generarPedido">Generar Pedido</string>
+
+    <string name="adminProductos">Administrar Productos</string>
+    <string name="eliminarBtn">Eliminar</string>
+    <string name="sin_productos">Sin Productos</string>
+
+
 
     <!--Mensaje de error-->
     <string name="msj_error_campo_vacio">El campo no puede estar vacío</string>
@@ -122,5 +127,7 @@
     <string name="disponible">Disponible</string>
     <string name="agregar">Agregar</string>
     <string name="action_cerrar_session">Cerrar Sesion</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
