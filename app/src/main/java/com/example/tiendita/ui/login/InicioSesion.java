@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.tiendita.MainActivity;
 import com.example.tiendita.R;
 import com.example.tiendita.datos.firebase.AccionesFirebaseAuth;
+import com.example.tiendita.datos.firebase.AccionesFirebaseRTDataBase;
 import com.example.tiendita.datos.firebase.FirebaseCallback;
 import com.example.tiendita.text_watcher.CampoTextWatcher;
 import com.example.tiendita.utilidades.Constantes;
@@ -19,6 +21,7 @@ import com.example.tiendita.utilidades.ExcepcionUtilidades;
 import com.example.tiendita.utilidades.Validaciones;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DataSnapshot;
 
 public class InicioSesion extends AppCompatActivity {
     //Componentes
@@ -82,13 +85,13 @@ public class InicioSesion extends AppCompatActivity {
             @Override
             public void enInicio() {
                 alertDialog = Dialogo.dialogoProceso(view, R.string.msj_iniciando_sesion);
-                alertDialog.show();
+                Dialogo.muestraDialogoProceso(alertDialog);
             }
 
             @Override
             public void enExito(Void respuesta, int accion) {
-                Dialogo.ocultaDialogoProceso(alertDialog);
-                startActivity(new Intent(InicioSesion.this, MainActivity.class));
+                Log.e(Constantes.ETIQUETA_INICIO_SESION, AccionesFirebaseAuth.getUID());
+                iniciaSesionUsuario(view);
             }
 
             @Override
@@ -98,6 +101,60 @@ public class InicioSesion extends AppCompatActivity {
                    Constantes.ETIQUETA_INICIO_SESION);
             }
         });
+    }
+
+    private void iniciaSesionUsuario(View view) {
+        AccionesFirebaseRTDataBase.getUser(AccionesFirebaseAuth.getUID(), new FirebaseCallback<DataSnapshot>() {
+            @Override
+            public void enInicio() {
+
+            }
+
+            @Override
+            public void enExito(DataSnapshot respuesta, int accion) {
+                Dialogo.ocultaDialogoProceso(alertDialog);
+
+                Intent intent = new Intent(InicioSesion.this, MainActivity.class);
+                boolean esNegocio = false;
+
+                intent.putExtra(Constantes.CONST_NEGOCIO_TYPE, esNegocio);
+                startActivity(new Intent(InicioSesion.this, MainActivity.class));
+            }
+
+            @Override
+            public void enFallo(Exception excepcion) {
+                ExcepcionUtilidades.muestraMensajeError(view, excepcion,
+                   R.string.msj_error_inicio_sesion, Constantes.ETIQUETA_INICIO_SESION_USUARIO);
+                iniciaSesionNegocio(view);
+            }
+        });
+    }
+
+    private void iniciaSesionNegocio(View view) {
+        AccionesFirebaseRTDataBase.getNegocio(AccionesFirebaseAuth.getUID(), new FirebaseCallback<DataSnapshot>() {
+            @Override
+            public void enInicio() {
+
+            }
+
+            @Override
+            public void enExito(DataSnapshot respuesta, int accion) {
+                Dialogo.ocultaDialogoProceso(alertDialog);
+
+                Intent intent = new Intent(InicioSesion.this, MainActivity.class);
+                boolean esNegocio = true;
+
+                intent.putExtra(Constantes.CONST_NEGOCIO_TYPE, esNegocio);
+                startActivity(new Intent(InicioSesion.this, MainActivity.class));
+            }
+
+            @Override
+            public void enFallo(Exception excepcion) {
+                Dialogo.ocultaDialogoProceso(alertDialog);
+                ExcepcionUtilidades.muestraMensajeError(view, excepcion,
+                   R.string.msj_error_inicio_sesion, Constantes.ETIQUETA_INICIO_SESION_NEGOCIO);
+            }
+        });Dialogo.ocultaDialogoProceso(alertDialog);
     }
 
     private void limpiaCampos(){
