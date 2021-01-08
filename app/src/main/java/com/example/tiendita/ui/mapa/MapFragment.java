@@ -281,7 +281,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         data.putBoolean(Constantes.CONST_EDICION_TYPE,false);
         data.putString(Constantes.CONST_SUCURSAL_ID,sucursalModelo.getSucursalID());
         NavHostFragment.findNavController(this)
-                .navigate(R.id.action_nav_mapu_to_nav_editpedido, data);
+                .navigate(R.id.action_nav_mapu_to_nav_detalle_sucursalu, data);
     }
 
     @Override

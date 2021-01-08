@@ -39,6 +39,48 @@
             android:defaultValue="true" />
     </fragment>
 
+    <fragment
+        android:id="@+id/nav_sucursales"
+        android:name="com.example.tiendita.ui.tiendas.ListadoSucursalFragment"
+        android:label="@string/mapa"
+        tools:layout="@layout/fragment_listado_sucursal">
+        <argument
+            android:name="esNegocio"
+            app:argType="boolean"
+            android:defaultValue="true" />
+        <action
+            android:id="@+id/action_nav_sucursales_to_nav_detalle_sucursaln"
+            app:destination="@id/nav_detalle_sucursaln" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_detalle_sucursaln"
+        android:name="com.example.tiendita.ui.tiendas.DetallesSucursalFragment"
+        android:label="@string/mapa"
+        tools:layout="@layout/fragment_detalles_sucursal">
+        <argument
+            android:name="esNegocio"
+            app:argType="boolean"
+            android:defaultValue="true" />
+        <action
+            android:id="@+id/action_nav_detalle_sucursaln_to_nav_editar_productos"
+            app:destination="@id/nav_editar_productos" />
+        <action
+            android:id="@+id/action_nav_detalle_sucursaln_to_nav_mapn"
+            app:destination="@id/nav_mapn" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_editar_productos"
+        android:name="com.example.tiendita.ui.tiendas.EditarProductosFragment"
+        android:label="@string/mapa"
+        tools:layout="@layout/fragment_editar_productos">
+        <argument
+            android:name="esNegocio"
+            app:argType="boolean"
+            android:defaultValue="true" />
+    </fragment>
+
 
 
 
@@ -100,7 +142,22 @@
             app:argType="boolean"
             android:defaultValue="false" />
         <action
-            android:id="@+id/action_nav_mapu_to_nav_editpedido"
+            android:id="@+id/action_nav_mapu_to_nav_detalle_sucursalu"
+            app:destination="@id/nav_detalle_sucursalu" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_detalle_sucursalu"
+        android:name="com.example.tiendita.ui.tiendas.DetallesSucursalFragment"
+        android:label="@string/mapa"
+        tools:layout="@layout/fragment_detalles_sucursal">
+        <argument
+            android:name="esNegocio"
+            app:argType="boolean"
+            android:defaultValue="true" />
+        <action
+            android:id="@+id/action_nav_detalle_sucursalu_to_nav_editpedido"
             app:destination="@id/nav_editpedido" />
     </fragment>
 
