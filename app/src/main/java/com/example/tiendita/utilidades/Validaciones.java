@@ -37,6 +37,7 @@ public class Validaciones {
             break;
 
          case R.id.til_contrasenia_registro:
+         case R.id.til_contrasenia_perfil:
             if(texto.matches(Constantes.EXP_REG_CARACTERES_NO_VALIDOS) ||
                texto.length() < Constantes.LONGITUD_MIN_CONTRASENIA) {
                textInputLayout.setError(activity.getString(R.string.msj_error_campo_contrasenia));
@@ -51,6 +52,7 @@ public class Validaciones {
             break;
 
          case R.id.til_nombre_registro:
+         case R.id.til_nombre_perfil:
             if (texto.toUpperCase().matches(Constantes.EXP_REG_NOMBRE)) {
                textInputLayout.setError("");
             }
@@ -60,10 +62,12 @@ public class Validaciones {
             break;
 
          case R.id.til_nombre_negocio_registro:
+         case R.id.til_nombre_negocio_perfil:
             textInputLayout.setError("");
             break;
 
          case R.id.til_apellido_registro:
+         case R.id.til_apellido_perfil:
             if (texto.toUpperCase().matches(Constantes.EXP_REG_NOMBRE)) {
                textInputLayout.setError("");
             }
