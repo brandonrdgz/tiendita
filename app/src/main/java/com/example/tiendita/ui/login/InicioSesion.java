@@ -124,13 +124,11 @@ public class InicioSesion extends AppCompatActivity {
                 boolean esNegocio = false;
 
                 intent.putExtra(Constantes.CONST_NEGOCIO_TYPE, esNegocio);
-                startActivity(new Intent(InicioSesion.this, MainActivity.class));
+                startActivity(intent);
             }
 
             @Override
             public void enFallo(Exception excepcion) {
-                ExcepcionUtilidades.muestraMensajeError(view, excepcion,
-                   R.string.msj_error_inicio_sesion, Constantes.ETIQUETA_INICIO_SESION_USUARIO);
                 iniciaSesionNegocio(view);
             }
         });
@@ -151,7 +149,7 @@ public class InicioSesion extends AppCompatActivity {
                 boolean esNegocio = true;
 
                 intent.putExtra(Constantes.CONST_NEGOCIO_TYPE, esNegocio);
-                startActivity(new Intent(InicioSesion.this, MainActivity.class));
+                startActivity(intent);
             }
 
             @Override

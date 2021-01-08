@@ -34,10 +34,14 @@ import com.example.tiendita.datos.firebase.FirebaseCallback;
 import com.example.tiendita.datos.firebase.UploadCallback;
 import com.example.tiendita.datos.modelos.NegocioModelo;
 import com.example.tiendita.datos.modelos.UsuarioModelo;
+import com.example.tiendita.text_watcher.CampoTextWatcher;
 import com.example.tiendita.utilidades.Constantes;
 import com.example.tiendita.utilidades.Dialogo;
 import com.example.tiendita.utilidades.ImageManager;
+import com.example.tiendita.utilidades.TextInputUtilidades;
+import com.example.tiendita.utilidades.Validaciones;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 
 import java.io.File;
@@ -53,7 +57,8 @@ public class PerfilFragment extends Fragment implements View.OnClickListener,
         UploadCallback<Task<Uri>>  {
 
     private PerfilViewModel mViewModel;
-    private EditText tvNombre,tvApellido,tvPassword,tvCorreo,tvNombreNegocio;
+    private TextInputLayout tilNombre, tilApellido, tilContrasenia, tilCorreo, tilNombreNegocio;
+    private TextInputLayout[] textInputLayouts;
     private Button bttnEdit,bttnSave,bttnDiscard;
     private ImageView ivImagen,ivNombreNegocioIcon;
     private NegocioModelo currentN;
@@ -86,29 +91,42 @@ public class PerfilFragment extends Fragment implements View.OnClickListener,
     }
 
     private void initComps(View root) {
-
-        tvNombre = root.findViewById(R.id.tf_perfil_nombre);
-        tvNombreNegocio = root.findViewById(R.id.tf_perfil_nombre_negocio);
-        tvApellido = root.findViewById(R.id.tf_perfil_apellido);
-        tvPassword = root.findViewById(R.id.tf_perfil_password);
-        tvCorreo = root.findViewById(R.id.tf_perfil_correo);
+        tilNombre = root.findViewById(R.id.til_nombre_perfil);
+        tilNombreNegocio = root.findViewById(R.id.til_nombre_negocio_perfil);
+        tilApellido = root.findViewById(R.id.til_apellido_perfil);
+        tilContrasenia = root.findViewById(R.id.til_contrasenia_perfil);
+        tilCorreo = root.findViewById(R.id.til_correo_perfil);
         bttnSave = root.findViewById(R.id.bttn_save_perfil);
         bttnEdit = root.findViewById(R.id.bttn_edit_perfil);
         bttnDiscard = root.findViewById(R.id.bttn_discad_perfil);
         ivImagen =root.findViewById(R.id.iv_perfil);
         ivNombreNegocioIcon=root.findViewById(R.id.iv_perfil_nombre_negocio_icon);
 
+        TextInputUtilidades.soloMayusculasTextInputLayout(tilNombre);
+        TextInputUtilidades.soloMayusculasTextInputLayout(tilApellido);
+
+        textInputLayouts = new TextInputLayout[] {
+           tilNombre,
+           tilApellido,
+           tilNombreNegocio,
+           tilContrasenia
+        };
+
+        for (TextInputLayout textInputLayout : textInputLayouts) {
+            textInputLayout.getEditText().addTextChangedListener(new CampoTextWatcher(getActivity(), textInputLayout));
+        }
+
         if(esNegocio){
-            tvNombreNegocio.setEnabled(false);
+            tilNombreNegocio.setEnabled(false);
         }else{
-            tvNombreNegocio.setVisibility(View.GONE);
+            tilNombreNegocio.setVisibility(View.GONE);
             ivNombreNegocioIcon.setVisibility(View.GONE);
 
         }
-        tvCorreo.setEnabled(false);
-        tvPassword.setEnabled(false);
-        tvNombre.setEnabled(false);
-        tvApellido.setEnabled(false);
+        tilCorreo.setEnabled(false);
+        tilContrasenia.setEnabled(false);
+        tilNombre.setEnabled(false);
+        tilApellido.setEnabled(false);
         ivImagen.setEnabled(false);
         bttnDiscard.setVisibility(View.GONE);
         bttnSave.setVisibility(View.GONE);
@@ -156,103 +174,137 @@ public class PerfilFragment extends Fragment implements View.OnClickListener,
     }
     //metodos  onClick
     private void onSave(){
-        if(esNegocio) {
-            if(imgHasChange||
-                    !tvNombre.getText().toString().equals(currentN.getNombre())||
-                    !tvNombreNegocio.getText().toString().equals(currentN.getNombreNegocio())||
-                    !tvPassword.getText().toString().equals(currentN.getContrasenia())||
-                    !tvApellido.getText().toString().equals(currentN.getApellido())) {
+        if (camposValidos()) {
+            if (esNegocio) {
+                if (imgHasChange ||
+                   !tilNombre.getEditText().getText().toString().equals(currentN.getNombre()) ||
+                   !tilNombreNegocio.getEditText().getText().toString().equals(currentN.getNombreNegocio()) ||
+                   !tilContrasenia.getEditText().getText().toString().equals(currentN.getContrasenia()) ||
+                   !tilApellido.getEditText().getText().toString().equals(currentN.getApellido())) {
 
-                currentN.setNombre(tvNombre.getText().toString());
-                currentN.setNombreNegocio(tvNombreNegocio.getText().toString());
-                if (!currentN.getContrasenia().equals(tvPassword.getText().toString())) {
-                    currentN.setContrasenia(tvPassword.getText().toString());
-                    AccionesFirebaseAuth.actualizaContrasenia(currentN.getContrasenia());
-                }
-                currentN.setApellido(tvApellido.getText().toString());
-                if (imgHasChange) {
-
-                    //si se cambio la imagen de usuario se actualiza la referencia remota
-                    if (currentN.getRemoteImg() != null) {
-                        AccionesFirebaseRTDataBase.updateLocalImgRef(currentN.getId(), currentPath, this.getContext());
-                        AccionesFireStorage.updateImage(AccionesFirebaseAuth.getUID(),
-                                currentN.getRemoteImg(),
-                                currentPath,
-                                this.getContext(),
-                                this);
-                    } else {
-                        AccionesFirebaseRTDataBase.insertLocalImgRef(currentN.getId(), currentPath, this.getContext());
-                        AccionesFireStorage.loadImage(AccionesFirebaseAuth.getUID(),
-                                currentPath,
-                                this.getContext(),
-                                this);
+                    currentN.setNombre(tilNombre.getEditText().getText().toString());
+                    currentN.setNombreNegocio(tilNombreNegocio.getEditText().getText().toString());
+                    if (!currentN.getContrasenia().equals(tilContrasenia.getEditText().getText().toString())) {
+                        currentN.setContrasenia(tilContrasenia.getEditText().getText().toString());
+                        AccionesFirebaseAuth.actualizaContrasenia(currentN.getContrasenia());
                     }
+                    currentN.setApellido(tilApellido.getEditText().getText().toString());
+                    if (imgHasChange) {
 
-                } else {
-                    //si no se cambio la imagen se actualizan solo los datos de realtime
-                    AccionesFirebaseRTDataBase.updateNegocio(currentN, this);
+                        //si se cambio la imagen de usuario se actualiza la referencia remota
+                        if (currentN.getRemoteImg() != null) {
+                            AccionesFirebaseRTDataBase.updateLocalImgRef(currentN.getId(), currentPath, this.getContext());
+                            AccionesFireStorage.updateImage(AccionesFirebaseAuth.getUID(),
+                               currentN.getRemoteImg(),
+                               currentPath,
+                               this.getContext(),
+                               this);
+                        }
+                        else {
+                            AccionesFirebaseRTDataBase.insertLocalImgRef(currentN.getId(), currentPath, this.getContext());
+                            AccionesFireStorage.loadImage(AccionesFirebaseAuth.getUID(),
+                               currentPath,
+                               this.getContext(),
+                               this);
+                        }
+
+                    }
+                    else {
+                        //si no se cambio la imagen se actualizan solo los datos de realtime
+                        AccionesFirebaseRTDataBase.updateNegocio(currentN, this);
+                    }
                 }
-            }else{
-                onDiscard();
+                else {
+                    onDiscard();
+                }
             }
-        }else {
-            if (imgHasChange ||
-                    !tvNombre.getText().toString().equals(currentU.getNombre()) ||
-                    !tvPassword.getText().toString().equals(currentU.getContrasenia()) ||
-                    !tvApellido.getText().toString().equals(currentU.getApellido())) {
+            else {
+                if (imgHasChange ||
+                   !tilNombre.getEditText().getText().toString().equals(currentU.getNombre()) ||
+                   !tilContrasenia.getEditText().getText().toString().equals(currentU.getContrasenia()) ||
+                   !tilApellido.getEditText().getText().toString().equals(currentU.getApellido())) {
 
-                currentU.setNombre(tvNombre.getText().toString());
-                if (!currentU.getContrasenia().equals(tvPassword.getText().toString())) {
-                    currentU.setContrasenia(tvPassword.getText().toString());
-                    AccionesFirebaseAuth.actualizaContrasenia(currentU.getContrasenia());
-                }
-                currentU.setApellido(tvApellido.getText().toString());
-                if (imgHasChange) {
-                    //si se cambio la imagen de usuario se actualiza la referencia remota
-                    if (currentU.getRemoteImg() != null) {
-                        AccionesFirebaseRTDataBase.updateLocalImgRef(currentU.getId(), currentPath, this.getContext());
-                        AccionesFireStorage.updateImage(AccionesFirebaseAuth.getUID(),
-                                currentU.getRemoteImg(),
-                                currentPath,
-                                this.getContext(),
-                                this);
-                    } else {
-                        AccionesFirebaseRTDataBase.insertLocalImgRef(currentU.getId(), currentPath, this.getContext());
-                        AccionesFireStorage.loadImage(AccionesFirebaseAuth.getUID(),
-                                currentPath,
-                                this.getContext(),
-                                this);
+                    currentU.setNombre(tilNombre.getEditText().getText().toString());
+                    if (!currentU.getContrasenia().equals(tilContrasenia.getEditText().getText().toString())) {
+                        currentU.setContrasenia(tilContrasenia.getEditText().getText().toString());
+                        AccionesFirebaseAuth.actualizaContrasenia(currentU.getContrasenia());
                     }
+                    currentU.setApellido(tilApellido.getEditText().getText().toString());
+                    if (imgHasChange) {
+                        //si se cambio la imagen de usuario se actualiza la referencia remota
+                        if (currentU.getRemoteImg() != null) {
+                            AccionesFirebaseRTDataBase.updateLocalImgRef(currentU.getId(), currentPath, this.getContext());
+                            AccionesFireStorage.updateImage(AccionesFirebaseAuth.getUID(),
+                               currentU.getRemoteImg(),
+                               currentPath,
+                               this.getContext(),
+                               this);
+                        }
+                        else {
+                            AccionesFirebaseRTDataBase.insertLocalImgRef(currentU.getId(), currentPath, this.getContext());
+                            AccionesFireStorage.loadImage(AccionesFirebaseAuth.getUID(),
+                               currentPath,
+                               this.getContext(),
+                               this);
+                        }
 
-                } else {
-                    //si no se cambio la imagen se actualizan solo los datos de realtime
-                    AccionesFirebaseRTDataBase.updateUser(currentU, this);
+                    }
+                    else {
+                        //si no se cambio la imagen se actualizan solo los datos de realtime
+                        AccionesFirebaseRTDataBase.updateUser(currentU, this);
+                    }
                 }
-        }else{
-            onDiscard();
-        }
+                else {
+                    onDiscard();
+                }
+            }
         }
     }
+
+    private boolean camposValidos() {
+        boolean camposValidos = true;
+        boolean esUsuario = tilNombreNegocio.getVisibility() == View.GONE;
+
+        Validaciones.validaCampos(getActivity(), textInputLayouts);
+
+        if (esUsuario) {
+            tilNombreNegocio.setError(null);
+        }
+
+        for (TextInputLayout textInputLayout : textInputLayouts) {
+            if (textInputLayout.getError() != null) {
+                camposValidos = false;
+                break;
+            }
+        }
+
+        return camposValidos;
+    }
+
     private void onEdit(){
         bttnDiscard.setVisibility(View.VISIBLE);
         bttnSave.setVisibility(View.VISIBLE);
         bttnEdit.setVisibility(View.GONE);
-        tvPassword.setEnabled(true);
-        tvNombre.setEnabled(true);
-        tvApellido.setEnabled(true);
+        tilContrasenia.setEnabled(true);
+        tilNombre.setEnabled(true);
+        tilApellido.setEnabled(true);
+
         if(esNegocio) {
-            tvNombreNegocio.setEnabled(true);
+            tilNombreNegocio.setEnabled(true);
         }
+
         ivImagen.setEnabled(true);
 
     }
     private void onDiscard(){
-        tvPassword.setEnabled(false);
-        tvNombre.setEnabled(false);
-        tvApellido.setEnabled(false);
+        tilContrasenia.setEnabled(false);
+        tilNombre.setEnabled(false);
+        tilApellido.setEnabled(false);
+
         if(esNegocio) {
-            tvNombreNegocio.setEnabled(false);
+            tilNombreNegocio.setEnabled(false);
         }
+
         ivImagen.setEnabled(false);
         bttnDiscard.setVisibility(View.GONE);
         bttnSave.setVisibility(View.GONE);
@@ -302,20 +354,22 @@ public class PerfilFragment extends Fragment implements View.OnClickListener,
                 String localRef = AccionesFirebaseRTDataBase.getLocalImgRef(currentN.getId(), getContext());
                 ImageManager.loadImage(localRef, ivImagen, this.getContext());
             }
-            tvCorreo.setText(currentN.getCorreo());
-            tvPassword.setText(currentN.getContrasenia());
-            tvNombre.setText(currentN.getNombre());
-            tvApellido.setText(currentN.getApellido());
-            tvNombreNegocio.setText(currentN.getNombreNegocio());
+
+            tilCorreo.getEditText().setText(currentN.getCorreo());
+            tilContrasenia.getEditText().setText(currentN.getContrasenia());
+            tilNombre.getEditText().setText(currentN.getNombre());
+            tilApellido.getEditText().setText(currentN.getApellido());
+            tilNombreNegocio.getEditText().setText(currentN.getNombreNegocio());
         }else{
             if(currentU.getRemoteImg()!=null) {
                 String localRef = AccionesFirebaseRTDataBase.getLocalImgRef(currentU.getId(), getContext());
                 ImageManager.loadImage(localRef, ivImagen, this.getContext());
             }
-            tvCorreo.setText(currentU.getCorreo());
-            tvPassword.setText(currentU.getContrasenia());
-            tvNombre.setText(currentU.getNombre());
-            tvApellido.setText(currentU.getApellido());
+
+            tilCorreo.getEditText().setText(currentU.getCorreo());
+            tilContrasenia.getEditText().setText(currentU.getContrasenia());
+            tilNombre.getEditText().setText(currentU.getNombre());
+            tilApellido.getEditText().setText(currentU.getApellido());
 
         }
     }
@@ -408,9 +462,9 @@ public class PerfilFragment extends Fragment implements View.OnClickListener,
             case AccionesFirebaseRTDataBase.UPDATE_USER_ACCTION: {
                 //si se guardaron datos del cliente
                 Toast.makeText(this.getContext(), R.string.datos_actualizados, Toast.LENGTH_LONG).show();
-                tvPassword.setEnabled(false);
-                tvNombre.setEnabled(false);
-                tvApellido.setEnabled(false);
+                tilContrasenia.setEnabled(false);
+                tilNombre.setEnabled(false);
+                tilApellido.setEnabled(false);
                 ivImagen.setEnabled(false);
                 bttnDiscard.setVisibility(View.GONE);
                 bttnSave.setVisibility(View.GONE);
@@ -421,11 +475,11 @@ public class PerfilFragment extends Fragment implements View.OnClickListener,
             case AccionesFirebaseRTDataBase.UPDATE_NEGOCIO_ACCTION: {
                 //si se guardaron datos del cliente
                 Toast.makeText(this.getContext(), R.string.datos_actualizados, Toast.LENGTH_LONG).show();
-                tvPassword.setEnabled(false);
-                tvNombre.setEnabled(false);
-                tvApellido.setEnabled(false);
+                tilContrasenia.setEnabled(false);
+                tilNombre.setEnabled(false);
+                tilApellido.setEnabled(false);
                 ivImagen.setEnabled(false);
-                tvNombreNegocio.setEnabled(false);
+                tilNombreNegocio.setEnabled(false);
                 bttnDiscard.setVisibility(View.GONE);
                 bttnSave.setVisibility(View.GONE);
                 bttnEdit.setVisibility(View.VISIBLE);
