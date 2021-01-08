@@ -59,6 +59,10 @@ public class Validaciones {
             }
             break;
 
+         case R.id.til_nombre_negocio_registro:
+            textInputLayout.setError("");
+            break;
+
          case R.id.til_apellido_registro:
             if (texto.toUpperCase().matches(Constantes.EXP_REG_NOMBRE)) {
                textInputLayout.setError("");
