@@ -37,7 +37,7 @@ public class InicioSesion extends AppCompatActivity {
         iniComponentes();
 
         if (AccionesFirebaseAuth.getUID() != null) {
-            alertDialog = Dialogo.dialogoProceso(mbIngresar, R.string.msj_iniciando_sesion);
+            alertDialog = Dialogo.dialogoProceso(InicioSesion.this, R.string.msj_iniciando_sesion);
             Dialogo.muestraDialogoProceso(alertDialog);
             iniciaSesionUsuario(mbIngresar);
         }
@@ -90,7 +90,7 @@ public class InicioSesion extends AppCompatActivity {
         AccionesFirebaseAuth.inicioSesion(correo, contrasenia, new FirebaseCallback<Void>() {
             @Override
             public void enInicio() {
-                alertDialog = Dialogo.dialogoProceso(view, R.string.msj_iniciando_sesion);
+                alertDialog = Dialogo.dialogoProceso(view.getContext(), R.string.msj_iniciando_sesion);
                 Dialogo.muestraDialogoProceso(alertDialog);
             }
 
@@ -160,7 +160,7 @@ public class InicioSesion extends AppCompatActivity {
                 ExcepcionUtilidades.muestraMensajeError(view, excepcion,
                    R.string.msj_error_inicio_sesion, Constantes.ETIQUETA_INICIO_SESION_NEGOCIO);
             }
-        });Dialogo.ocultaDialogoProceso(alertDialog);
+        });
     }
 
     private void limpiaCampos(){

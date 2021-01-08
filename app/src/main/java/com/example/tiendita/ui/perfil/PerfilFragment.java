@@ -1,5 +1,6 @@
 package com.example.tiendita.ui.perfil;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -34,6 +35,7 @@ import com.example.tiendita.datos.firebase.UploadCallback;
 import com.example.tiendita.datos.modelos.NegocioModelo;
 import com.example.tiendita.datos.modelos.UsuarioModelo;
 import com.example.tiendita.utilidades.Constantes;
+import com.example.tiendita.utilidades.Dialogo;
 import com.example.tiendita.utilidades.ImageManager;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -61,6 +63,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener,
     public static  String currentPath;
     public static Uri photoUri;
     private boolean imgHasChange;
+    private AlertDialog alertDialog;
 
     public static PerfilFragment newInstance() {
         return new PerfilFragment();
@@ -321,11 +324,13 @@ public class PerfilFragment extends Fragment implements View.OnClickListener,
     //carga y guardado de datos
     @Override
     public void enInicio() {
-
+        alertDialog = Dialogo.dialogoProceso(getContext(), R.string.msj_cargando_datos_perfil);
+        Dialogo.muestraDialogoProceso(alertDialog);
     }
 
     @Override
     public void enExito(DataSnapshot respuesta, int accion) {
+        Dialogo.ocultaDialogoProceso(alertDialog);
 
         switch (accion){
             case AccionesFirebaseRTDataBase.GET_USER_ACCTION: {
@@ -441,18 +446,21 @@ public class PerfilFragment extends Fragment implements View.OnClickListener,
     //descarga de imagen remota
     @Override
     public void enInicioDesc() {
-
+        alertDialog = Dialogo.dialogoProceso(getContext(), R.string.msj_descargando_datos_perfil);
+        Dialogo.muestraDialogoProceso(alertDialog);
     }
 
     @Override
     public void enExitoDesc(Object respuesta, File localFile) {
         //se guarda la nueva direccion local
         //y se muestran los datos
+        Dialogo.ocultaDialogoProceso(alertDialog);
         showData();
     }
 
     @Override
     public void enFalloDesc(Exception excepcion) {
+        Dialogo.ocultaDialogoProceso(alertDialog);
         Toast.makeText(this.getContext(), R.string.error_cargar_img,Toast.LENGTH_LONG).show();
         Log.d("Descargar imagen","Error al descargar imagen\n Causa: "+excepcion.getCause());
     }

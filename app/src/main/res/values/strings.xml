@@ -50,10 +50,16 @@
 
 
     //Strings para Usuario
+    <string name="msj_cargando_tiendas">Cargando tiendas</string>
+    <string name="msj_descargando_datos_tienda">Descargando datos de la tienda</string>
+
     //Strings para Perfil
     <string name="editarBtn">Editar</string>
     <string name="guardarBtn">Guardar</string>
     <string name="descartarBtn">Descartar</string>
+    <string name="msj_cargando_datos_perfil">Cargando datos del perfil</string>
+    <string name="msj_descargando_datos_perfil">Descargando datos del perfil</string>
+
     //Strings para Pedidos
     <string name="listaPedidos">Lista de Pedidos</string>
     <string name="cancelarBtn">Cancelar</string>
@@ -61,12 +67,20 @@
     <string name="cantidad">Cantidad</string>
     <string name="precio">Precio</string>
     <string name="presentacion">Presentación</string>
-    //Strings para Negocio
+    <string name="msj_cargando_detalles_pedido">Cargando detalles del pedido</string>
+    <string name="msj_descargando_datos_pedido">Descargando datos del pedido</string>
+    <string name="msj_cargando_lista_pedidos">Cargando lista de pedidos</string>
 
+    //Strings para Negocio
 
 
     <string name="masDetalles">Más Detalles</string>
     <string name="generarPedido">Generar Pedido</string>
+
+    <string name="adminProductos">Administrar Productos</string>
+    <string name="eliminarBtn">Eliminar</string>
+
+
 
     <!--Mensaje de error-->
     <string name="msj_error_campo_vacio">El campo no puede estar vacío</string>
@@ -125,5 +139,7 @@
     <string name="pedido_actualizado">Pedido Actualizado</string>
     <string name="pedido_guardado">Pedido Guardado</string>
     <string name="pedido_eliminado">Pedido Eliminado</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

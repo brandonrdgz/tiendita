@@ -1,5 +1,6 @@
 package com.example.tiendita.ui.pedidos;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -24,10 +25,9 @@ import com.example.tiendita.datos.firebase.AccionesFirebaseRTDataBase;
 import com.example.tiendita.datos.firebase.FirebaseCallback;
 import com.example.tiendita.datos.modelos.PedidoModelo;
 import com.example.tiendita.utilidades.Constantes;
+import com.example.tiendita.utilidades.Dialogo;
 import com.google.firebase.database.DataSnapshot;
 
-import java.io.File;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -41,6 +41,7 @@ public class PedidosFragment extends Fragment implements FirebaseCallback<DataSn
     private TextView tvSinPedidos;
     private Boolean esNegocio;
     private ArrayList<PedidoModelo> listaPedidos;
+    private AlertDialog alertDialog;
 
     public static PedidosFragment newInstance() {
         return new PedidosFragment();
@@ -79,7 +80,8 @@ public class PedidosFragment extends Fragment implements FirebaseCallback<DataSn
 
     @Override
     public void enInicio() {
-
+        alertDialog = Dialogo.dialogoProceso(getContext(), R.string.msj_cargando_lista_pedidos);
+        Dialogo.muestraDialogoProceso(alertDialog);
     }
 
     @Override
@@ -105,12 +107,14 @@ public class PedidosFragment extends Fragment implements FirebaseCallback<DataSn
         listView.setOnItemClickListener(this);
         tvSinPedidos.setVisibility(View.GONE);
 
+        Dialogo.ocultaDialogoProceso(alertDialog);
     }
 
 
 
     @Override
     public void enFallo(Exception excepcion) {
+        Dialogo.ocultaDialogoProceso(alertDialog);
         Toast.makeText(this.getContext(), R.string.sin_pedidos, Toast.LENGTH_LONG).show();
         listView.setVisibility(View.GONE);
     }
