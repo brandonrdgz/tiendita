@@ -145,5 +145,6 @@
     <string name="sucursal">Sucursal</string>
     <string name="editar_prod">Editar Producto</string>
     <string name="sin_sucursales_registradas">No hay sucursales registradas</string>
+    <string name="msj_operacion_datos">Espere un momento...</string>
 
 </resources>

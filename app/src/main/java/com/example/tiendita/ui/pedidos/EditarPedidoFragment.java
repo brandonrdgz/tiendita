@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ import com.example.tiendita.datos.modelos.PedidoModelo;
 import com.example.tiendita.datos.modelos.ProductoModelo;
 import com.example.tiendita.datos.modelos.ProductosPedidoModelo;
 import com.example.tiendita.utilidades.Constantes;
+import com.example.tiendita.utilidades.Dialogo;
 import com.example.tiendita.utilidades.ImageManager;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -64,6 +66,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
     private ArrayList<ProductoModelo> listaProductos;
     private ArrayList<ProductoModelo> listaProductosTotales;
     private ArrayList<ProductosPedidoModelo> listaPedido;
+    private androidx.appcompat.app.AlertDialog alertDialog;
 
     private ProductoModelo currentProd;
     private ProductosPedidoModelo currentProdPedido;
@@ -331,12 +334,15 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void enInicio() {
+        alertDialog = Dialogo.dialogoProceso(getContext(), R.string.msj_operacion_datos);
+        Dialogo.muestraDialogoProceso(alertDialog);
 
     }
 
 
     @Override
     public void enExito(DataSnapshot respuesta, int accion) {
+        Dialogo.ocultaDialogoProceso(alertDialog);
         switch (accion) {
             case AccionesFirebaseRTDataBase.GET_PRODUCTOS_ACCTION: {
                 for (DataSnapshot dataSnapshot : respuesta.getChildren()) {
@@ -431,6 +437,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void enFallo(Exception excepcion) {
+        Dialogo.ocultaDialogoProceso(alertDialog);
         if(excepcion.getMessage().equals("Sin productos")) {
             tvSinProductos.setText(R.string.sin_productos);
             tvSinProductos.setVisibility(View.VISIBLE);
@@ -608,11 +615,13 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void enInicioDesc() {
-
+        alertDialog = Dialogo.dialogoProceso(getContext(), R.string.msj_operacion_datos);
+        Dialogo.muestraDialogoProceso(alertDialog);
     }
 
     @Override
     public void enExitoDesc(Task<FileDownloadTask.TaskSnapshot> respuesta, File localFile) {
+        Dialogo.ocultaDialogoProceso(alertDialog);
         if(currentProd==null){
             showProduct(false);
         }else{
@@ -624,6 +633,9 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void enFalloDesc(Exception excepcion) {
+        Dialogo.ocultaDialogoProceso(alertDialog);
+        Toast.makeText(this.getContext(), R.string.error_cargar_img,Toast.LENGTH_LONG).show();
+        Log.d("Descargar imagen","Error al descargar imagen\n Causa: "+excepcion.getCause());
 
     }
             @Override
