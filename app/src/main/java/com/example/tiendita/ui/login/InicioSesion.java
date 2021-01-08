@@ -129,8 +129,6 @@ public class InicioSesion extends AppCompatActivity {
 
             @Override
             public void enFallo(Exception excepcion) {
-                ExcepcionUtilidades.muestraMensajeError(view, excepcion,
-                   R.string.msj_error_inicio_sesion, Constantes.ETIQUETA_INICIO_SESION_USUARIO);
                 iniciaSesionNegocio(view);
             }
         });
