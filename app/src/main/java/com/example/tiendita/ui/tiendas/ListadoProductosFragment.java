@@ -25,7 +25,7 @@ public class ListadoProductosFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.listado_productos_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_listado_productos, container, false);
     }
 
     @Override
