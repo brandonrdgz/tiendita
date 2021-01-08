@@ -77,8 +77,8 @@ public class PerfilFragment extends Fragment implements View.OnClickListener,
         View root = inflater.inflate(R.layout.fragment_perfil, container, false);
         Bundle data = this.getArguments();
         if (data != null) {
-            initComps(root);
             esNegocio=data.getBoolean(Constantes.CONST_NEGOCIO_TYPE);
+            initComps(root);
         }else{
             esNegocio=false;
         }
@@ -442,6 +442,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener,
     @Override
     public void enFallo(Exception excepcion) {
         Toast.makeText(this.getContext(), R.string.error_datos, Toast.LENGTH_LONG).show();
+        Dialogo.ocultaDialogoProceso(alertDialog);
     }
     //descarga de imagen remota
     @Override
