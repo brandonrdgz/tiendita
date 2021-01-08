@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,7 +51,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener,
         UploadCallback<Task<Uri>>  {
 
     private PerfilViewModel mViewModel;
-    private TextView tvNombre,tvApellido,tvPassword,tvCorreo,tvNombreNegocio;
+    private EditText tvNombre,tvApellido,tvPassword,tvCorreo,tvNombreNegocio;
     private Button bttnEdit,bttnSave,bttnDiscard;
     private ImageView ivImagen,ivNombreNegocioIcon;
     private NegocioModelo currentN;

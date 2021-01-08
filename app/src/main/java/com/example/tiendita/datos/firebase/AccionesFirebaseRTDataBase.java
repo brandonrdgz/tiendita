@@ -9,9 +9,14 @@ import androidx.annotation.NonNull;
 import com.example.tiendita.R;
 import com.example.tiendita.datos.bd.SQLite;
 import com.example.tiendita.datos.modelos.NegocioModelo;
+import com.example.tiendita.datos.modelos.PedidoModelo;
+import com.example.tiendita.datos.modelos.ProductoModelo;
+import com.example.tiendita.datos.modelos.ProductosPedidoModelo;
 import com.example.tiendita.datos.modelos.UsuarioModelo;
 import com.example.tiendita.utilidades.Constantes;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,8 +24,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 
 public class AccionesFirebaseRTDataBase {
@@ -34,6 +41,12 @@ public class AccionesFirebaseRTDataBase {
     public static final int GET_LISTA_PRODUCTOS_PEDIDO_ACCTION=8;
     public static final int GET_SUCURSAL_ACCTION=9;
     public static final int GET_PRODUCTOS_ACCTION=10;
+    public static final int INSERT_PEDIDO_ACCTION=11;
+    public static final int INSERT_PRODUCTOS_PEDIDO_ACCTION=12;
+    public static final int UPDATE_PRODUCTOS_ACCTION=13;
+    public static final int DELETE_PEDIDO_ACCTION=14;
+    public static final int DELETE_PRODUCTOS_PEDIDO_ACCTION=15;
+    
 
     public static void getUser(String UID,FirebaseCallback<DataSnapshot> firebaseCallback){
         firebaseCallback.enInicio();
@@ -196,12 +209,12 @@ public class AccionesFirebaseRTDataBase {
                     }
                 });
     }
-    public static void getPedido(String UID,FirebaseCallback<DataSnapshot> firebaseCallback){
+    public static void getPedido(String pedidoID,FirebaseCallback<DataSnapshot> firebaseCallback){
         firebaseCallback.enInicio();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference
                 .child(Constantes.NODO_PEDIDOS)
-                .child(UID)
+                .child(pedidoID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -218,20 +231,19 @@ public class AccionesFirebaseRTDataBase {
                 });
 
     }
-    public static void getListaProductosPedido(String UID,FirebaseCallback<DataSnapshot> firebaseCallback){
+    public static void getListaProductosPedido(String pedidoID,FirebaseCallback<DataSnapshot> firebaseCallback){
         firebaseCallback.enInicio();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
          databaseReference
                     .child(Constantes.NODO_PRODUCTOS_DE_PEDIDOS)
-                    .orderByChild(Constantes.CONST_PEDIDO_NEGOCIO_ID)
-                    .equalTo(UID)
+                    .child(pedidoID)
                     .getRef().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
                     firebaseCallback.enExito(snapshot, GET_LISTA_PRODUCTOS_PEDIDO_ACCTION);
                 }else{
-                    firebaseCallback.enFallo(null);
+                    firebaseCallback.enFallo(new Exception("Sin productos"));
                 }
             }
             @Override
@@ -240,12 +252,13 @@ public class AccionesFirebaseRTDataBase {
             }
         });
     }
-    public static void getSucursal(String UID,FirebaseCallback<DataSnapshot> firebaseCallback){
+    public static void getSucursal(String negocioID, String sucursalID,FirebaseCallback<DataSnapshot> firebaseCallback){
         firebaseCallback.enInicio();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference
                 .child(Constantes.NODO_SUCURSAL)
-                .child(UID)
+                .child(negocioID)
+                .child(sucursalID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -262,20 +275,19 @@ public class AccionesFirebaseRTDataBase {
                 });
 
     }
-    public static void getProductos(String UID,FirebaseCallback<DataSnapshot> firebaseCallback){
+    public static void getProductos(String sucursalID,FirebaseCallback<DataSnapshot> firebaseCallback){
         firebaseCallback.enInicio();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference
                 .child(Constantes.NODO_PRODUCTOS)
-                .orderByChild(Constantes.CONST_PRODUCTO_SUCURSAL_ID)
-                .equalTo(UID)
+                .child(sucursalID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()) {
                             firebaseCallback.enExito(snapshot,GET_PRODUCTOS_ACCTION);
                         }else{
-                            firebaseCallback.enFallo(null);
+                            firebaseCallback.enFallo(new Exception("Sin productos"));
                         }
                     }
                     @Override
@@ -285,5 +297,104 @@ public class AccionesFirebaseRTDataBase {
                 });
 
     }
+    public static void insertPedido(PedidoModelo pedidoModelo,
+                                    FirebaseCallback<DataSnapshot> firebaseCallback){
+        firebaseCallback.enInicio();
+        String id=UUID.randomUUID().toString();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        pedidoModelo.setPedidoID(id);
+        databaseReference
+                .child(Constantes.NODO_PEDIDOS)
+                .child(id)
+                .setValue(pedidoModelo).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                firebaseCallback.enExito(null,INSERT_PEDIDO_ACCTION);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                firebaseCallback.enFallo(e);
+            }
+        });
+    }
+    public  static void insertProductosPedido(ArrayList<ProductosPedidoModelo> lista,
+                                              String pedidoID,
+                                              FirebaseCallback<DataSnapshot> firebaseCallback){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference
+                .child(Constantes.NODO_PRODUCTOS_DE_PEDIDOS)
+                .child(pedidoID)
+                .setValue(lista).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                firebaseCallback.enExito(null,INSERT_PRODUCTOS_PEDIDO_ACCTION);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                firebaseCallback.enFallo(e);
+            }
+        });
+    }
+
+    public  static void updateProductos(ArrayList<ProductoModelo> lista,
+                                              String sucursalID,
+                                              FirebaseCallback<DataSnapshot> firebaseCallback){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference
+                .child(Constantes.NODO_PRODUCTOS_DE_PEDIDOS)
+                .child(sucursalID)
+                .setValue(lista).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                firebaseCallback.enExito(null,UPDATE_PRODUCTOS_ACCTION);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                firebaseCallback.enFallo(e);
+            }
+        });
+    }
+    public static void deletePedido(String pedidoId,
+                                    FirebaseCallback<DataSnapshot> firebaseCallback){
+        firebaseCallback.enInicio();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference
+                .child(Constantes.NODO_PEDIDOS)
+                .child(pedidoId)
+                .removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                firebaseCallback.enExito(null,DELETE_PEDIDO_ACCTION);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                firebaseCallback.enFallo(e);
+            }
+        });
+    }
+    public  static void deleteProductosPedido(String pedidoID,
+                                              FirebaseCallback<DataSnapshot> firebaseCallback){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference
+                .child(Constantes.NODO_PRODUCTOS_DE_PEDIDOS)
+                .child(pedidoID)
+                .removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                firebaseCallback.enExito(null,DELETE_PRODUCTOS_PEDIDO_ACCTION);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                firebaseCallback.enFallo(e);
+            }
+        });
+    }
+
+
 
 }

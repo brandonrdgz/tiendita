@@ -112,5 +112,18 @@
     <string name="disponible">Disponible</string>
     <string name="agregar">Agregar</string>
     <string name="action_cerrar_session">Cerrar Sesion</string>
+    <string name="error_cargar_datos">Error al cargar datos</string>
+    <string name="quitar">Quitar</string>
+    <string name="elimina_pedido">Eliminar</string>
+    <string name="sin_productos">Sin productos</string>
+    <string name="sin_productos_encontrados">No se encontraron coincidencias</string>
+    <string name="pedido_vacio">El pedido debe terner al menos un producto</string>
+    <string name="header_eliminar">Eliminar</string>
+    <string name="message_eliminar_pedido">¿Eliminar pedidos?</string>
+    <string name="action_eliminar">Eliminar</string>
+    <string name="action_cancelar">Cancelar</string>
+    <string name="pedido_actualizado">Pedido Actualizado</string>
+    <string name="pedido_guardado">Pedido Guardado</string>
+    <string name="pedido_eliminado">Pedido Eliminado</string>
 
 </resources>

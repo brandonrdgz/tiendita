@@ -139,5 +139,11 @@
         android:name="com.example.tiendita.ui.pedidos.EditarPedidoFragment"
         android:label="@string/pedido"
         tools:layout="@layout/fragment_editar_pedido" >
+        <action
+            android:id="@+id/action_nav_editpedido_to_nav_pedidou"
+            app:destination="@id/nav_pedidou" />
+        <action
+            android:id="@+id/action_nav_editpedido_to_nav_pedidosu"
+            app:destination="@id/nav_pedidosu" />
     </fragment>
 </navigation>

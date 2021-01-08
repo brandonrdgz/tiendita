@@ -55,7 +55,6 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
     private ListView listView;
     private Button bttnEditar,bttnCancelar;
     private Boolean esNegocio,banDialogo;
-    private  String currentId;
     private PedidoModelo currentPedido;
     private SucursalModelo currentSucursal;
     private ProductosPedidoModelo currentProductosPedidoModelo;
@@ -73,7 +72,14 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
         Bundle data = this.getArguments();
         if (data != null) {
             esNegocio=data.getBoolean(Constantes.CONST_NEGOCIO_TYPE);
-            currentId=data.getString(Constantes.CONST_PEDIDO_ID);
+            currentPedido.setClienteID(data.getString(Constantes.CONST_PEDIDO_CLIENTE_ID));
+            currentPedido.setFecha(data.getString(Constantes.CONST_PEDIDO_FECHA));
+            currentPedido.setHora(data.getString(Constantes.CONST_PEDIDO_HORA));
+            currentPedido.setNegocioID(data.getString(Constantes.CONST_PEDIDO_NEGOCIO_ID));
+            currentPedido.setPago(data.getFloat(Constantes.CONST_PEDIDO_PAGO));
+            currentPedido.setPedidoID(data.getString(Constantes.CONST_PEDIDO_ID));
+            currentPedido.setSucursalID(data.getString(Constantes.CONST_PEDIDO_SUCURSAL_ID));
+            currentPedido.setTotalProductos(data.getInt(Constantes.CONST_PEDIDO_TOTAL_PROD));
             init(root);
         }else{
             esNegocio=false;
@@ -93,15 +99,20 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
         tvDireccion=root.findViewById(R.id.tv_direccion_detalle);
         bttnCancelar=root.findViewById(R.id.bttn_cancelar_detalle);
         bttnEditar=root.findViewById(R.id.bttn_editar_detalle);
+        bttnEditar.setOnClickListener(this);
         bttnCancelar.setOnClickListener(this);
-        if(esNegocio){
-            bttnEditar.setVisibility(View.GONE);
-        }else{
-            bttnEditar.setOnClickListener(this);
-        }
 
-        AccionesFirebaseRTDataBase.getPedido(currentId,
-                                            this);
+        if (esNegocio) {
+            bttnEditar.setVisibility(View.GONE);
+            AccionesFirebaseRTDataBase.getUser(currentPedido.getClienteID(),
+                    this);
+
+        } else {
+            bttnEditar.setOnClickListener(this);
+            AccionesFirebaseRTDataBase.getSucursal(currentPedido.getNegocioID(),currentPedido.getSucursalID(),
+                    this);
+
+        }
 
     }
 
@@ -120,27 +131,6 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
     @Override
     public void enExito(DataSnapshot respuesta, int tipo) {
         switch (tipo) {
-            case AccionesFirebaseRTDataBase.GET_PEDIDO_ACCTION: {
-                HashMap pedidoHash = (HashMap) respuesta.getValue();
-                currentPedido.setClienteID(pedidoHash.get(Constantes.CONST_PEDIDO_CLIENTE_ID).toString());
-                currentPedido.setFecha(pedidoHash.get(Constantes.CONST_PEDIDO_FECHA).toString());
-                currentPedido.setHora(pedidoHash.get(Constantes.CONST_PEDIDO_HORA).toString());
-                currentPedido.setNegocioID(pedidoHash.get(Constantes.CONST_PEDIDO_NEGOCIO_ID).toString());
-                currentPedido.setPago(Float.parseFloat(pedidoHash.get(Constantes.CONST_PEDIDO_PAGO).toString()));
-                currentPedido.setPedidoID(pedidoHash.get(Constantes.CONST_PEDIDO_ID).toString());
-                currentPedido.setSucursalID(pedidoHash.get(Constantes.CONST_PEDIDO_SUCURSAL_ID).toString());
-                currentPedido.setTotalProductos(Integer.parseInt(pedidoHash.get(Constantes.CONST_PEDIDO_TOTAL_PROD).toString()));
-                if (esNegocio) {
-                    AccionesFirebaseRTDataBase.getUser(currentPedido.getClienteID(),
-                            this);
-
-                } else {
-                    AccionesFirebaseRTDataBase.getNegocio(currentPedido.getNegocioID(),
-                            this);
-
-                }
-            }
-            break;
             case AccionesFirebaseRTDataBase.GET_USER_ACCTION: {
                 HashMap cliente = (HashMap) respuesta.getValue();
                 currentUser = new UsuarioModelo();
@@ -152,7 +142,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
                 String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentUser.getId(),getContext());
                 File filePhoto = new File(localRef);
                 if (filePhoto.exists()) {
-                    AccionesFirebaseRTDataBase.getListaProductosPedido(currentId,this);
+                    AccionesFirebaseRTDataBase.getListaProductosPedido(currentPedido.getPedidoID(),this);
                 } else {
                     AccionesFireStorage.downloadImg(currentUser.getRemoteImg(),
                             this.getActivity(),
@@ -178,7 +168,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
                 String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentSucursal.getSucursalID(),getContext());
                 File filePhoto = new File(localRef);
                 if (filePhoto.exists()) {
-                    AccionesFirebaseRTDataBase.getListaProductosPedido(currentId,this);
+                    AccionesFirebaseRTDataBase.getListaProductosPedido(currentPedido.getPedidoID(),this);
                 } else {
                     AccionesFireStorage.downloadImg(currentSucursal.getRemoteImg(),
                             this.getActivity(),
@@ -189,7 +179,6 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
 
 
 
-                showData();
 
             }
             break;
@@ -198,7 +187,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
                     ProductosPedidoModelo productosPedidoModelo=new ProductosPedidoModelo();
                     productosPedidoModelo.setCantidad(Integer.parseInt(dataSnapshot.child(Constantes.CONST_PRODUCTO_CANTIDAD).getValue().toString()));
                     productosPedidoModelo.setDescripcion(dataSnapshot.child(Constantes.CONST_PRODUCTO_DESCRIPCION).getValue().toString());
-                     productosPedidoModelo.setNombreProducto(dataSnapshot.child(Constantes.CONST_PRODUCTO_NOMBRE).getValue().toString());
+                    productosPedidoModelo.setNombreProducto(dataSnapshot.child(Constantes.CONST_PRODUCTO_NOMBRE).getValue().toString());
                     productosPedidoModelo.setPedidoID(dataSnapshot.child(Constantes.CONST_PEDIDO_ID).getValue().toString());
                     productosPedidoModelo.setPrecio(Float.parseFloat(dataSnapshot.child(Constantes.CONST_PRODUCTO_PRECIO).getValue().toString()));
                     productosPedidoModelo.setRemoteImg(dataSnapshot.child(Constantes.CONST_BASE_REMOTEIMG).getValue().toString());
@@ -206,7 +195,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
                     productosPedidoModelo.setSucursalId(dataSnapshot.child(Constantes.CONST_PRODUCTO_SUCURSAL_ID).getValue().toString());
                     lista.add(productosPedidoModelo);
                 }
-                AccionesFirebaseRTDataBase.getSucursal(currentPedido.getSucursalID(),this);
+                showData();
 
             }
                 break;
@@ -219,19 +208,17 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
             String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentUser.getId(),getContext());
             ImageManager.loadImage(localRef,ivImagen,this.getContext());
             tvNombre.setText("Cliente: "+currentUser.getNombre()+" "+currentUser.getApellido());
-            tvID.setText("ID:"+currentId);
-            tvFecha.setText(currentPedido.getFecha()+"\n"+currentPedido.getHora());
             tvDireccion.setText("Sucursal:"+currentSucursal.getNombre());
-            tvTotal.setText("Total:" +currentPedido.getPago());
         }else{
             String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentSucursal.getSucursalID(),getContext());
             ImageManager.loadImage(localRef,ivImagen,this.getContext());
             tvNombre.setText("Negocio: "+currentSucursal.getNombre());
-            tvID.setText("ID:"+currentId);
-            tvTotal.setText("Total:" +currentPedido.getPago());
             tvDireccion.setText("Dirección:"+currentSucursal.getDireccion());
-            tvFecha.setText(currentPedido.getFecha()+"\n"+currentPedido.getHora());
         }
+
+        tvID.setText("ID:"+currentPedido.getPedidoID());
+        tvFecha.setText(currentPedido.getFecha()+"\n"+currentPedido.getHora());
+        tvTotal.setText("Total:" +currentPedido.getPago());
 
         ArrayAdapter<ProductosPedidoModelo> adapter = new ArrayAdapter<>(this.getContext(),
                 android.R.layout.simple_list_item_1,
@@ -297,7 +284,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
         if(banDialogo){
             showDialog(currentProductosPedidoModelo);
         }else{
-            AccionesFirebaseRTDataBase.getListaProductosPedido(currentId,this);
+            AccionesFirebaseRTDataBase.getListaProductosPedido(currentPedido.getPedidoID(),this);
 
         }
 
@@ -313,18 +300,29 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.bttn_editar_detalle:
+            case R.id.bttn_editar_detalle: {
                 Bundle data = new Bundle();
-                data.putBoolean(Constantes.CONST_EDICION_TYPE,true);
-                data.putString(Constantes.CONST_PEDIDO_ID,currentId);
-                data.putString(Constantes.CONST_SUCURSAL_ID,currentSucursal.getSucursalID());
-                    NavHostFragment.findNavController(this)
-                            .navigate(R.id.action_nav_pedidou_to_nav_editpedido, data);
-                break;
-            case R.id.bttn_cancelar_detalle:
-                break;
 
+                data.putBoolean(Constantes.CONST_EDICION_TYPE, true);
+                data.putString(Constantes.CONST_PEDIDO_ID, currentPedido.getPedidoID());
+                data.putString(Constantes.CONST_PEDIDO_NEGOCIO_ID, currentPedido.getNegocioID());
+                data.putString(Constantes.CONST_PEDIDO_SUCURSAL_ID, currentPedido.getSucursalID());
+                data.putString(Constantes.CONST_PEDIDO_CLIENTE_ID, currentPedido.getClienteID());
+                data.putString(Constantes.CONST_PEDIDO_FECHA, currentPedido.getFecha());
+                data.putString(Constantes.CONST_PEDIDO_HORA, currentPedido.getHora());
+                data.putFloat(Constantes.CONST_PEDIDO_PAGO, currentPedido.getPago());
+                data.putInt(Constantes.CONST_PEDIDO_TOTAL_PROD, currentPedido.getTotalProductos());
+
+                NavHostFragment.findNavController(this)
+                        .navigate(R.id.action_nav_pedidou_to_nav_editpedido, data);
+            }
+                break;
+            case R.id.bttn_cancelar_detalle:{
+            }
+
+                break;
         }
+
 
     }
 }

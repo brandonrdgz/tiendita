@@ -120,6 +120,14 @@ public class PedidosFragment extends Fragment implements FirebaseCallback<DataSn
         //redirect vista de pedido
                     Bundle data = new Bundle();
                     data.putString(Constantes.CONST_PEDIDO_ID,listaPedidos.get(position).getPedidoID());
+                    data.putString(Constantes.CONST_PEDIDO_NEGOCIO_ID,listaPedidos.get(position).getNegocioID());
+                    data.putString(Constantes.CONST_PEDIDO_SUCURSAL_ID,listaPedidos.get(position).getSucursalID());
+                    data.putString(Constantes.CONST_PEDIDO_CLIENTE_ID,listaPedidos.get(position).getClienteID());
+                    data.putString(Constantes.CONST_PEDIDO_FECHA,listaPedidos.get(position).getFecha());
+                    data.putString(Constantes.CONST_PEDIDO_HORA,listaPedidos.get(position).getHora());
+                    data.putFloat(Constantes.CONST_PEDIDO_PAGO,listaPedidos.get(position).getPago());
+                    data.putInt(Constantes.CONST_PEDIDO_TOTAL_PROD,listaPedidos.get(position).getTotalProductos());
+
                     if(esNegocio){
                         NavHostFragment.findNavController(this)
                                 .navigate(R.id.action_nav_pedidosn_to_nav_pedidon, data);

@@ -5,7 +5,7 @@ public class ProductoModelo {
     private String sucursalId;
     private String nombreProducto;
     private String descripcion;
-    private String precio;
+    private float precio;
     private int cantidad;
     private String remoteImg;
 
@@ -41,13 +41,6 @@ public class ProductoModelo {
         this.descripcion = descripcion;
     }
 
-    public String getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(String precio) {
-        this.precio = precio;
-    }
 
     public int getCantidad() {
         return cantidad;
@@ -63,5 +56,19 @@ public class ProductoModelo {
 
     public void setRemoteImg(String remoteImg) {
         this.remoteImg = remoteImg;
+    }
+
+    public float getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(float precio) {
+        this.precio = precio;
+    }
+    @Override
+    public String toString() {
+        return "Producto: \n" +
+                nombreProducto+ " \n"+
+                "precio=$" + precio;
     }
 }

@@ -149,6 +149,13 @@
                         android:layout_margin="5dp"
                         android:text="@string/agregar"/>
                     <Button
+                        android:id="@+id/bttn_quitar_producto_pedido"
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="@string/quitar"/>
+                    <Button
                         android:id="@+id/bttn_cancelar_producto_pedido"
                         android:layout_weight="1"
                         android:layout_width="wrap_content"
@@ -162,6 +169,18 @@
 
 
         </LinearLayout>
+        <TextView
+            android:id="@+id/tv_sin_productos_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/myriadproregular"
+            android:gravity="center"
+            android:text="@string/sin_productos"
+            android:textColor="@color/font_color"
+            android:textSize="30sp"
+            android:textStyle="bold" />
         <ListView
             android:id="@+id/lv_disponible"
             android:layout_width="match_parent"
@@ -188,19 +207,20 @@
             android:orientation="horizontal">
 
         <Button
-            android:id="@+id/bttn_guardar_producto_pedido"
+            android:id="@+id/bttn_guardar_pedido_editar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="5dp"
             android:text="@string/guardarBtn"/>
         <Button
-            android:id="@+id/bttn_descartar_producto_pedido"
+            android:id="@+id/bttn_cancelar_pedido_editar"
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="@string/descartarBtn"/>
+            android:text="@string/cancelarBtn"/>
+
         </LinearLayout>
 
     </LinearLayout>
