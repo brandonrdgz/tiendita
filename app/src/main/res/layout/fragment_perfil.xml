@@ -56,10 +56,10 @@
                         android:src="@drawable/ic_person"/>
 
                     <com.google.android.material.textfield.TextInputLayout
+                       android:id="@+id/til_nombre_perfil"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/tf_perfil_nombre"
                             android:layout_width="250dp"
                             android:layout_height="50dp"
                             android:background="@color/white"
@@ -85,10 +85,10 @@
                         android:src="@drawable/ic_people"/>
 
                     <com.google.android.material.textfield.TextInputLayout
+                       android:id="@+id/til_apellido_perfil"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/tf_perfil_apellido"
                             android:layout_width="250dp"
                             android:layout_height="50dp"
                             android:background="@color/white"
@@ -114,10 +114,10 @@
                         android:src="@drawable/ic_message"/>
 
                     <com.google.android.material.textfield.TextInputLayout
+                       android:id="@+id/til_correo_perfil"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/tf_perfil_correo"
                             android:layout_width="250dp"
                             android:layout_height="50dp"
                             android:background="@color/white"
@@ -143,10 +143,10 @@
                         android:src="@drawable/ic_passwordlock"/>
 
                     <com.google.android.material.textfield.TextInputLayout
+                       android:id="@+id/til_contrasenia_perfil"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/tf_perfil_password"
                             android:layout_width="250dp"
                             android:layout_height="50dp"
                             android:background="@color/white"
@@ -172,10 +172,10 @@
                         android:src="@drawable/ic_business"/>
 
                     <com.google.android.material.textfield.TextInputLayout
+                       android:id="@+id/til_nombre_negocio_perfil"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/tf_perfil_nombre_negocio"
                             android:layout_width="250dp"
                             android:layout_height="50dp"
                             android:background="@color/white"
