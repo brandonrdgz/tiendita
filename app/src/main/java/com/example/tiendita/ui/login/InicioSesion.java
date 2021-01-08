@@ -160,7 +160,7 @@ public class InicioSesion extends AppCompatActivity {
                 ExcepcionUtilidades.muestraMensajeError(view, excepcion,
                    R.string.msj_error_inicio_sesion, Constantes.ETIQUETA_INICIO_SESION_NEGOCIO);
             }
-        });Dialogo.ocultaDialogoProceso(alertDialog);
+        });
     }
 
     private void limpiaCampos(){
