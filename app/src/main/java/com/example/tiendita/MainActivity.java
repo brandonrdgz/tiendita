@@ -1,6 +1,5 @@
 package com.example.tiendita;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -8,9 +7,10 @@ import android.view.MenuItem;
 import com.example.tiendita.datos.firebase.AccionesFirebaseAuth;
 import com.example.tiendita.utilidades.Constantes;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.navigation.NavController;
+import androidx.navigation.NavGraph;
+import androidx.navigation.NavInflater;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -39,27 +39,33 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         if(esNegocio) {
-            navigationView.inflateMenu(R.menu.negocio_drawer);
+            navigationView.getMenu().removeGroup(R.id.drawer_usuario);
             mAppBarConfiguration = new AppBarConfiguration.Builder(
                     R.id.nav_homen, R.id.nav_perfiln, R.id.nav_pedidosn,R.id.nav_pedidon,
                     R.id.nav_sucursales,R.id.nav_detalle_sucursaln,R.id.nav_editar_productos,R.id.nav_mapn)
                     .setDrawerLayout(drawer)
                     .build();
             NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+            NavInflater inflater= navHostFragment.getNavController().getNavInflater();
+            NavGraph graph= inflater.inflate(R.navigation.mobile_navigation);
+            graph.setStartDestination(R.id.nav_homen);
+            navHostFragment.getNavController().setGraph(graph);
             NavController navController = navHostFragment.getNavController();
-            navController.getGraph().setStartDestination(R.id.nav_homen);
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
             NavigationUI.setupWithNavController(navigationView, navController);
         }else{
-            navigationView.inflateMenu(R.menu.usuario_drawer);
+            navigationView.getMenu().removeGroup(R.id.drawer_negocio);
             mAppBarConfiguration = new AppBarConfiguration.Builder(
                     R.id.nav_homeu, R.id.nav_perfilu, R.id.nav_pedidosu, R.id.nav_editpedido,
                     R.id.nav_pedidou,R.id.nav_detalle_sucursalu,R.id.nav_mapu)
                     .setDrawerLayout(drawer)
                     .build();
             NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+            NavInflater inflater= navHostFragment.getNavController().getNavInflater();
+            NavGraph graph= inflater.inflate(R.navigation.mobile_navigation);
+            graph.setStartDestination(R.id.nav_homeu);
+            navHostFragment.getNavController().setGraph(graph);
             NavController navController = navHostFragment.getNavController();
-            navController.getGraph().setStartDestination(R.id.nav_homeu);
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
             NavigationUI.setupWithNavController(navigationView, navController);
         }

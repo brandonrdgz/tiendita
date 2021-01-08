@@ -141,5 +141,9 @@
     <string name="pedido_eliminado">Pedido Eliminado</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="mapa_negocio">¿Donde esta su negocio?</string>
+    <string name="sucursal">Sucursal</string>
+    <string name="editar_prod">Editar Producto</string>
+    <string name="sin_sucursales_registradas">No hay sucursales registradas</string>
 
 </resources>

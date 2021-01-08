@@ -181,7 +181,7 @@
                             android:background="@color/white"
                             android:fontFamily="@font/myriadproregular"
                             android:hint="@string/nombreNegocio"
-                            android:inputType="textPassword"
+                            android:inputType="text"
                             android:padding="15dp"
                             android:textSize="15sp"/>
                     </com.google.android.material.textfield.TextInputLayout>

@@ -523,11 +523,13 @@ public class PerfilFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void enInicioCar() {
+        alertDialog = Dialogo.dialogoProceso(getContext(), R.string.msj_cargando_datos_perfil);
         Toast.makeText(this.getContext(), R.string.actualizando_img,Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void enExitoCar(Task<Uri> respuesta) {
+        Dialogo.ocultaDialogoProceso(alertDialog);
         //se actualiza imagen remota y se actualiza el usuario
         List<String> segments = respuesta.getResult().getPathSegments();
         if(esNegocio) {
@@ -544,6 +546,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void enFalloCar(Exception excepcion) {
+        Dialogo.ocultaDialogoProceso(alertDialog);
         Toast.makeText(this.getContext(), R.string.error_actualiza_img,Toast.LENGTH_LONG).show();
     }
 

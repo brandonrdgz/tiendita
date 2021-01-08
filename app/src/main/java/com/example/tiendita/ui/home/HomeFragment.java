@@ -13,16 +13,24 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.tiendita.R;
+import com.example.tiendita.utilidades.Constantes;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
+    private boolean esNegocio;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+        Bundle data = this.getArguments();
+        if (data != null) {
+            esNegocio=data.getBoolean(Constantes.CONST_NEGOCIO_TYPE);
+        }else{
+            esNegocio=false;
+        }
         final TextView textView = root.findViewById(R.id.text_home);
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override

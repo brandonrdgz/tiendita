@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_homeu">
+    app:startDestination="@id/nav_homeu">
 
 
     <fragment
@@ -31,7 +31,7 @@
     <fragment
         android:id="@+id/nav_mapn"
         android:name="com.example.tiendita.ui.mapa.MapFragment"
-        android:label="@string/mapa"
+        android:label="@string/mapa_negocio"
         tools:layout="@layout/fragment_map">
         <argument
             android:name="esNegocio"
@@ -42,7 +42,7 @@
     <fragment
         android:id="@+id/nav_sucursales"
         android:name="com.example.tiendita.ui.tiendas.ListadoSucursalFragment"
-        android:label="@string/mapa"
+        android:label="@string/sucursales"
         tools:layout="@layout/fragment_listado_sucursal">
         <argument
             android:name="esNegocio"
@@ -56,7 +56,7 @@
     <fragment
         android:id="@+id/nav_detalle_sucursaln"
         android:name="com.example.tiendita.ui.tiendas.DetallesSucursalFragment"
-        android:label="@string/mapa"
+        android:label="@string/sucursal"
         tools:layout="@layout/fragment_detalles_sucursal">
         <argument
             android:name="esNegocio"
@@ -73,7 +73,7 @@
     <fragment
         android:id="@+id/nav_editar_productos"
         android:name="com.example.tiendita.ui.tiendas.EditarProductosFragment"
-        android:label="@string/mapa"
+        android:label="@string/editar_prod"
         tools:layout="@layout/fragment_editar_productos">
         <argument
             android:name="esNegocio"
@@ -150,7 +150,7 @@
     <fragment
         android:id="@+id/nav_detalle_sucursalu"
         android:name="com.example.tiendita.ui.tiendas.DetallesSucursalFragment"
-        android:label="@string/mapa"
+        android:label="@string/sucursal"
         tools:layout="@layout/fragment_detalles_sucursal">
         <argument
             android:name="esNegocio"
