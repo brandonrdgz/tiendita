@@ -1,10 +1,16 @@
 package com.example.tiendita.ui.home;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,10 +21,16 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.tiendita.R;
 import com.example.tiendita.utilidades.Constantes;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private HomeViewModel homeViewModel;
     private boolean esNegocio;
+    private ViewFlipper vf;
+    private ImageButton imgBttnLeft, imgBttnRight, imgBttnMiddle, imgBttnBottom;
+    private TextView tv_cabecera_uno, tv_cabecera_dos;
+    private int ImagesUsuario[] = new int[]{R.drawable.img_banner_uno, R.drawable.img_banner_dos, R.drawable.img_banner_tres};
+    private int ImagesNegocio[] = new int[]{R.drawable.img_banner_cuatro, R.drawable.img_banner_dos, R.drawable.img_banner_cinco};
+    private int Images[] = new int[3];
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -26,18 +38,90 @@ public class HomeFragment extends Fragment {
                 new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         Bundle data = this.getArguments();
+        asignarComponentes(root);
         if (data != null) {
-            esNegocio=data.getBoolean(Constantes.CONST_NEGOCIO_TYPE);
-        }else{
-            esNegocio=false;
+            esNegocio = data.getBoolean(Constantes.CONST_NEGOCIO_TYPE);
+        } else {
+            esNegocio = false;
         }
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        asignarRecursos(esNegocio);
         return root;
+    }
+
+    private void asignarComponentes(View root) {
+        vf = root.findViewById(R.id.viewFlipper_banner);
+        imgBttnLeft = root.findViewById(R.id.imgBttnLeft);
+        imgBttnRight = root.findViewById(R.id.imgBttnRight);
+        imgBttnMiddle = root.findViewById(R.id.imgBttnMiddle);
+        imgBttnBottom = root.findViewById(R.id.imgBttnBottom);
+        imgBttnLeft.setOnClickListener(this::onClick);
+        imgBttnRight.setOnClickListener(this::onClick);
+        imgBttnMiddle.setOnClickListener(this::onClick);
+        imgBttnBottom.setOnClickListener(this::onClick);
+        tv_cabecera_uno = root.findViewById(R.id.tv_cabecera_uno);
+        tv_cabecera_dos = root.findViewById(R.id.tv_cabecera_dos);
+    }
+
+    private void asignarRecursos(boolean esNegocio) {
+        if (esNegocio) {
+            Images = ImagesNegocio;
+            imgBttnLeft.setImageResource(R.drawable.img_profile_bttn);
+            imgBttnRight.setImageResource(R.drawable.img_orders_bttn);
+            imgBttnMiddle.setImageResource(R.drawable.img_businness_bttn);
+            tv_cabecera_uno.setText("Mis productos más vendidos");
+            tv_cabecera_dos.setText("Mis sucursales");
+        } else {
+            Images = ImagesUsuario;
+            imgBttnLeft.setImageResource(R.drawable.img_stores_bttn);
+            imgBttnRight.setImageResource(R.drawable.img_orders_bttn);
+            imgBttnMiddle.setImageResource(R.drawable.img_profile_bttn);
+            tv_cabecera_uno.setText("Productos más populares");
+            tv_cabecera_dos.setText("Tiendas cercanas");
+        }
+        //ViewFlipper Banner superior
+        for (int image : Images) {
+            flipperImages(image);
+        }
+    }
+
+    private void flipperImages(int image) {
+        ImageView imageView = new ImageView(getContext());
+        imageView.setBackgroundResource(image);
+        vf.addView(imageView);
+        vf.setFlipInterval(4000);
+        vf.setAutoStart(true);
+
+        vf.setInAnimation(getContext(), android.R.anim.slide_in_left);
+        vf.setOutAnimation(getContext(), android.R.anim.slide_out_right);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.imgBttnLeft:
+                if (esNegocio) {
+                    Toast.makeText(getContext(), "cambiar por conexión al fragment perfil de negocio", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "cambiar por conexión al fragment tiendas de usuario", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.imgBttnRight:
+                if (esNegocio) {
+                    Toast.makeText(getContext(), "cambiar por conexión al fragment pedidos de negocio", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "cambiar por conexión al fragment pedidos de usuario", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.imgBttnMiddle:
+                if (esNegocio) {
+                    Toast.makeText(getContext(), "cambiar por conexión al fragment sucursales de negocio", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "cambiar por conexión al fragment perfil de usuario", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.imgBttnBottom:
+                Toast.makeText(getContext(), "cambiar por conexión al fragment de información del equipo", Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 }
