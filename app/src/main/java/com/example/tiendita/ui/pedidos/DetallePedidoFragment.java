@@ -188,6 +188,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
             }
             break;
             case AccionesFirebaseRTDataBase.GET_LISTA_PRODUCTOS_PEDIDO_ACCTION: {
+                listaPedido=new ArrayList<>();
                 for (DataSnapshot dataSnapshot : respuesta.getChildren()) {
                     ProductosPedidoModelo productosPedidoModelo=new ProductosPedidoModelo();
                     productosPedidoModelo.setCantidad(Integer.parseInt(dataSnapshot.child(Constantes.CONST_PRODUCTO_CANTIDAD).getValue().toString()));
@@ -205,6 +206,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
             }
                 break;
             case AccionesFirebaseRTDataBase.GET_PRODUCTOS_ACCTION: {
+                listaProductosTotales=new ArrayList<>();
                 for (DataSnapshot dataSnapshot : respuesta.getChildren()) {
                     HashMap pedidoHash = (HashMap) dataSnapshot.getValue();
                     ProductoModelo productoModelo=new ProductoModelo();
@@ -230,7 +232,6 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
                 }else{
                     NavHostFragment.findNavController(this)
                             .navigate(R.id.action_nav_pedidou_to_nav_pedidosu);
-
                 }
             }
             break;
@@ -382,13 +383,14 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
+        dialog.dismiss();
         switch (which) {
             case BUTTON_POSITIVE:
                 // int which = -1
                 AccionesFirebaseRTDataBase.getProductos(currentPedido.getSucursalID(),this);
                 //*restock();
                //* AccionesFirebaseRTDataBase.deletePedido(currentPedido.getPedidoID(),this);
-                dialog.dismiss();
+
                 break;
         }
     }

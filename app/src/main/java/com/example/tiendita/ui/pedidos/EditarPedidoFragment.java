@@ -1,5 +1,6 @@
 package com.example.tiendita.ui.pedidos;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.AlertDialog;
@@ -34,6 +35,7 @@ import com.example.tiendita.datos.firebase.FirebaseCallback;
 import com.example.tiendita.datos.modelos.PedidoModelo;
 import com.example.tiendita.datos.modelos.ProductoModelo;
 import com.example.tiendita.datos.modelos.ProductosPedidoModelo;
+import com.example.tiendita.ui.home.HomeFragment;
 import com.example.tiendita.utilidades.Constantes;
 import com.example.tiendita.utilidades.Dialogo;
 import com.example.tiendita.utilidades.ImageManager;
@@ -135,7 +137,28 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
         listaPedido=new ArrayList<>();
         listaProductos=new ArrayList<>();
         listaProductosTotales=new ArrayList<>();
-            AccionesFirebaseRTDataBase.getProductos(sucursalId,this);
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                Bundle data = new Bundle();
+                data.putString(Constantes.CONST_PEDIDO_ID, currentPedido.getPedidoID());
+                data.putString(Constantes.CONST_PEDIDO_NEGOCIO_ID,currentPedido.getNegocioID());
+                data.putString(Constantes.CONST_PEDIDO_SUCURSAL_ID, currentPedido.getSucursalID());
+                data.putString(Constantes.CONST_PEDIDO_CLIENTE_ID, currentPedido.getClienteID());
+                data.putString(Constantes.CONST_PEDIDO_FECHA, currentPedido.getFecha());
+                data.putString(Constantes.CONST_PEDIDO_HORA, currentPedido.getHora());
+                data.putFloat(Constantes.CONST_PEDIDO_PAGO, currentPedido.getPago());
+                data.putInt(Constantes.CONST_PEDIDO_TOTAL_PROD, currentPedido.getTotalProductos());
+
+                NavHostFragment.findNavController(EditarPedidoFragment.this)
+                        .navigate(R.id.action_nav_editpedido_to_nav_pedidou, data);
+
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+
+        AccionesFirebaseRTDataBase.getProductos(sucursalId,this);
     }
     private void hidePanel(boolean ban){
         if(ban){
