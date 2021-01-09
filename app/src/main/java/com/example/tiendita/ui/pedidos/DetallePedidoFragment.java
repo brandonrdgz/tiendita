@@ -2,6 +2,7 @@ package com.example.tiendita.ui.pedidos;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -28,6 +29,7 @@ import com.example.tiendita.datos.firebase.AccionesFirebaseRTDataBase;
 import com.example.tiendita.datos.firebase.DownloadCallback;
 import com.example.tiendita.datos.firebase.FirebaseCallback;
 import com.example.tiendita.datos.modelos.PedidoModelo;
+import com.example.tiendita.datos.modelos.ProductoModelo;
 import com.example.tiendita.datos.modelos.ProductosPedidoModelo;
 import com.example.tiendita.datos.modelos.SucursalModelo;
 import com.example.tiendita.datos.modelos.UsuarioModelo;
@@ -40,9 +42,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static android.content.DialogInterface.BUTTON_POSITIVE;
+
 public class DetallePedidoFragment extends Fragment implements FirebaseCallback<DataSnapshot>,
         DownloadCallback,
-        View.OnClickListener {
+        View.OnClickListener,
+        DialogInterface.OnClickListener {
 
     private DetallePedidoViewModel mViewModel;
     private ImageView ivImagen;
@@ -53,8 +58,9 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
     private PedidoModelo currentPedido;
     private SucursalModelo currentSucursal;
     private ProductosPedidoModelo currentProductosPedidoModelo;
+    private ArrayList<ProductoModelo> listaProductosTotales;
     private UsuarioModelo currentUser;
-    private ArrayList<ProductosPedidoModelo> lista;
+    private ArrayList<ProductosPedidoModelo> listaPedido;
     private AlertDialog alertDialog;
 
     public static DetallePedidoFragment newInstance() {
@@ -192,12 +198,49 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
                     productosPedidoModelo.setRemoteImg(dataSnapshot.child(Constantes.CONST_BASE_REMOTEIMG).getValue().toString());
                     productosPedidoModelo.setProductoId(dataSnapshot.child(Constantes.CONST_PRODUCTO_ID).getValue().toString());
                     productosPedidoModelo.setSucursalId(dataSnapshot.child(Constantes.CONST_PRODUCTO_SUCURSAL_ID).getValue().toString());
-                    lista.add(productosPedidoModelo);
+                    listaPedido.add(productosPedidoModelo);
                 }
                 showData();
 
             }
                 break;
+            case AccionesFirebaseRTDataBase.GET_PRODUCTOS_ACCTION: {
+                for (DataSnapshot dataSnapshot : respuesta.getChildren()) {
+                    HashMap pedidoHash = (HashMap) dataSnapshot.getValue();
+                    ProductoModelo productoModelo=new ProductoModelo();
+                    productoModelo.setNombreProducto(pedidoHash.get(Constantes.CONST_PRODUCTO_NOMBRE).toString());
+                    productoModelo.setCantidad(Integer.parseInt(dataSnapshot.child(Constantes.CONST_PRODUCTO_CANTIDAD).getValue().toString()));
+                    productoModelo.setDescripcion(dataSnapshot.child(Constantes.CONST_PRODUCTO_DESCRIPCION).getValue().toString());
+                    productoModelo.setNombreProducto(dataSnapshot.child(Constantes.CONST_PRODUCTO_NOMBRE).getValue().toString());
+                    productoModelo.setPrecio(Float.parseFloat(dataSnapshot.child(Constantes.CONST_PRODUCTO_PRECIO).getValue().toString()));
+                    productoModelo.setRemoteImg(dataSnapshot.child(Constantes.CONST_BASE_REMOTEIMG).getValue().toString());
+                    productoModelo.setProductoId(dataSnapshot.child(Constantes.CONST_PRODUCTO_ID).getValue().toString());
+                    productoModelo.setSucursalId(dataSnapshot.child(Constantes.CONST_PRODUCTO_SUCURSAL_ID).getValue().toString());
+                    listaProductosTotales.add(productoModelo);
+                }
+                restock();
+                AccionesFirebaseRTDataBase.deletePedido(currentPedido.getPedidoID(),this);
+            }
+            case AccionesFirebaseRTDataBase.UPDATE_PRODUCTOS_ACCTION: {
+                /*redirect
+                lista fragment*/
+                if(esNegocio) {
+                    NavHostFragment.findNavController(this)
+                            .navigate(R.id.action_nav_pedidon_to_nav_pedidosn);
+                }else{
+                    NavHostFragment.findNavController(this)
+                            .navigate(R.id.action_nav_pedidou_to_nav_pedidosu);
+
+                }
+            }
+            break;
+            case AccionesFirebaseRTDataBase.DELETE_PEDIDO_ACCTION: {
+                AccionesFirebaseRTDataBase.deleteProductosPedido(currentPedido.getPedidoID(),this);
+            }
+            break;
+            case AccionesFirebaseRTDataBase.DELETE_PRODUCTOS_PEDIDO_ACCTION: {
+                AccionesFirebaseRTDataBase.updateProductos(listaProductosTotales,currentPedido.getSucursalID(),this);
+            }
         }
 
     }
@@ -221,7 +264,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
 
         ArrayAdapter<ProductosPedidoModelo> adapter = new ArrayAdapter<>(this.getContext(),
                 android.R.layout.simple_list_item_1,
-                lista);
+                listaPedido);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -237,7 +280,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
 
     private void initDialog(int i) {
         banDialogo=true;
-        currentProductosPedidoModelo=lista.get(i);
+        currentProductosPedidoModelo= listaPedido.get(i);
         String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentProductosPedidoModelo.getProductoId(),getContext());
         File filePhoto = new File(localRef);
         if (filePhoto.exists()) {
@@ -322,6 +365,13 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
             }
                 break;
             case R.id.bttn_cancelar_detalle:{
+                android.app.AlertDialog.Builder dialogo= new android.app.AlertDialog.Builder(getContext());
+                dialogo.setTitle(R.string.header_eliminar);
+                dialogo.setMessage(R.string.message_eliminar_pedido);
+                dialogo.setPositiveButton(R.string.action_eliminar, this);
+                dialogo.setNegativeButton(R.string.action_cancelar,this);
+                dialogo.show();
+
             }
 
                 break;
@@ -329,4 +379,43 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
 
 
     }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        switch (which) {
+            case BUTTON_POSITIVE:
+                // int which = -1
+                AccionesFirebaseRTDataBase.getProductos(currentPedido.getSucursalID(),this);
+                //*restock();
+               //* AccionesFirebaseRTDataBase.deletePedido(currentPedido.getPedidoID(),this);
+                dialog.dismiss();
+                break;
+        }
+    }
+
+    private void restock() {
+        int suma,indx;
+        for(ProductosPedidoModelo productosPedidoModelo:listaPedido){
+            indx=getIndex(productosPedidoModelo.getProductoId());
+            suma=productosPedidoModelo.getCantidad()+listaProductosTotales.get(indx).getCantidad();
+            listaProductosTotales.get(indx).setCantidad(suma);
+        }
+    }
+    private int getIndex(String prodId){
+        boolean notFound=true;
+        int prodIndex=0;
+            while (notFound && (prodIndex < listaProductosTotales.size())) {
+                if (listaProductosTotales.get(prodIndex).getProductoId().equals(prodId)) {
+                    notFound = false;
+                } else {
+                    prodIndex++;
+                }
+            }
+        if(notFound){
+            return -1;
+        }else{
+            return prodIndex;
+        }
+    }
+
 }

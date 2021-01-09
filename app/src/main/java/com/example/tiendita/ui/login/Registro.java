@@ -110,6 +110,7 @@ public class Registro extends AppCompatActivity {
                     intent.putExtra(Constantes.CONST_NEGOCIO_TYPE, smTipoUsuario.isChecked());
 
                     startActivity(intent);
+                    finish();
                 }
 
                 @Override

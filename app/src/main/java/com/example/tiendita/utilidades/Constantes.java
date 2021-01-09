@@ -64,6 +64,8 @@ public class Constantes {
    //Constantes para Tipo de vista
    public static final String CONST_NEGOCIO_TYPE ="esNegocio";
    public static final String CONST_EDICION_TYPE ="esEdicion";
+   public static final String CONST_NUEVA_TYPE ="esNueva";
+
 
 
    //Constantes para el tipo de actualizacion de la referencia local img

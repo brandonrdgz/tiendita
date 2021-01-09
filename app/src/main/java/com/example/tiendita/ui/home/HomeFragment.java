@@ -1,6 +1,8 @@
 package com.example.tiendita.ui.home;
 
+import android.app.Dialog;
 import android.media.Image;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -19,9 +22,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.tiendita.R;
+import com.example.tiendita.datos.firebase.AccionesFirebaseRTDataBase;
 import com.example.tiendita.utilidades.Constantes;
+import static android.content.DialogInterface.BUTTON_NEGATIVE;
+import static android.content.DialogInterface.BUTTON_POSITIVE;
 
-public class HomeFragment extends Fragment implements View.OnClickListener {
+
+public class HomeFragment extends Fragment implements DialogInterface.OnClickListener, View.OnClickListener{
 
     private HomeViewModel homeViewModel;
     private boolean esNegocio;
@@ -45,6 +52,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             esNegocio = false;
         }
         asignarRecursos(esNegocio);
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                android.app.AlertDialog.Builder dialogo= new android.app.AlertDialog.Builder(getContext());
+                dialogo.setTitle(R.string.header_salir);
+                dialogo.setMessage(R.string.message_salir);
+                dialogo.setPositiveButton(R.string.action_salir, HomeFragment.this);
+                dialogo.setNegativeButton(R.string.action_cancelar,HomeFragment.this);
+                dialogo.show();
+            }
+        };
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+
         return root;
     }
 
@@ -98,6 +120,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case BUTTON_POSITIVE:
+                getActivity().finishAffinity();
+                break;
+            case BUTTON_NEGATIVE:
+                break;
             case R.id.imgBttnLeft:
                 if (esNegocio) {
                     Toast.makeText(getContext(), "cambiar por conexión al fragment perfil de negocio", Toast.LENGTH_SHORT).show();
@@ -123,5 +150,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 Toast.makeText(getContext(), "cambiar por conexión al fragment de información del equipo", Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        dialog.dismiss();
+        switch (which) {
+            case BUTTON_POSITIVE:
+                getActivity().finishAffinity();
+                break;
+            case BUTTON_NEGATIVE:
+                break;
+        }
+
     }
 }

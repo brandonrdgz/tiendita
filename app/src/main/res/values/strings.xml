@@ -11,6 +11,7 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
 
+    <string name="contactanos">Contáctanos</string>
     <string name="versionApp">Tiendita v1.0</string>
     <string name="integrantes">Integrantes</string>
     <string name="nombreUno">Butrón Cañada Juan Jesús</string>
@@ -156,5 +157,11 @@
     <string name="sucursal">Sucursal</string>
     <string name="editar_prod">Editar Producto</string>
     <string name="sin_sucursales_registradas">No hay sucursales registradas</string>
+    <string name="msj_operacion_datos">Espere un momento...</string>
+    <string name="action_agregar" >Agregar Nueva</string>
+    <string name="msj_cargando_lista_sucursales">Cargando Sucursales</string>
+    <string name="header_salir">Salir</string>
+    <string name="message_salir">¿Cerrar Aplicación?</string>
+    <string name="action_salir">Salir</string>
 
 </resources>
