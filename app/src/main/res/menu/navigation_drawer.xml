@@ -21,10 +21,6 @@
             android:id="@+id/nav_mapu"
             android:icon="@drawable/ic_business"
             android:title="@string/mapa" />
-        <item
-            android:id="@+id/nav_infou"
-            android:icon="@drawable/ic_info"
-            android:title="@string/contactanos"/>
     </group>
 
     <group android:checkableBehavior="single"
@@ -45,8 +41,11 @@
             android:id="@+id/nav_sucursales"
             android:icon="@drawable/ic_business"
             android:title="@string/sucursales" />
+    </group>
+
+    <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_infon"
+            android:id="@+id/nav_info"
             android:icon="@drawable/ic_info"
             android:title="@string/contactanos"/>
     </group>

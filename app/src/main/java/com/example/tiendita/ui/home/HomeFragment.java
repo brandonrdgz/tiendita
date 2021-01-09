@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.tiendita.R;
 import com.example.tiendita.datos.firebase.AccionesFirebaseRTDataBase;
@@ -120,35 +121,41 @@ public class HomeFragment extends Fragment implements DialogInterface.OnClickLis
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case BUTTON_POSITIVE:
-                getActivity().finishAffinity();
-                break;
-            case BUTTON_NEGATIVE:
-                break;
             case R.id.imgBttnLeft:
                 if (esNegocio) {
-                    Toast.makeText(getContext(), "cambiar por conexión al fragment perfil de negocio", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), "cambiar por conexión al fragment tiendas de usuario", Toast.LENGTH_SHORT).show();
+                    NavHostFragment.findNavController(this)
+                            .navigate(R.id.action_nav_homen_to_nav_perfiln);
+                  } else {
+                    NavHostFragment.findNavController(this)
+                            .navigate(R.id.action_nav_homeu_to_nav_mapu);
                 }
                 break;
             case R.id.imgBttnRight:
                 if (esNegocio) {
-                    Toast.makeText(getContext(), "cambiar por conexión al fragment pedidos de negocio", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), "cambiar por conexión al fragment pedidos de usuario", Toast.LENGTH_SHORT).show();
-                }
+                    NavHostFragment.findNavController(this)
+                            .navigate(R.id.action_nav_homen_to_nav_pedidosn);
+                   } else {
+                    NavHostFragment.findNavController(this)
+                            .navigate(R.id.action_nav_homeu_to_nav_pedidosu);
+                     }
                 break;
             case R.id.imgBttnMiddle:
                 if (esNegocio) {
-                    Toast.makeText(getContext(), "cambiar por conexión al fragment sucursales de negocio", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), "cambiar por conexión al fragment perfil de usuario", Toast.LENGTH_SHORT).show();
-                }
+                    NavHostFragment.findNavController(this)
+                            .navigate(R.id.action_nav_homen_to_nav_sucursales);
+                     } else {
+                    NavHostFragment.findNavController(this)
+                            .navigate(R.id.action_nav_homeu_to_nav_perfilu);
+                   }
                 break;
             case R.id.imgBttnBottom:
-                Toast.makeText(getContext(), "cambiar por conexión al fragment de información del equipo", Toast.LENGTH_SHORT).show();
-                break;
+                if (esNegocio) {
+                    NavHostFragment.findNavController(this)
+                            .navigate(R.id.action_nav_homen_to_nav_info);
+                } else {
+                    NavHostFragment.findNavController(this)
+                            .navigate(R.id.action_nav_homeu_to_nav_info);
+                } break;
         }
     }
 

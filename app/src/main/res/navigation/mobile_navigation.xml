@@ -15,6 +15,18 @@
             android:name="esNegocio"
             app:argType="boolean"
             android:defaultValue="true" />
+        <action
+            android:id="@+id/action_nav_homen_to_nav_info"
+            app:destination="@id/nav_info" />
+        <action
+            android:id="@+id/action_nav_homen_to_nav_perfiln"
+            app:destination="@id/nav_perfiln" />
+        <action
+            android:id="@+id/action_nav_homen_to_nav_pedidosn"
+            app:destination="@id/nav_pedidosn" />
+        <action
+            android:id="@+id/action_nav_homen_to_nav_sucursales"
+            app:destination="@id/nav_sucursales" />
     </fragment>
 
     <fragment
@@ -122,6 +134,18 @@
             android:name="esNegocio"
             app:argType="boolean"
             android:defaultValue="false" />
+        <action
+            android:id="@+id/action_nav_homeu_to_nav_info"
+            app:destination="@id/nav_info" />
+        <action
+            android:id="@+id/action_nav_homeu_to_nav_perfilu"
+            app:destination="@id/nav_perfilu" />
+        <action
+            android:id="@+id/action_nav_homeu_to_nav_pedidosu"
+            app:destination="@id/nav_pedidosu" />
+        <action
+            android:id="@+id/action_nav_homeu_to_nav_mapu"
+            app:destination="@id/nav_mapu" />
     </fragment>
 
     <fragment
@@ -215,12 +239,7 @@
 
     <!--Fragments para información de app-->
     <fragment
-        android:id="@+id/nav_infou"
-        android:name="com.example.tiendita.ui.infodeapp.informacionApp"
-        android:label="@string/contactanos"
-        tools:layout="@layout/fragment_informacion_app"></fragment>
-    <fragment
-        android:id="@+id/nav_infon"
+        android:id="@+id/nav_info"
         android:name="com.example.tiendita.ui.infodeapp.informacionApp"
         android:label="@string/contactanos"
         tools:layout="@layout/fragment_informacion_app"></fragment>
