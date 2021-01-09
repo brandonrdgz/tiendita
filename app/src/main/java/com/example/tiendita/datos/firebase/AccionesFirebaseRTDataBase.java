@@ -46,6 +46,7 @@ public class AccionesFirebaseRTDataBase {
     public static final int UPDATE_PRODUCTOS_ACCTION=13;
     public static final int DELETE_PEDIDO_ACCTION=14;
     public static final int DELETE_PRODUCTOS_PEDIDO_ACCTION=15;
+    public static final int GET_SUCURSALES_ACCTION=16;
     
 
     public static void getUser(String UID,FirebaseCallback<DataSnapshot> firebaseCallback){
@@ -393,6 +394,29 @@ public class AccionesFirebaseRTDataBase {
                 firebaseCallback.enFallo(e);
             }
         });
+    }
+    public static void getSucursales(String negocioID, FirebaseCallback<DataSnapshot> firebaseCallback){
+        firebaseCallback.enInicio();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child(Constantes.NODO_SUCURSAL)
+                .child(negocioID)
+                .orderByKey()
+                .getRef()
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()) {
+                            firebaseCallback.enExito(snapshot,GET_SUCURSALES_ACCTION);
+                        }else{
+                            firebaseCallback.enFallo(null);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
     }
 
 

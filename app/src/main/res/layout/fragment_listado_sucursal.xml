@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background_color"
     android:padding="20dp"
+    android:orientation="vertical"
     tools:context=".ui.tiendas.ListadoSucursalFragment">
 
     <TextView
-        android:id="@+id/tv_sin_tiendas_label"
+        android:id="@+id/tv_sin_sucursales_label"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="10dp"
+        android:layout_height="0dp"
         android:layout_weight="1"
+        android:layout_marginBottom="10dp"
         android:fontFamily="@font/myriadproregular"
         android:gravity="center"
         android:text="@string/sin_sucursales_registradas"
@@ -20,10 +22,21 @@
         android:textSize="30sp"
         android:textStyle="bold" />
 
+        <ListView
+            android:id="@+id/lv_tiendas"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="top"
+            android:layout_weight="1"
+            />
 
-    <ListView
-        android:id="@+id/lv_tiendas"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/bttn_agrega_sucursal"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center"
+            android:text="@string/action_agregar"
+            app:cornerRadius="40dp"/>
 
-</FrameLayout>
+</LinearLayout>

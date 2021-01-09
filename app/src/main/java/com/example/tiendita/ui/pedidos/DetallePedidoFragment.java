@@ -223,9 +223,15 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
             }
             case AccionesFirebaseRTDataBase.UPDATE_PRODUCTOS_ACCTION: {
                 /*redirect
-                lista fragment
-                        NavHostFragment.findNavController(this)
-                                .navigate(R.id.action_nav_editpedido_to_nav_pedidosu);*/
+                lista fragment*/
+                if(esNegocio) {
+                    NavHostFragment.findNavController(this)
+                            .navigate(R.id.action_nav_pedidon_to_nav_pedidosn);
+                }else{
+                    NavHostFragment.findNavController(this)
+                            .navigate(R.id.action_nav_pedidou_to_nav_pedidosu);
+
+                }
             }
             break;
             case AccionesFirebaseRTDataBase.DELETE_PEDIDO_ACCTION: {

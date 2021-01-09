@@ -417,7 +417,8 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
 
                 }else{
                     Toast.makeText(this.getContext(), R.string.pedido_guardado, Toast.LENGTH_LONG).show();
-                    //Redirect fragment Sucursal
+                    NavHostFragment.findNavController(this)
+                            .navigate(R.id.action_nav_editpedido_to_nav_detalle_sucursalu);
                 }
 
             }

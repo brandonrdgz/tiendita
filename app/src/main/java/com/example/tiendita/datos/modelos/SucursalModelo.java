@@ -82,4 +82,13 @@ public class SucursalModelo {
     public void setLongitud(Double longitud) {
         this.longitud = longitud;
     }
+
+    @Override
+    public String toString() {
+        return "Sucursal" +
+                "nombre=" + nombre + "\n" +
+                "direccion=" + direccion + "\n" +
+                "hora de apertura=" + horaAper + "\n"+
+                "hora de cierre=" + horaCierre ;
+    }
 }

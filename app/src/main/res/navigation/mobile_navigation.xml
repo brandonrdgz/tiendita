@@ -107,6 +107,9 @@
             android:name="esNegocio"
             app:argType="boolean"
             android:defaultValue="true" />
+        <action
+            android:id="@+id/action_nav_pedidon_to_nav_pedidosn"
+            app:destination="@id/nav_pedidosn" />
     </fragment>
 
 
@@ -205,5 +208,8 @@
         <action
             android:id="@+id/action_nav_editpedido_to_nav_pedidosu"
             app:destination="@id/nav_pedidosu" />
+        <action
+            android:id="@+id/action_nav_editpedido_to_nav_detalle_sucursalu"
+            app:destination="@id/nav_detalle_sucursalu" />
     </fragment>
 </navigation>
