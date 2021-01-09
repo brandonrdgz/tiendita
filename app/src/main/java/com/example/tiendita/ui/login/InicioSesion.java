@@ -125,6 +125,7 @@ public class InicioSesion extends AppCompatActivity {
 
                 intent.putExtra(Constantes.CONST_NEGOCIO_TYPE, esNegocio);
                 startActivity(intent);
+                finish();
             }
 
             @Override
@@ -150,6 +151,7 @@ public class InicioSesion extends AppCompatActivity {
 
                 intent.putExtra(Constantes.CONST_NEGOCIO_TYPE, esNegocio);
                 startActivity(intent);
+                finish();
             }
 
             @Override

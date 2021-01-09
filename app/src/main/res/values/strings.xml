@@ -148,5 +148,8 @@
     <string name="msj_operacion_datos">Espere un momento...</string>
     <string name="action_agregar" >Agregar Nueva</string>
     <string name="msj_cargando_lista_sucursales">Cargando Sucursales</string>
+    <string name="header_salir">Salir</string>
+    <string name="message_salir">¿Cerrar Aplicación?</string>
+    <string name="action_salir">Salir</string>
 
 </resources>
