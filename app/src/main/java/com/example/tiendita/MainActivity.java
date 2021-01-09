@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         if(esNegocio) {
             navigationView.getMenu().removeGroup(R.id.drawer_usuario);
             mAppBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.nav_homen, R.id.nav_perfiln, R.id.nav_pedidosn,R.id.nav_pedidon,
+                    R.id.nav_homen, R.id.nav_perfiln, R.id.nav_pedidosn,R.id.nav_pedidon, R.id.nav_infon,
                     R.id.nav_sucursales,R.id.nav_detalle_sucursaln,R.id.nav_editar_productos,R.id.nav_mapn)
                     .setDrawerLayout(drawer)
                     .build();
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         }else{
             navigationView.getMenu().removeGroup(R.id.drawer_negocio);
             mAppBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.nav_homeu, R.id.nav_perfilu, R.id.nav_pedidosu, R.id.nav_editpedido,
+                    R.id.nav_homeu, R.id.nav_perfilu, R.id.nav_pedidosu, R.id.nav_infou,R.id.nav_editpedido,
                     R.id.nav_pedidou,R.id.nav_detalle_sucursalu,R.id.nav_mapu)
                     .setDrawerLayout(drawer)
                     .build();
