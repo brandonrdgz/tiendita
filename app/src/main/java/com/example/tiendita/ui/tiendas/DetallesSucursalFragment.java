@@ -179,6 +179,7 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
     }
 
     private void llenaCamposDatosSucursal() {
+
         tilNombre.getEditText().setText(this.sucursal.getNombre());
         tilDireccion.getEditText().setText(this.sucursal.getDireccion());
         tilHoraApertura.getEditText().setText(this.sucursal.getHoraAper());

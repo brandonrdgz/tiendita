@@ -86,6 +86,7 @@ public class ListadoSucursalFragment extends Fragment implements FirebaseCallbac
 
     @Override
     public void enExito(DataSnapshot respuesta, int accion) {
+        listaSucursales=new ArrayList<>();
         for (DataSnapshot dataSnapshot : respuesta.getChildren()) {
                   SucursalModelo sucursalModelo = new SucursalModelo();
                 sucursalModelo.setNombre(dataSnapshot.child(Constantes.CONST_SUCURSAL_NOMBRE).getValue().toString());

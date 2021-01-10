@@ -145,16 +145,19 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
                 currentUser.setContrasenia(cliente.get(Constantes.CONST_BASE_CONTRASENIA).toString());
                 currentUser.setRemoteImg(cliente.get(Constantes.CONST_BASE_REMOTEIMG).toString());
                 String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentUser.getId(),getContext());
-                File filePhoto = new File(localRef);
-                if (filePhoto.exists()) {
-                    AccionesFirebaseRTDataBase.getListaProductosPedido(currentPedido.getPedidoID(),this);
-                } else {
-                    AccionesFireStorage.downloadImg(currentUser.getRemoteImg(),
-                            this.getActivity(),
-                            this.getContext(),
-                            this,
-                            currentUser.getId());
+                if(localRef!=null) {
+                    File filePhoto = new File(localRef);
+                    if (filePhoto.exists()) {
+                        AccionesFirebaseRTDataBase.getListaProductosPedido(currentPedido.getPedidoID(), this);
+                    } else {
+                        AccionesFireStorage.downloadImg(currentUser.getRemoteImg(),
+                                this.getActivity(),
+                                this.getContext(),
+                                this,
+                                currentUser.getId());
+                    }
                 }
+
             }
                 break;
             case AccionesFirebaseRTDataBase.GET_SUCURSAL_ACCTION: {
