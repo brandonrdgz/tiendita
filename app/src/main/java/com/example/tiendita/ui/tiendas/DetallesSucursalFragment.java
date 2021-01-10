@@ -15,6 +15,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.example.tiendita.R;
@@ -48,10 +49,12 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
     Guarda una nueva sucursal, desde la lista de sucursales-accion agregar nueva
     **Solo cuando el usuairo es negocio redirecciona al frgamento editar productos
      */
+    private ImageButton ibImgSucursal;
     private TextInputLayout tilNombre;
     private TextInputLayout tilDireccion;
     private TextInputLayout tilHoraApertura;
     private TextInputLayout tilHoraCierre;
+    private MaterialButton mbRealizarPedido;
     private MaterialButton mbAdminProductos;
     private LinearLayout llEliminarEditar;
     private MaterialButton mbEliminarSucursal;
@@ -61,6 +64,7 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
     private MaterialButton mbGuardar;
     private DetallesSucursalViewModel mViewModel;
 
+    private boolean esUsuario;
     private boolean esNegocio;
     private boolean esSucursalNueva;
     private AlertDialog alertDialog;
@@ -90,23 +94,16 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
         }
 
         sucursal = datos.getParcelable(Constantes.LLAVE_SUCURSAL);
-        boolean esUsuario = ! esNegocio;
-
-        if (esUsuario) {
-            Bundle datosNuevos = new Bundle();
-            datosNuevos.putBoolean(Constantes.CONST_EDICION_TYPE, false);
-            datos.putString(Constantes.CONST_SUCURSAL_ID, sucursal.getSucursalID());
-
-            NavHostFragment.findNavController(this)
-               .navigate(R.id.action_nav_detalle_sucursalu_to_nav_editpedido, datosNuevos);
-        }
+        esUsuario = ! esNegocio;
     }
 
     private void iniComponentes(View root) {
+        ibImgSucursal = root.findViewById(R.id.ib_img_sucursal_det_sucursal);
         tilNombre = root.findViewById(R.id.til_nombre_sucursal_det_sucursal);
         tilDireccion = root.findViewById(R.id.til_direccion_det_sucursal);
         tilHoraApertura = root.findViewById(R.id.til_hora_apertura_det_sucursal);
         tilHoraCierre = root.findViewById(R.id.til_hora_cierre_det_sucursal);
+        mbRealizarPedido = root.findViewById(R.id.mb_realizar_pedido_det_sucursal);
         mbAdminProductos = root.findViewById(R.id.mb_admin_productos_det_sucursal);
         llEliminarEditar = root.findViewById(R.id.ll_elim_edit_sucursal_det_sucursal);
         mbEliminarSucursal = root.findViewById(R.id.mb_eliminar_det_sucursal);
@@ -127,16 +124,28 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
                textInputLayout));
         }
 
-        if (esSucursalNueva) {
+        if (esUsuario) {
+            ibImgSucursal.setClickable(false);
+            llenaCamposDatosSucursal();
+            deshabilitaCamposDatosSucursal();
+            mbAdminProductos.setVisibility(View.GONE);
+            llEliminarEditar.setVisibility(View.GONE);
+            llDescartarGuardar.setVisibility(View.GONE);
+        }
+        else if (esSucursalNueva) {
+            mbRealizarPedido.setVisibility(View.GONE);
             mbAdminProductos.setVisibility(View.GONE);
             llEliminarEditar.setVisibility(View.GONE);
         }
         else {
             llenaCamposDatosSucursal();
             deshabilitaCamposDatosSucursal();
+            mbRealizarPedido.setVisibility(View.GONE);
             llDescartarGuardar.setVisibility(View.GONE);
         }
 
+        ibImgSucursal.setOnClickListener(this);
+        mbRealizarPedido.setOnClickListener(this);
         mbAdminProductos.setOnClickListener(this);
         mbEliminarSucursal.setOnClickListener(this);
         mbEditarSucursal.setOnClickListener(this);
@@ -169,6 +178,14 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.ib_img_sucursal_det_sucursal:
+                ibImgSucursalClic();
+                break;
+
+            case R.id.mb_realizar_pedido_det_sucursal:
+                mbRealizarPedidoClic();
+                break;
+
             case R.id.mb_admin_productos_det_sucursal:
                 mbAdminProductosClic();
                 break;
@@ -189,6 +206,19 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
                 mbGuardarClic();
                 break;
         }
+    }
+
+    private void ibImgSucursalClic() {
+        //Implementar logica de clic en la imagen de la sucursal
+    }
+
+    private void mbRealizarPedidoClic() {
+        Bundle datos = new Bundle();
+        datos.putBoolean(Constantes.CONST_EDICION_TYPE, false);
+        datos.putString(Constantes.CONST_SUCURSAL_ID, sucursal.getSucursalID());
+
+        NavHostFragment.findNavController(this)
+           .navigate(R.id.action_nav_detalle_sucursalu_to_nav_editpedido, datos);
     }
 
     private void mbAdminProductosClic() {

@@ -1,7 +1,6 @@
 package com.example.tiendita.datos.firebase;
 
 import android.content.Context;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,8 +25,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 
@@ -314,22 +311,6 @@ public class AccionesFirebaseRTDataBase {
        .addOnFailureListener(exception -> {
           firebaseCallback.enFallo(exception);
        });
-    }
-
-    public static void actualizaSucursal(SucursalModelo sucursalModelo, FirebaseCallback<Void> firebaseCallback) {
-       firebaseCallback.enInicio();
-       DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-       databaseReference
-          .child(Constantes.NODO_SUCURSAL)
-          .child(sucursalModelo.getNegocioID())
-          .child(sucursalModelo.getSucursalID())
-          .setValue(sucursalModelo)
-          .addOnSuccessListener(aVoid -> {
-             firebaseCallback.enExito(null, 0);
-          })
-          .addOnFailureListener(exception -> {
-             firebaseCallback.enFallo(exception);
-          });
     }
 
     public static void insertPedido(PedidoModelo pedidoModelo,

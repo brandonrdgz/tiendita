@@ -61,6 +61,7 @@
     <string name="msj_descargando_datos_perfil">Descargando datos del perfil</string>
 
     //Strings para Pedidos
+    <string name="realizar_pedido">Realizar pedido</string>
     <string name="listaPedidos">Lista de Pedidos</string>
     <string name="cancelarBtn">Cancelar</string>
     <string name="buscarProducto">Buscar Producto</string>
