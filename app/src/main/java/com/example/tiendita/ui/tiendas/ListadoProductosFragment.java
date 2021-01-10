@@ -44,6 +44,9 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
     private ArrayList<ProductoModelo> listaProductos;
     private AlertDialog alertDialog;
 
+    private boolean esNegocio;
+    private String nombreSucursal, idNegocio, idSucursal;
+
     public static ListadoProductosFragment newInstance() {
         return new ListadoProductosFragment();
     }
@@ -52,8 +55,18 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_listado_productos, container, false);
-        initComp(root);
+        recuperaDatosSucursal(this.getArguments(),root);
         return root;
+    }
+
+    private void recuperaDatosSucursal(Bundle datos,View root) {
+        if (datos != null) {
+            esNegocio = datos.getBoolean(Constantes.CONST_NEGOCIO_TYPE);
+            nombreSucursal = datos.getString("nombreSucursal");
+            idNegocio = datos.getString("idNegocio");
+            idSucursal = datos.getString("idSucursal");
+            initComp(root);
+        }
     }
 
     private void initComp(View root){
@@ -63,7 +76,7 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
 
         button.setOnClickListener(this::onClick);
 
-        AccionesFirebaseRTDataBase.getProductos(AccionesFirebaseAuth.getUID(),this);
+        AccionesFirebaseRTDataBase.getProductos(idSucursal,this);
     }
 
 
@@ -102,7 +115,7 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
     @Override
     public void enFallo(Exception excepcion) {
         Dialogo.ocultaDialogoProceso(alertDialog);
-        Toast.makeText(this.getContext(), R.string.sin_sucursales_registradas, Toast.LENGTH_LONG).show();
+        Toast.makeText(this.getContext(), R.string.sin_productos_encontrados, Toast.LENGTH_LONG).show();
         textView.setVisibility(View.VISIBLE);
         listView.setVisibility(View.GONE);
     }
@@ -110,9 +123,6 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Bundle data = new Bundle();
-        data.putBoolean(Constantes.CONST_NUEVA_TYPE,false);
-        //data.putParcelable(Constantes.LLAVE_SUCURSAL, listaProductos.get(position));
-
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_nav_sucursales_to_nav_detalle_sucursaln, data);
     }
@@ -121,6 +131,9 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
     public void onClick(View v) {
         Bundle data = new Bundle();
         data.putBoolean(Constantes.CONST_NUEVA_TYPE, true);
+        data.putString("nombreSucursal",nombreSucursal);
+        data.putString("idSucursal",idSucursal);
+        data.putString("idNegocio",idNegocio);
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_nav_listado_producto_to_nav_editar_productos, data);
     }
