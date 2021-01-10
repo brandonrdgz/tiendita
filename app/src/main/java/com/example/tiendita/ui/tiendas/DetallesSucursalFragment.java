@@ -28,6 +28,7 @@ import com.example.tiendita.text_watcher.CampoTextWatcher;
 import com.example.tiendita.utilidades.Constantes;
 import com.example.tiendita.utilidades.Dialogo;
 import com.example.tiendita.utilidades.ExcepcionUtilidades;
+import com.example.tiendita.utilidades.Validaciones;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -258,6 +259,26 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
     }
 
     private void mbGuardarClic() {
+        if (camposValidos()) {
+            datosDeCampos();
+        }
+    }
+
+    private boolean camposValidos() {
+        boolean camposValidos = true;
+        Validaciones.validaCampos(this.getActivity(), textInputLayouts);
+
+        for (TextInputLayout textInputLayout : textInputLayouts) {
+            if (textInputLayout.getError() != null) {
+                camposValidos = false;
+                break;
+            }
+        }
+
+        return camposValidos;
+    }
+
+    private void datosDeCampos() {
         String nombre = tilNombre.getEditText().getText().toString();
         String direccion = tilDireccion.getEditText().getText().toString();
         String horaApertura = tilHoraApertura.getEditText().getText().toString();

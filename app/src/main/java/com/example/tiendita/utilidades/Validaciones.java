@@ -75,6 +75,17 @@ public class Validaciones {
                textInputLayout.setError(activity.getString(R.string.msj_error_apellido));
             }
             break;
+
+         /**
+          * Validaciones de campos de detalles de sucursal
+          * Agregar lógica en caso de que existan validaciones para estos campos
+          */
+         case R.id.til_nombre_sucursal_det_sucursal:
+         case R.id.til_direccion_det_sucursal:
+         case R.id.til_hora_apertura_det_sucursal:
+         case R.id.til_hora_cierre_det_sucursal:
+            textInputLayout.setError("");
+            break;
       }
    }
 }
