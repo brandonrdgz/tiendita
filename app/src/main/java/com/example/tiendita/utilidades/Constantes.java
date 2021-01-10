@@ -21,9 +21,11 @@ public class Constantes {
    public static final String ETIQUETA_INICIO_SESION = "INICIO DE SESIÓN";
    public static final String ETIQUETA_INICIO_SESION_USUARIO = "INICIO DE SESIÓN_USUARIO";
    public static final String ETIQUETA_INICIO_SESION_NEGOCIO = "INICIO DE SESIÓN_NEGOCIO";
+   public static final String ETIQUETA_DETALLES_SUCURSAL = "DETALLES DE SUCURSAL";
 
    //Constantes para atributos
    //Atributos Sucursal
+   public static final String LLAVE_SUCURSAL = "SUCURSAL";
    public static final String CONST_SUCURSAL_ID="sucursalID";
    public static final String CONST_NEGOCIO_ID= "negocioID";
    public static final String CONST_SUCURSAL_NOMBRE= "nombre";

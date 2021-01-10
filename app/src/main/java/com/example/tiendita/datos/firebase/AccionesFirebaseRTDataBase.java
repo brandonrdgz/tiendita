@@ -12,6 +12,7 @@ import com.example.tiendita.datos.modelos.NegocioModelo;
 import com.example.tiendita.datos.modelos.PedidoModelo;
 import com.example.tiendita.datos.modelos.ProductoModelo;
 import com.example.tiendita.datos.modelos.ProductosPedidoModelo;
+import com.example.tiendita.datos.modelos.SucursalModelo;
 import com.example.tiendita.datos.modelos.UsuarioModelo;
 import com.example.tiendita.utilidades.Constantes;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -298,6 +299,39 @@ public class AccionesFirebaseRTDataBase {
                 });
 
     }
+
+    public static void guardaSucursal(SucursalModelo sucursalModelo, FirebaseCallback<Void> firebaseCallback) {
+       firebaseCallback.enInicio();
+       DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+       databaseReference
+          .child(Constantes.NODO_SUCURSAL)
+          .child(sucursalModelo.getNegocioID())
+          .child(sucursalModelo.getSucursalID())
+          .setValue(sucursalModelo)
+       .addOnSuccessListener(aVoid -> {
+          firebaseCallback.enExito(null, 0);
+       })
+       .addOnFailureListener(exception -> {
+          firebaseCallback.enFallo(exception);
+       });
+    }
+
+    public static void actualizaSucursal(SucursalModelo sucursalModelo, FirebaseCallback<Void> firebaseCallback) {
+       firebaseCallback.enInicio();
+       DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+       databaseReference
+          .child(Constantes.NODO_SUCURSAL)
+          .child(sucursalModelo.getNegocioID())
+          .child(sucursalModelo.getSucursalID())
+          .setValue(sucursalModelo)
+          .addOnSuccessListener(aVoid -> {
+             firebaseCallback.enExito(null, 0);
+          })
+          .addOnFailureListener(exception -> {
+             firebaseCallback.enFallo(exception);
+          });
+    }
+
     public static void insertPedido(PedidoModelo pedidoModelo,
                                     FirebaseCallback<DataSnapshot> firebaseCallback){
         firebaseCallback.enInicio();

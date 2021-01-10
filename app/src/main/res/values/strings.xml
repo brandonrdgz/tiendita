@@ -79,7 +79,11 @@
 
     <string name="adminProductos">Administrar Productos</string>
     <string name="eliminarBtn">Eliminar</string>
-
+    <string name="msj_eliminar_sucursal">¿Estás seguro de querer eliminar esta sucursal? Se perderán
+        todos los productos que haya registrado para esta sucursal</string>
+    <string name="msj_generando_coordenadas">Generando coordenadas de la dirección</string>
+    <string name="msj_guardando_datos">Guardando datos</string>
+    <string name="msj_guardado_datos_exitoso">Datos guardados exitosamente</string>
 
 
     <!--Mensaje de error-->
@@ -93,6 +97,8 @@
     <string name="msj_error_credenciales_no_validas">Correo o constraseña no válidos</string>
     <string name="msj_error_registro">Ocurrió un error durante el registro</string>
     <string name="msj_error_inicio_sesion">Hubo un error al iniciar sesión</string>
+    <string name="msj_error_generacion_coordenadas">Ocurrió un error al generar las coordenadas de la dirección</string>
+    <string name="msj_error_guardar_datos">Ocurrió un error al guardar los datos</string>
 
     <!--Mensajes-->
     <string name="msj_registrando">Registrando</string>
