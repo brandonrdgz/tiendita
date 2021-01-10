@@ -170,5 +170,8 @@
     <string name="header_salir">Salir</string>
     <string name="message_salir">¿Cerrar Aplicación?</string>
     <string name="action_salir">Salir</string>
+    <string name="msj_elimindo_sucursal">Eliminando</string>
+    <string name="error_eliminar">Error al eliminar</string>
+    <string name="exito_eliminar">Eliminado</string>
 
 </resources>

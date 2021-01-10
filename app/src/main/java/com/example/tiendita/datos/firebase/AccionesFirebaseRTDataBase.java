@@ -45,6 +45,9 @@ public class AccionesFirebaseRTDataBase {
     public static final int DELETE_PEDIDO_ACCTION=14;
     public static final int DELETE_PRODUCTOS_PEDIDO_ACCTION=15;
     public static final int GET_SUCURSALES_ACCTION=16;
+    public static final int DELETE_SUCURSAL_ACCTION=17;
+    public static final int DELETE_PRODUCTOS_ACCTION=18;
+    public static final int DELETE_PEDIDOS_DE_SUCURSAL_ACCTION=19;
     
 
     public static void getUser(String UID,FirebaseCallback<DataSnapshot> firebaseCallback){
@@ -433,6 +436,47 @@ public class AccionesFirebaseRTDataBase {
                 });
 
     }
+    public static void deleteSucursal(String NegocioID,String sucursalID,
+                                    FirebaseCallback<DataSnapshot> firebaseCallback){
+        firebaseCallback.enInicio();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference
+                .child(Constantes.NODO_SUCURSAL)
+                .child(NegocioID)
+                .child(sucursalID)
+                .removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                firebaseCallback.enExito(null,DELETE_PEDIDO_ACCTION);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                firebaseCallback.enFallo(e);
+            }
+        });
+    }
+
+    public static void deleteProductos(String sucursalID, FirebaseCallback<DataSnapshot> firebaseCallback) {
+        firebaseCallback.enInicio();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference
+                .child(Constantes.NODO_PEDIDOS)
+                .child(sucursalID)
+                .removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                firebaseCallback.enExito(null,DELETE_PRODUCTOS_ACCTION);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                firebaseCallback.enFallo(e);
+            }
+        });
+    }
+
 
 
 

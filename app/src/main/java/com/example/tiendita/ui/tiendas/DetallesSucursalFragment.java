@@ -1,10 +1,14 @@
 package com.example.tiendita.ui.tiendas;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,29 +16,41 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.tiendita.R;
+import com.example.tiendita.datos.firebase.AccionesFireStorage;
 import com.example.tiendita.datos.firebase.AccionesFirebaseAuth;
 import com.example.tiendita.datos.firebase.AccionesFirebaseRTDataBase;
 import com.example.tiendita.datos.firebase.FirebaseCallback;
+import com.example.tiendita.datos.firebase.UploadCallback;
 import com.example.tiendita.datos.modelos.SucursalModelo;
 import com.example.tiendita.datos.operaciones.CallbackGeneral;
 import com.example.tiendita.text_watcher.CampoTextWatcher;
 import com.example.tiendita.utilidades.Constantes;
 import com.example.tiendita.utilidades.Dialogo;
 import com.example.tiendita.utilidades.ExcepcionUtilidades;
+import com.example.tiendita.utilidades.ImageManager;
 import com.example.tiendita.utilidades.Validaciones;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DataSnapshot;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -64,10 +80,15 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
     private MaterialButton mbDescartar;
     private MaterialButton mbGuardar;
     private DetallesSucursalViewModel mViewModel;
+    public static final int REQUEST_TAKE_PHOTO=1;
+    public static  String currentPath;
+    public static Uri photoUri;
+
 
     private boolean esUsuario;
     private boolean esNegocio;
     private boolean esSucursalNueva;
+    private boolean imgHasChange;
     private AlertDialog alertDialog;
 
     private SucursalModelo sucursal;
@@ -82,20 +103,21 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_detalles_sucursal, container, false);
 
-        recuperaDatosSucursal(this.getArguments());
-        iniComponentes(root);
+        recuperaDatosSucursal(this.getArguments(),root);
+
 
         return root;
     }
 
-    private void recuperaDatosSucursal(Bundle datos) {
+    private void recuperaDatosSucursal(Bundle datos,View root) {
         if (datos != null) {
             esNegocio = datos.getBoolean(Constantes.CONST_NEGOCIO_TYPE);
             esSucursalNueva = datos.getBoolean(Constantes.CONST_NUEVA_TYPE);
-        }
 
-        sucursal = datos.getParcelable(Constantes.LLAVE_SUCURSAL);
-        esUsuario = ! esNegocio;
+            sucursal = datos.getParcelable(Constantes.LLAVE_SUCURSAL);
+            esUsuario = !esNegocio;
+            iniComponentes(root);
+        }
     }
 
     private void iniComponentes(View root) {
@@ -139,6 +161,7 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
             llEliminarEditar.setVisibility(View.GONE);
         }
         else {
+            imgHasChange=false;
             llenaCamposDatosSucursal();
             deshabilitaCamposDatosSucursal();
             mbRealizarPedido.setVisibility(View.GONE);
@@ -211,6 +234,7 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
 
     private void ibImgSucursalClic() {
         //Implementar logica de clic en la imagen de la sucursal
+        takePhoto();
     }
 
     private void mbRealizarPedidoClic() {
@@ -231,6 +255,65 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
         alertDialogBuilder.setMessage(R.string.msj_eliminar_sucursal);
         alertDialogBuilder.setPositiveButton(R.string.action_aceptar, (dialog, which) -> {
             //implementar la eliminación tanto de la sucursal como de sus productos
+            AccionesFirebaseRTDataBase.deleteSucursal(AccionesFirebaseAuth.getUID(),
+                    sucursal.getSucursalID(),
+                    new FirebaseCallback<DataSnapshot>() {
+                        @Override
+                        public void enInicio() {
+                            alertDialog = Dialogo.dialogoProceso(getContext(), R.string.msj_elimindo_sucursal);
+                            Dialogo.muestraDialogoProceso(alertDialog);
+
+                        }
+
+                        @Override
+                        public void enExito(DataSnapshot respuesta, int accion) {
+                            Dialogo.ocultaDialogoProceso(alertDialog);
+                            Toast.makeText(DetallesSucursalFragment.this.getContext(), R.string.exito_eliminar, Toast.LENGTH_LONG).show();
+                            AccionesFirebaseRTDataBase.deleteProductos(sucursal.getSucursalID(), new FirebaseCallback<DataSnapshot>() {
+                                @Override
+                                public void enInicio() {
+
+                                }
+
+                                @Override
+                                public void enExito(DataSnapshot respuesta, int accion) {
+
+                                }
+
+                                @Override
+                                public void enFallo(Exception excepcion) {
+                                    Log.d("Error Eliminar","Error al elimnar productos\n Causa: "+excepcion.getLocalizedMessage());
+
+                                }
+                            });
+                            AccionesFirebaseRTDataBase.deletePedido(sucursal.getSucursalID(), new FirebaseCallback<DataSnapshot>() {
+                                @Override
+                                public void enInicio() {
+
+                                }
+
+                                @Override
+                                public void enExito(DataSnapshot respuesta, int accion) {
+
+                                }
+
+                                @Override
+                                public void enFallo(Exception excepcion) {
+                                    Log.d("Error Eliminar","Error al elimnar productos\n Causa: "+excepcion.getLocalizedMessage());
+
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void enFallo(Exception excepcion) {
+                            Dialogo.ocultaDialogoProceso(alertDialog);
+                            Toast.makeText(DetallesSucursalFragment.this.getContext(), R.string.error_eliminar, Toast.LENGTH_LONG).show();
+
+                        }
+                    }
+            );
         })
         .setNegativeButton(R.string.action_cancelar, null);
 
@@ -285,81 +368,181 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
         String horaCierre = tilHoraCierre.getEditText().getText().toString();
 
         if (esSucursalNueva) {
-            SucursalModelo sucursalNueva = new SucursalModelo();
-            sucursalNueva.setNegocioID(AccionesFirebaseAuth.getUID());
-            sucursalNueva.setSucursalID(UUID.randomUUID().toString());
-            sucursalNueva.setRemoteImg();
-            sucursalNueva.setNombre(nombre);
-            sucursalNueva.setDireccion(direccion);
-            sucursalNueva.setHoraAper(horaApertura);
-            sucursalNueva.setHoraCierre(horaCierre);
+            AccionesFirebaseRTDataBase.insertLocalImgRef(sucursal.getSucursalID(), currentPath, this.getContext());
+            AccionesFireStorage.loadImage(AccionesFirebaseAuth.getUID(),
+                    currentPath,
+                    this.getContext(),
+                    new UploadCallback<Task<Uri>>() {
+                        @Override
+                        public void enInicioCar() {
+                            alertDialog = Dialogo.dialogoProceso(getContext(), R.string.actualizando_img);
+                            Dialogo.muestraDialogoProceso(alertDialog);
+                        }
 
-            latitudLongitudDeDireccion(sucursalNueva.getDireccion(), new CallbackGeneral<Address>() {
-                @Override
-                public void enInicio() {
-                    alertDialog = Dialogo.dialogoProceso(getContext(), R.string.msj_generando_coordenadas);
-                    Dialogo.muestraDialogoProceso(alertDialog);
-                }
+                        @Override
+                        public void enExitoCar(Task<Uri> respuesta) {
+                            Dialogo.ocultaDialogoProceso(alertDialog);
+                            //se actualiza imagen remota y se actualiza el usuario
+                            List<String> segments = respuesta.getResult().getPathSegments();
+                            SucursalModelo sucursalNueva = new SucursalModelo();
+                            sucursalNueva.setNegocioID(AccionesFirebaseAuth.getUID());
+                            sucursalNueva.setSucursalID(UUID.randomUUID().toString());
+                            sucursalNueva.setRemoteImg(segments.get(segments.size() - 1));
+                            sucursalNueva.setNombre(nombre);
+                            sucursalNueva.setDireccion(direccion);
+                            sucursalNueva.setHoraAper(horaApertura);
+                            sucursalNueva.setHoraCierre(horaCierre);
 
-                @Override
-                public void enExito(Address respuesta) {
-                    Dialogo.ocultaDialogoProceso(alertDialog);
+                            latitudLongitudDeDireccion(sucursalNueva.getDireccion(), new CallbackGeneral<Address>() {
+                                @Override
+                                public void enInicio() {
+                                    alertDialog = Dialogo.dialogoProceso(getContext(), R.string.msj_generando_coordenadas);
+                                    Dialogo.muestraDialogoProceso(alertDialog);
+                                }
 
-                    sucursalNueva.setLatitud(respuesta.getLatitude());
-                    sucursalNueva.setLongitud(respuesta.getLongitude());
+                                @Override
+                                public void enExito(Address respuesta) {
+                                    Dialogo.ocultaDialogoProceso(alertDialog);
 
-                    guardaDatosSucursal(sucursalNueva, R.string.msj_guardando_datos);
-                }
+                                    sucursalNueva.setLatitud(respuesta.getLatitude());
+                                    sucursalNueva.setLongitud(respuesta.getLongitude());
 
-                @Override
-                public void enFallo(Exception excepcion) {
-                    Dialogo.ocultaDialogoProceso(alertDialog);
-                    ExcepcionUtilidades.muestraMensajeError(getView(), excepcion,
-                       R.string.msj_error_generacion_coordenadas, Constantes.ETIQUETA_DETALLES_SUCURSAL);
-                }
-            });
+                                    guardaDatosSucursal(sucursalNueva, R.string.msj_guardando_datos);
+                                }
+
+                                @Override
+                                public void enFallo(Exception excepcion) {
+                                    Dialogo.ocultaDialogoProceso(alertDialog);
+                                    ExcepcionUtilidades.muestraMensajeError(getView(), excepcion,
+                                            R.string.msj_error_generacion_coordenadas, Constantes.ETIQUETA_DETALLES_SUCURSAL);
+                                }
+                            });
+
+
+                        }
+
+                        @Override
+                        public void enFalloCar(Exception excepcion) {
+                            Dialogo.ocultaDialogoProceso(alertDialog);
+                            Toast.makeText(DetallesSucursalFragment.this.getContext(), R.string.error_actualiza_img,Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+
         }
         else {
-            SucursalModelo sucursalEditada = new SucursalModelo();
-            sucursalEditada.setNegocioID(this.sucursal.getNegocioID());
-            sucursalEditada.setSucursalID(this.sucursal.getSucursalID());
-            sucursalEditada.setRemoteImg();
-            sucursalEditada.setNombre(nombre);
-            sucursalEditada.setHoraAper(horaApertura);
-            sucursalEditada.setHoraCierre(horaCierre);
-            sucursalEditada.setDireccion(this.sucursal.getDireccion());
-            boolean direccionHaCambiado = ! this.sucursal.getDireccion().equals(direccion);
+            //si se cambio la imagen de usuario se actualiza la referencia remota
+            if (imgHasChange) {
+                AccionesFirebaseRTDataBase.updateLocalImgRef(sucursal.getSucursalID(), currentPath, this.getContext());
+                AccionesFireStorage.updateImage(AccionesFirebaseAuth.getUID(),
+                        sucursal.getRemoteImg(),
+                        currentPath,
+                        this.getContext(),
+                        new UploadCallback<Task<Uri>>() {
+                            @Override
+                            public void enInicioCar() {
+                                alertDialog = Dialogo.dialogoProceso(getContext(), R.string.actualizando_img);
+                                Dialogo.muestraDialogoProceso(alertDialog);
 
-            if (direccionHaCambiado) {
-                sucursalEditada.setDireccion(direccion);
+                            }
 
-                latitudLongitudDeDireccion(sucursalEditada.getDireccion(), new CallbackGeneral<Address>() {
-                    @Override
-                    public void enInicio() {
-                        alertDialog = Dialogo.dialogoProceso(getContext(), R.string.msj_generando_coordenadas);
-                        Dialogo.muestraDialogoProceso(alertDialog);
-                    }
+                            @Override
+                            public void enExitoCar(Task<Uri> respuesta) {
+                                Dialogo.ocultaDialogoProceso(alertDialog);
+                                List<String> segments = respuesta.getResult().getPathSegments();
+                                SucursalModelo sucursalEditada = new SucursalModelo();
+                                sucursalEditada.setNegocioID(sucursal.getNegocioID());
+                                sucursalEditada.setSucursalID(sucursal.getSucursalID());
+                                sucursalEditada.setRemoteImg(segments.get(segments.size() - 1));
+                                sucursalEditada.setNombre(nombre);
+                                sucursalEditada.setHoraAper(horaApertura);
+                                sucursalEditada.setHoraCierre(horaCierre);
+                                sucursalEditada.setDireccion(sucursal.getDireccion());
+                                boolean direccionHaCambiado = ! sucursal.getDireccion().equals(direccion);
 
-                    @Override
-                    public void enExito(Address respuesta) {
-                        Dialogo.ocultaDialogoProceso(alertDialog);
+                                if (direccionHaCambiado) {
+                                    sucursalEditada.setDireccion(direccion);
 
-                        sucursalEditada.setLatitud(respuesta.getLatitude());
-                        sucursalEditada.setLongitud(respuesta.getLongitude());
+                                    latitudLongitudDeDireccion(sucursalEditada.getDireccion(), new CallbackGeneral<Address>() {
+                                        @Override
+                                        public void enInicio() {
+                                            alertDialog = Dialogo.dialogoProceso(getContext(), R.string.msj_generando_coordenadas);
+                                            Dialogo.muestraDialogoProceso(alertDialog);
+                                        }
 
-                        guardaDatosSucursal(sucursalEditada, R.string.msj_guardando_datos);
-                    }
+                                        @Override
+                                        public void enExito(Address respuesta) {
+                                            Dialogo.ocultaDialogoProceso(alertDialog);
 
-                    @Override
-                    public void enFallo(Exception excepcion) {
-                        Dialogo.ocultaDialogoProceso(alertDialog);
-                        ExcepcionUtilidades.muestraMensajeError(getView(), excepcion,
-                           R.string.msj_error_generacion_coordenadas, Constantes.ETIQUETA_DETALLES_SUCURSAL);
-                    }
-                });
-            }
-            else {
-                guardaDatosSucursal(sucursalEditada, R.string.msj_guardando_datos);
+                                            sucursalEditada.setLatitud(respuesta.getLatitude());
+                                            sucursalEditada.setLongitud(respuesta.getLongitude());
+
+                                            guardaDatosSucursal(sucursalEditada, R.string.msj_guardando_datos);
+                                        }
+
+                                        @Override
+                                        public void enFallo(Exception excepcion) {
+                                            Dialogo.ocultaDialogoProceso(alertDialog);
+                                            ExcepcionUtilidades.muestraMensajeError(getView(), excepcion,
+                                                    R.string.msj_error_generacion_coordenadas, Constantes.ETIQUETA_DETALLES_SUCURSAL);
+                                        }
+                                    });
+                                }
+                                else {
+                                    guardaDatosSucursal(sucursalEditada, R.string.msj_guardando_datos);
+                                }
+
+                            }
+
+                            @Override
+                            public void enFalloCar(Exception excepcion) {
+                                Dialogo.ocultaDialogoProceso(alertDialog);
+                                Toast.makeText(DetallesSucursalFragment.this.getContext(), R.string.error_actualiza_img,Toast.LENGTH_LONG).show();
+
+
+                            }
+                        });
+            }else {
+                SucursalModelo sucursalEditada = new SucursalModelo();
+                sucursalEditada.setNegocioID(this.sucursal.getNegocioID());
+                sucursalEditada.setSucursalID(this.sucursal.getSucursalID());
+                sucursalEditada.setRemoteImg(this.sucursal.getRemoteImg());
+                sucursalEditada.setNombre(nombre);
+                sucursalEditada.setHoraAper(horaApertura);
+                sucursalEditada.setHoraCierre(horaCierre);
+                sucursalEditada.setDireccion(this.sucursal.getDireccion());
+                boolean direccionHaCambiado = !this.sucursal.getDireccion().equals(direccion);
+
+                if (direccionHaCambiado) {
+                    sucursalEditada.setDireccion(direccion);
+
+                    latitudLongitudDeDireccion(sucursalEditada.getDireccion(), new CallbackGeneral<Address>() {
+                        @Override
+                        public void enInicio() {
+                            alertDialog = Dialogo.dialogoProceso(getContext(), R.string.msj_generando_coordenadas);
+                            Dialogo.muestraDialogoProceso(alertDialog);
+                        }
+
+                        @Override
+                        public void enExito(Address respuesta) {
+                            Dialogo.ocultaDialogoProceso(alertDialog);
+
+                            sucursalEditada.setLatitud(respuesta.getLatitude());
+                            sucursalEditada.setLongitud(respuesta.getLongitude());
+
+                            guardaDatosSucursal(sucursalEditada, R.string.msj_guardando_datos);
+                        }
+
+                        @Override
+                        public void enFallo(Exception excepcion) {
+                            Dialogo.ocultaDialogoProceso(alertDialog);
+                            ExcepcionUtilidades.muestraMensajeError(getView(), excepcion,
+                                    R.string.msj_error_generacion_coordenadas, Constantes.ETIQUETA_DETALLES_SUCURSAL);
+                        }
+                    });
+                } else {
+                    guardaDatosSucursal(sucursalEditada, R.string.msj_guardando_datos);
+                }
             }
         }
     }
@@ -417,6 +600,40 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(DetallesSucursalViewModel.class);
         // TODO: Use the ViewModel
+    }
+
+    public  void takePhoto() {
+        Intent tomaFoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (tomaFoto.resolveActivity(this.getActivity().getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+
+            } catch (IOException ex) {
+                Toast.makeText(this.getContext(), R.string.no_img, Toast.LENGTH_LONG).show();
+            }
+            if (photoFile != null) {
+                photoUri = FileProvider.getUriForFile(this.getContext(), "com.example.tiendita", photoFile);
+                tomaFoto.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(tomaFoto, REQUEST_TAKE_PHOTO);
+            }
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode==REQUEST_TAKE_PHOTO && resultCode== Activity.RESULT_OK){
+            ImageManager.loadImage(currentPath, ibImgSucursal,this.getContext());
+            imgHasChange=true;
+        }
+    }
+
+    public File createImageFile()throws IOException {
+        String timeStamp=new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFile="JPEG_"+timeStamp+"_";
+        File storageDir=this.getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File ima=File.createTempFile(imageFile,".jpg",storageDir);
+        currentPath=ima.getAbsolutePath();
+        return ima;
     }
 
 }
