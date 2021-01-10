@@ -118,8 +118,7 @@ public class SucursalModelo implements Parcelable {
 
     @Override
     public String toString() {
-        return "Sucursal" +
-                "nombre=" + nombre + "\n" +
+        return  nombre + "\n" +
                 "direccion=" + direccion + "\n" +
                 "hora de apertura=" + horaAper + "\n"+
                 "hora de cierre=" + horaCierre ;

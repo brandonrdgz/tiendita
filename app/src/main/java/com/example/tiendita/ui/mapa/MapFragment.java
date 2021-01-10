@@ -46,6 +46,7 @@ import com.google.firebase.storage.FileDownloadTask;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback,
                                                     GoogleMap.OnMarkerClickListener,
@@ -146,18 +147,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void enExito(DataSnapshot respuesta, int accion) {
         for (DataSnapshot dataSnapshot : respuesta.getChildren()) {
-            if(isInRange(Double.parseDouble(dataSnapshot.child(Constantes.CONST_SUCURSAL_LAT).getValue().toString()),
-                    Double.parseDouble(dataSnapshot.child(Constantes.CONST_SUCURSAL_LONG).getValue().toString()))) {
+            HashMap data = (HashMap) dataSnapshot.getValue();
+            String  lat =data.get(Constantes.CONST_SUCURSAL_LAT).toString();
+            String lon =data.get(Constantes.CONST_SUCURSAL_LONG).toString();
+            if(isInRange(Double.parseDouble(lat), Double.parseDouble(lon))) {
                 SucursalModelo sucursalModelo = new SucursalModelo();
-                sucursalModelo.setNombre(dataSnapshot.child(Constantes.CONST_SUCURSAL_NOMBRE).getValue().toString());
-                sucursalModelo.setDireccion(dataSnapshot.child(Constantes.CONST_SUCURSAL_DIRECCION).getValue().toString());
-                sucursalModelo.setHoraAper(dataSnapshot.child(Constantes.CONST_SUCURSAL_HORAAPER).getValue().toString());
-                sucursalModelo.setHoraCierre(dataSnapshot.child(Constantes.CONST_SUCURSAL_HORACIERRE).getValue().toString());
-                sucursalModelo.setSucursalID(dataSnapshot.child(Constantes.CONST_SUCURSAL_ID).getValue().toString());
-                sucursalModelo.setNegocioID(dataSnapshot.child(Constantes.CONST_NEGOCIO_ID).getValue().toString());
-                sucursalModelo.setRemoteImg(dataSnapshot.child(Constantes.CONST_BASE_REMOTEIMG).getValue().toString());
-                sucursalModelo.setLatitud(Double.parseDouble(dataSnapshot.child(Constantes.CONST_SUCURSAL_LAT).getValue().toString()));
-                sucursalModelo.setLongitud(Double.parseDouble(dataSnapshot.child(Constantes.CONST_SUCURSAL_LONG).getValue().toString()));
+                sucursalModelo.setNombre(data.get(Constantes.CONST_SUCURSAL_NOMBRE).toString());
+                sucursalModelo.setDireccion(data.get(Constantes.CONST_SUCURSAL_DIRECCION).toString());
+                sucursalModelo.setHoraAper(data.get(Constantes.CONST_SUCURSAL_HORAAPER).toString());
+                sucursalModelo.setHoraCierre(data.get(Constantes.CONST_SUCURSAL_HORACIERRE).toString());
+                sucursalModelo.setSucursalID(data.get(Constantes.CONST_SUCURSAL_ID).toString());
+                sucursalModelo.setNegocioID(data.get(Constantes.CONST_NEGOCIO_ID).toString());
+                sucursalModelo.setRemoteImg(data.get(Constantes.CONST_BASE_REMOTEIMG).toString());
+                sucursalModelo.setLatitud(Double.parseDouble(lat));
+                sucursalModelo.setLongitud(Double.parseDouble(lon));
                 list.add(sucursalModelo);
             }
         }
