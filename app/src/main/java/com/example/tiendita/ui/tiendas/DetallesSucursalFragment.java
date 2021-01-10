@@ -33,11 +33,13 @@ import com.example.tiendita.R;
 import com.example.tiendita.datos.firebase.AccionesFireStorage;
 import com.example.tiendita.datos.firebase.AccionesFirebaseAuth;
 import com.example.tiendita.datos.firebase.AccionesFirebaseRTDataBase;
+import com.example.tiendita.datos.firebase.DownloadCallback;
 import com.example.tiendita.datos.firebase.FirebaseCallback;
 import com.example.tiendita.datos.firebase.UploadCallback;
 import com.example.tiendita.datos.modelos.SucursalModelo;
 import com.example.tiendita.datos.operaciones.CallbackGeneral;
 import com.example.tiendita.text_watcher.CampoTextWatcher;
+import com.example.tiendita.ui.pedidos.EditarPedidoFragment;
 import com.example.tiendita.utilidades.Constantes;
 import com.example.tiendita.utilidades.Dialogo;
 import com.example.tiendita.utilidades.ExcepcionUtilidades;
@@ -49,6 +51,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.storage.FileDownloadTask;
 
 import java.io.File;
 import java.io.IOException;
@@ -181,12 +184,50 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
     }
 
     private void llenaCamposDatosSucursal() {
+        String localRef = AccionesFirebaseRTDataBase.getLocalImgRef(this.sucursal.getSucursalID(), getContext());
 
-        tilNombre.getEditText().setText(this.sucursal.getNombre());
-        tilDireccion.getEditText().setText(this.sucursal.getDireccion());
-        tilHoraApertura.getEditText().setText(this.sucursal.getHoraAper());
-        tilHoraCierre.getEditText().setText(this.sucursal.getHoraCierre());
-        llDescartarGuardar.setVisibility(View.GONE);
+        File filePhoto = new File(localRef);
+        if (filePhoto.exists()) {
+            ImageManager.loadImage(localRef, ibImgSucursal, this.getContext());
+            tilNombre.getEditText().setText(this.sucursal.getNombre());
+            tilDireccion.getEditText().setText(this.sucursal.getDireccion());
+            tilHoraApertura.getEditText().setText(this.sucursal.getHoraAper());
+            tilHoraCierre.getEditText().setText(this.sucursal.getHoraCierre());
+            llDescartarGuardar.setVisibility(View.GONE);
+        } else {
+            AccionesFireStorage.downloadImg(this.sucursal.getRemoteImg(),
+                    getActivity(),
+                    getContext(),
+                    new DownloadCallback<Task<FileDownloadTask.TaskSnapshot>>() {
+                        @Override
+                        public void enInicioDesc() {
+                            alertDialog = Dialogo.dialogoProceso(DetallesSucursalFragment.this.getContext(), R.string.msj_operacion_datos);
+                            Dialogo.muestraDialogoProceso(alertDialog);
+                            ImageManager.loadImage(localRef, ibImgSucursal, DetallesSucursalFragment.this.getContext());
+                            tilNombre.getEditText().setText(sucursal.getNombre());
+                            tilDireccion.getEditText().setText(sucursal.getDireccion());
+                            tilHoraApertura.getEditText().setText(sucursal.getHoraAper());
+                            tilHoraCierre.getEditText().setText(sucursal.getHoraCierre());
+                            llDescartarGuardar.setVisibility(View.GONE);
+
+                        }
+
+                        @Override
+                        public void enExitoDesc(Task<FileDownloadTask.TaskSnapshot> respuesta, File localFile) {
+                            Dialogo.ocultaDialogoProceso(alertDialog);
+
+                        }
+
+                        @Override
+                        public void enFalloDesc(Exception excepcion) {
+                            Dialogo.ocultaDialogoProceso(alertDialog);
+                            Toast.makeText(DetallesSucursalFragment.this.getContext(), R.string.error_cargar_img,Toast.LENGTH_LONG).show();
+                            Log.d("Descargar imagen","Error al descargar imagen\n Causa: "+excepcion.getCause());
+
+                        }
+                    },
+                    this.sucursal.getSucursalID());
+        }
     }
 
     private void deshabilitaCamposDatosSucursal() {
