@@ -173,5 +173,8 @@
     <string name="msj_elimindo_sucursal">Eliminando</string>
     <string name="error_eliminar">Error al eliminar</string>
     <string name="exito_eliminar">Eliminado</string>
+    <string name="direccion">Dirección</string>
+    <string name="hora_apertura">Hora Apertura</string>
+    <string name="hora_cierre">Hora de Cierre</string>
 
 </resources>

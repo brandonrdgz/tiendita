@@ -12,23 +12,13 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageButton
+            <ImageView
                android:id="@+id/ib_img_sucursal_det_sucursal"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
+                android:layout_gravity="center"
                 android:src="@drawable/img_businness"
                 android:layout_margin="10dp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_margin="10dp"
-                android:text="Editar esto con datos de tienda\nComo nombre, horario, lugar"
-                android:textSize="18dp"/>
-        </LinearLayout>
-
         <!--Nombre-->
         <LinearLayout
             android:layout_width="match_parent"
@@ -80,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:fontFamily="@font/myriadproregular"
-                    android:hint="@string/nombre"
+                    android:hint="@string/direccion"
                     android:inputType="text"
                     android:textSize="15sp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -108,8 +98,8 @@
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:fontFamily="@font/myriadproregular"
-                    android:hint="@string/nombre"
-                    android:inputType="text"
+                    android:hint="@string/hora_apertura"
+                    android:inputType="time"
                     android:textSize="15sp" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
@@ -136,8 +126,8 @@
                    android:layout_height="wrap_content"
                    android:background="@color/white"
                    android:fontFamily="@font/myriadproregular"
-                   android:hint="@string/nombre"
-                   android:inputType="text"
+                   android:hint="@string/hora_cierre"
+                   android:inputType="time"
                    android:textSize="15sp" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
@@ -198,7 +188,7 @@
                android:fontFamily="@font/myriadproregular"
                android:textSize="18dp"
                android:layout_margin="25dp"
-               android:text="@string/eliminarBtn"/>
+               android:text="@string/descartarBtn"/>
 
             <com.google.android.material.button.MaterialButton
                android:id="@+id/mb_guardar_det_sucursal"
@@ -207,7 +197,7 @@
                android:fontFamily="@font/myriadproregular"
                android:textSize="18dp"
                android:layout_margin="25dp"
-               android:text="@string/editarBtn"/>
+               android:text="@string/guardarBtn"/>
         </LinearLayout>
     </LinearLayout>
 

@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -66,7 +67,7 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
     Guarda una nueva sucursal, desde la lista de sucursales-accion agregar nueva
     **Solo cuando el usuairo es negocio redirecciona al frgamento editar productos
      */
-    private ImageButton ibImgSucursal;
+    private ImageView ibImgSucursal;
     private TextInputLayout tilNombre;
     private TextInputLayout tilDireccion;
     private TextInputLayout tilHoraApertura;
@@ -368,7 +369,6 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
         String horaCierre = tilHoraCierre.getEditText().getText().toString();
 
         if (esSucursalNueva) {
-            AccionesFirebaseRTDataBase.insertLocalImgRef(sucursal.getSucursalID(), currentPath, this.getContext());
             AccionesFireStorage.loadImage(AccionesFirebaseAuth.getUID(),
                     currentPath,
                     this.getContext(),
@@ -392,7 +392,7 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
                             sucursalNueva.setDireccion(direccion);
                             sucursalNueva.setHoraAper(horaApertura);
                             sucursalNueva.setHoraCierre(horaCierre);
-
+                            AccionesFirebaseRTDataBase.insertLocalImgRef(sucursalNueva.getSucursalID(), currentPath, DetallesSucursalFragment.this.getContext());
                             latitudLongitudDeDireccion(sucursalNueva.getDireccion(), new CallbackGeneral<Address>() {
                                 @Override
                                 public void enInicio() {
@@ -433,7 +433,7 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
         else {
             //si se cambio la imagen de usuario se actualiza la referencia remota
             if (imgHasChange) {
-                AccionesFirebaseRTDataBase.updateLocalImgRef(sucursal.getSucursalID(), currentPath, this.getContext());
+
                 AccionesFireStorage.updateImage(AccionesFirebaseAuth.getUID(),
                         sucursal.getRemoteImg(),
                         currentPath,
@@ -458,6 +458,7 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
                                 sucursalEditada.setHoraAper(horaApertura);
                                 sucursalEditada.setHoraCierre(horaCierre);
                                 sucursalEditada.setDireccion(sucursal.getDireccion());
+                                AccionesFirebaseRTDataBase.updateLocalImgRef(sucursal.getSucursalID(), currentPath, DetallesSucursalFragment.this.getContext());
                                 boolean direccionHaCambiado = ! sucursal.getDireccion().equals(direccion);
 
                                 if (direccionHaCambiado) {
