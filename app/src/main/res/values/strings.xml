@@ -11,6 +11,18 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
 
+    <string name="contactanos">Contáctanos</string>
+    <string name="versionApp">Tiendita v1.0</string>
+    <string name="integrantes">Integrantes</string>
+    <string name="nombreUno">Butrón Cañada Juan Jesús</string>
+    <string name="nombreDos">Díaz Rodríguez Andrés Heladio</string>
+    <string name="nombreTres">Reyes Montiel Fernando Braulio</string>
+    <string name="nombreCuatro">Rodríguez Duarte Brandon Iván</string>
+    <string name="materia">Materia</string>
+    <string name="nombreMateria">Desarrollo Móvil</string>
+    <string name="profesor">Profesor</string>
+    <string name="nombreProfesor">Pulido Alba Rocío Elizabeth</string>
+
     //String globales
     <string name="iniciarSesion">INICIAR SESIÓN</string>
     <string name="registro">REGISTRO</string>
