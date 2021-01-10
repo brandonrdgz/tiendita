@@ -2,6 +2,8 @@ package com.example.tiendita.ui.tiendas;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
@@ -250,6 +252,9 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
 
     private void mbAdminProductosClic() {
         //Implementar la acción para administrar los productos de la sucursal
+        Bundle data = new Bundle();
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_nav_detalle_sucursaln_to_nav_listado_productos, data);
     }
 
     private void mbEliminarSucursalClic() {

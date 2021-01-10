@@ -78,6 +78,9 @@
             android:id="@+id/action_nav_detalle_sucursaln_to_nav_editar_productos"
             app:destination="@id/nav_editar_productos" />
         <action
+        android:id="@+id/action_nav_detalle_sucursaln_to_nav_listado_productos"
+        app:destination="@id/nav_listado_productos" />
+        <action
             android:id="@+id/action_nav_detalle_sucursaln_to_nav_mapn"
             app:destination="@id/nav_mapn" />
     </fragment>
@@ -92,7 +95,19 @@
             app:argType="boolean"
             android:defaultValue="true" />
     </fragment>
-
+    <fragment
+        android:id="@+id/nav_listado_productos"
+        android:name="com.example.tiendita.ui.tiendas.ListadoProductosFragment"
+        android:label="Listado de Productos"
+        tools:layout="@layout/fragment_listado_productos">
+        <argument
+            android:name="esNegocio"
+            app:argType="boolean"
+            android:defaultValue="true" />
+        <action
+            android:id="@+id/action_nav_listado_producto_to_nav_editar_productos"
+            app:destination="@id/nav_editar_productos" />
+    </fragment>
 
 
 
