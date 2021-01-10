@@ -76,7 +76,7 @@ public class AccionesFireStorage {
                 }
             }
         });
-            ref
+        imgRef
                 .child(oldRemoteImg)
                 .delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

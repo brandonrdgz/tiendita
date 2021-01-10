@@ -40,9 +40,8 @@ public boolean insertRef(
             String id,
             String imagenPath){
                 ContentValues cv=new ContentValues();
-                cv.put("ID",id);
                 cv.put("IMAGEN",imagenPath);
-                return (db.update("LOCALIMG",cv,"ID = "+id,null)!=-1);
+                return (db.update("LOCALIMG",cv,"ID = '"+id+"'",null)!=-1);
          }
 
          public String getImgRef(String id){
