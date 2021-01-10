@@ -121,28 +121,17 @@ public class ListadoSucursalFragment extends Fragment implements FirebaseCallbac
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Bundle data = new Bundle();
         data.putBoolean(Constantes.CONST_NUEVA_TYPE,false);
-        data.putString(Constantes.CONST_SUCURSAL_ID,listaSucursales.get(position).getSucursalID());
-        data.putString(Constantes.CONST_SUCURSAL_NOMBRE,listaSucursales.get(position).getNombre());
-        data.putString(Constantes.CONST_SUCURSAL_DIRECCION,listaSucursales.get(position).getDireccion());
-        data.putString(Constantes.CONST_SUCURSAL_HORAAPER,listaSucursales.get(position).getHoraAper());
-        data.putString(Constantes.CONST_SUCURSAL_HORACIERRE,listaSucursales.get(position).getHoraCierre());
-        data.putString(Constantes.CONST_NEGOCIO_ID,listaSucursales.get(position).getNegocioID());
-        data.putDouble(Constantes.CONST_SUCURSAL_LONG,listaSucursales.get(position).getLongitud());
-        data.putDouble(Constantes.CONST_SUCURSAL_LAT,listaSucursales.get(position).getLatitud());
-        data.putString(Constantes.CONST_BASE_REMOTEIMG,listaSucursales.get(position).getRemoteImg());
+        data.putParcelable(Constantes.LLAVE_SUCURSAL, listaSucursales.get(position));
 
-
-            NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_nav_sucursales_to_nav_detalle_sucursaln, data);
-
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_nav_sucursales_to_nav_detalle_sucursaln, data);
     }
 
     @Override
     public void onClick(View v) {
         Bundle data = new Bundle();
-        data.putBoolean(Constantes.CONST_NUEVA_TYPE,false);
+        data.putBoolean(Constantes.CONST_NUEVA_TYPE, true);
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_nav_sucursales_to_nav_detalle_sucursaln, data);
-
     }
 }
