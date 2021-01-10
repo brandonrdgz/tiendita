@@ -566,8 +566,8 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
                 addressList = geocoder.getFromLocationName(direccion, 1);
                 callbackGeneral.enExito(addressList.get(0));
             }
-            catch (IOException ioException) {
-                callbackGeneral.enFallo(ioException);
+            catch (IOException | IndexOutOfBoundsException exception) {
+                callbackGeneral.enFallo(exception);
             }
         });
     }
