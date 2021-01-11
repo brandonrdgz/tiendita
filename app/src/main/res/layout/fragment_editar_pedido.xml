@@ -12,8 +12,7 @@
 
 
         <LinearLayout
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:layout_margin="10dp"
             android:gravity="left"
@@ -43,8 +42,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:orientation="horizontal">
 
@@ -63,7 +61,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
                     android:fontFamily="@font/myriadproregular"
                     android:gravity="left"
                     android:text="@string/disponible"
@@ -74,7 +71,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
                     android:fontFamily="@font/myriadproregular"
                     android:gravity="left"
                     android:text="@string/disponible"
@@ -84,8 +80,6 @@
                     android:id="@+id/tv_precio_producto_pedido"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
                     android:fontFamily="@font/myriadproregular"
                     android:gravity="left"
                     android:text="@string/disponible"
@@ -98,7 +92,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
                     android:fontFamily="@font/myriadproregular"
                     android:gravity="left"
                     android:text="@string/disponible"
@@ -119,10 +112,17 @@
                         android:textColor="@color/font_color"
                         android:textSize="20dp" />
 
-                <Spinner
-                    android:id="@+id/sp_cantidad_producto_pedido"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></Spinner>
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tf_cantidad_editar_producto"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:fontFamily="@font/myriadproregular"
+                            android:padding="5dp"
+                            android:inputType="number"
+                            android:textSize="20dp"/>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -133,21 +133,24 @@
                     <Button
                         android:id="@+id/bttn_agregar_producto_pedido"
                         android:layout_weight="1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
+                        android:textSize="10dp"
                         android:text="@string/agregar"/>
                     <Button
                         android:id="@+id/bttn_quitar_producto_pedido"
                         android:layout_weight="1"
-                        android:layout_width="wrap_content"
+                        android:textSize="10dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:text="@string/quitar"/>
                     <Button
                         android:id="@+id/bttn_cancelar_producto_pedido"
                         android:layout_weight="1"
-                        android:layout_width="wrap_content"
+                        android:textSize="10dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:text="@string/cancelarBtn"/>

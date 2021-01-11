@@ -93,6 +93,7 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
 
     @Override
     public void enExito(DataSnapshot respuesta, int accion) {
+        textView.setVisibility(View.GONE);
         listaProductos=new ArrayList<>();
         for (DataSnapshot dataSnapshot : respuesta.getChildren()) {
             ProductoModelo productoModelo = new ProductoModelo();
@@ -113,16 +114,14 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
     @Override
     public void enFallo(Exception excepcion) {
         Dialogo.ocultaDialogoProceso(alertDialog);
-        Toast.makeText(this.getContext(), R.string.sin_productos_encontrados, Toast.LENGTH_LONG).show();
+        Toast.makeText(this.getContext(), R.string.sin_productos, Toast.LENGTH_LONG).show();
         textView.setVisibility(View.VISIBLE);
         listView.setVisibility(View.GONE);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Bundle data = new Bundle();
-        NavHostFragment.findNavController(this)
-                .navigate(R.id.action_nav_sucursales_to_nav_detalle_sucursaln, data);
+
     }
 
     @Override
