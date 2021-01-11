@@ -66,9 +66,15 @@ public class PedidosFragment extends Fragment implements FirebaseCallback<DataSn
         listView=root.findViewById(R.id.lv_pedidos);
         tvSinPedidos=root.findViewById(R.id.tv_sin_pedidos_label);
 
-        AccionesFirebaseRTDataBase.getListaPedidos(AccionesFirebaseAuth.getUID(),
-                                                esNegocio,
-                                                PedidosFragment.this);
+        if(esNegocio) {
+            AccionesFirebaseRTDataBase.getListaPedidos(AccionesFirebaseAuth.getUID(),
+                    esNegocio,
+                    PedidosFragment.this);
+        }else{
+            AccionesFirebaseRTDataBase.getListaPedidos(AccionesFirebaseAuth.getUID(),
+                    !esNegocio,
+                    PedidosFragment.this);
+        }
     }
 
     @Override
