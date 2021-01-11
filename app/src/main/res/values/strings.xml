@@ -112,6 +112,7 @@
     <string name="msj_error_inicio_sesion">Hubo un error al iniciar sesión</string>
     <string name="msj_error_generacion_coordenadas">Ocurrió un error al generar las coordenadas de la dirección</string>
     <string name="msj_error_guardar_datos">Ocurrió un error al guardar los datos</string>
+    <string name="msj_error_foto_no_tomada">Debe de tomar una foto primero</string>
 
     <!--Mensajes-->
     <string name="msj_registrando">Registrando</string>

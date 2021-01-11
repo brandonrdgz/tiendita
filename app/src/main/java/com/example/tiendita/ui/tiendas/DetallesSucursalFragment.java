@@ -425,9 +425,21 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
     }
 
     private void mbGuardarClic() {
-        if (camposValidos()) {
+        if (haTomadoFoto() && camposValidos()) {
             datosDeCampos();
         }
+    }
+
+    private boolean haTomadoFoto() {
+        boolean fotoTomada = currentPath != null;
+        boolean fotoNoTomada = ! fotoTomada;
+
+        if (fotoNoTomada) {
+            Snackbar.make(this.getView(), R.string.msj_error_foto_no_tomada, Snackbar.LENGTH_LONG)
+               .show();
+        }
+
+        return fotoTomada;
     }
 
     private boolean camposValidos() {
