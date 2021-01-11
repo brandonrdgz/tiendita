@@ -48,6 +48,7 @@ public class AccionesFirebaseRTDataBase {
     public static final int DELETE_SUCURSAL_ACCTION=17;
     public static final int DELETE_PRODUCTOS_ACCTION=18;
     public static final int DELETE_PEDIDOS_DE_SUCURSAL_ACCTION=19;
+    public static final int UPDATE_PEDIDO_ACCTION=20;
     
 
     public static void getUser(String UID,FirebaseCallback<DataSnapshot> firebaseCallback){
@@ -329,6 +330,25 @@ public class AccionesFirebaseRTDataBase {
             @Override
             public void onSuccess(Void aVoid) {
                 firebaseCallback.enExito(null,INSERT_PEDIDO_ACCTION);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                firebaseCallback.enFallo(e);
+            }
+        });
+    }
+    public static void updatePedido(PedidoModelo pedidoModelo,
+                                    FirebaseCallback<DataSnapshot> firebaseCallback){
+        firebaseCallback.enInicio();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference
+                .child(Constantes.NODO_PEDIDOS)
+                .child(pedidoModelo.getPedidoID())
+                .setValue(pedidoModelo).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                firebaseCallback.enExito(null,UPDATE_PEDIDO_ACCTION);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

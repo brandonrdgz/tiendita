@@ -62,6 +62,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
     private UsuarioModelo currentUser;
     private ArrayList<ProductosPedidoModelo> listaPedido;
     private AlertDialog alertDialog;
+    private Boolean done;
 
     public static DetallePedidoFragment newInstance() {
         return new DetallePedidoFragment();
@@ -106,6 +107,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
         bttnCancelar.setOnClickListener(this);
 
         if (esNegocio) {
+            done=false;
             bttnEditar.setVisibility(View.GONE);
             AccionesFirebaseRTDataBase.getUser(currentPedido.getClienteID(),
                     this);
@@ -337,8 +339,19 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
 
         if(banDialogo){
             showDialog(currentProductosPedidoModelo);
+            banDialogo=!banDialogo;
         }else{
+            if(esNegocio){
+                if(done){
+                    AccionesFirebaseRTDataBase.getListaProductosPedido(currentPedido.getPedidoID(), this);
+                }else {
+                    done=true;
+                    AccionesFirebaseRTDataBase.getSucursal(currentPedido.getNegocioID(), currentPedido.getSucursalID(),
+                            this);
+                }
+            }else {
                 AccionesFirebaseRTDataBase.getListaProductosPedido(currentPedido.getPedidoID(), this);
+            }
 
 
         }
