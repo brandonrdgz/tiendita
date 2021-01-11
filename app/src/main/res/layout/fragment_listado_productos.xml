@@ -13,8 +13,7 @@
         android:id="@+id/tv_sin_productos_label"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginBottom="10dp"
+        android:layout_weight="5"
         android:fontFamily="@font/myriadproregular"
         android:gravity="center"
         android:text="@string/sin_productos"
@@ -26,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="top"
-        android:layout_weight="1"/>
+        android:layout_weight="5"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bttn_agregar_producto_sucursal"

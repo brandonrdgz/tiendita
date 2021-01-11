@@ -53,15 +53,14 @@ import static android.content.DialogInterface.BUTTON_POSITIVE;
 
 public class EditarPedidoFragment extends Fragment implements View.OnClickListener,
         FirebaseCallback<DataSnapshot>,
-        AdapterView.OnItemClickListener,
         DownloadCallback<Task<FileDownloadTask.TaskSnapshot>>,
         DialogInterface.OnClickListener
         {
     private ImageView ivBuscar,ivProducto;
     private EditText tfBusqueda;
+            private EditText tfCantidad;
     private ListView lvDisponible,lvPedido;
     private TextView tvNombre,tvDescripcion,tvPrecio,tvDisponible,tvCantidad,tvSinProductos,tvProductos,tvPedido;
-    private Spinner spCantidad; 
     private Button bttnAgregaProd, bttnGuardarPedido, bttnCancelarEdicionPedido, bttnCancelarProducto, bttnQuitarProducto;
     private String sucursalId;
     private Boolean esEdicion, esAdicion,seHaEliminado;
@@ -121,7 +120,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
         tvSinProductos=root.findViewById(R.id.tv_sin_productos_label);
         tvProductos=root.findViewById(R.id.tv_disponibles_productos_label);
         tvPedido=root.findViewById(R.id.tv_pedido_productos_label);
-        spCantidad=root.findViewById(R.id.sp_cantidad_producto_pedido);
+        tvCantidad=root.findViewById(R.id.tf_cantidad_editar_producto);
         bttnGuardarPedido =root.findViewById(R.id.bttn_guardar_pedido_editar);
         bttnCancelarEdicionPedido =root.findViewById(R.id.bttn_cancelar_pedido_editar);
         bttnAgregaProd=root.findViewById(R.id.bttn_agregar_producto_pedido);
@@ -184,7 +183,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
             tvPrecio.setVisibility(View.GONE);
             tvDescripcion.setVisibility(View.GONE);
             tvDisponible.setVisibility(View.GONE);
-            spCantidad.setVisibility(View.GONE);
+            tvCantidad.setVisibility(View.GONE);
             tvCantidad.setVisibility(View.GONE);
             bttnAgregaProd.setVisibility(View.GONE);
             bttnCancelarProducto.setVisibility(View.GONE);
@@ -195,7 +194,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
             tvPrecio.setVisibility(View.VISIBLE);
             tvDescripcion.setVisibility(View.VISIBLE);
             tvDisponible.setVisibility(View.VISIBLE);
-            spCantidad.setVisibility(View.VISIBLE);
+            tvCantidad.setVisibility(View.VISIBLE);
             tvCantidad.setVisibility(View.VISIBLE);
             bttnAgregaProd.setVisibility(View.VISIBLE);
             bttnCancelarProducto.setVisibility(View.VISIBLE);
@@ -263,34 +262,46 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
             }
             break;
             case R.id.bttn_agregar_producto_pedido:{
-                if(esAdicion){
-                    //adicion del nuevo producto a la lista del pedido
-                        ProductosPedidoModelo productosPedidoModelo=new ProductosPedidoModelo();
-                        productosPedidoModelo.setCantidad(spCantidad.getSelectedItemPosition()-1);
-                        productosPedidoModelo.setDescripcion(currentProd.getDescripcion());
-                        productosPedidoModelo.setNombreProducto(currentProd.getNombreProducto());
-                        if(esEdicion) {
-                            productosPedidoModelo.setPedidoID(currentPedido.getPedidoID());
-                        }
-                        productosPedidoModelo.setPrecio(currentProd.getPrecio());
-                        productosPedidoModelo.setRemoteImg(currentProd.getRemoteImg());
-                        productosPedidoModelo.setProductoId(currentProd.getProductoId());
-                        productosPedidoModelo.setSucursalId(currentProd.getSucursalId());
-                        listaPedido.add(productosPedidoModelo);
-                        int diferencia=currentProd.getCantidad()-productosPedidoModelo.getCantidad();
-                        currentProd.setCantidad(diferencia);
-                    actualizaListas(0);
-                }else{
-                    //modificacion de la cantidad del producto en la lista del pedido
-                    if((spCantidad.getSelectedItemPosition()-1)!=currentProd.getCantidad()) {
-                        int prodIndex = getIndex(true, currentProdPedido.getProductoId());
-                        if (prodIndex<0) {
-                            Toast.makeText(this.getContext(), R.string.error_cargar_datos, Toast.LENGTH_LONG).show();
-                        } else {
-                            int suma = listaProductos.get(prodIndex).getCantidad() + currentProdPedido.getCantidad();
-                            currentProdPedido.setCantidad(spCantidad.getSelectedItemPosition() - 1);
-                            listaProductos.get(prodIndex).setCantidad(suma - spCantidad.getSelectedItemPosition() - 1);
+                    if (esAdicion) {
+                        //adicion del nuevo producto a la lista del pedido
+                        if(Integer.parseInt(tvCantidad.getText().toString())>currentProd.getCantidad()) {
+                            ProductosPedidoModelo productosPedidoModelo = new ProductosPedidoModelo();
+                            productosPedidoModelo.setCantidad(Integer.parseInt(tvCantidad.getText().toString()));
+                            productosPedidoModelo.setDescripcion(currentProd.getDescripcion());
+                            productosPedidoModelo.setNombreProducto(currentProd.getNombreProducto());
+                            if (esEdicion) {
+                                productosPedidoModelo.setPedidoID(currentPedido.getPedidoID());
+                            }
+                            productosPedidoModelo.setPrecio(currentProd.getPrecio());
+                            productosPedidoModelo.setRemoteImg(currentProd.getRemoteImg());
+                            productosPedidoModelo.setProductoId(currentProd.getProductoId());
+                            productosPedidoModelo.setSucursalId(currentProd.getSucursalId());
+                            listaPedido.add(productosPedidoModelo);
+                            int diferencia = currentProd.getCantidad() - productosPedidoModelo.getCantidad();
+                            currentProd.setCantidad(diferencia);
                             actualizaListas(0);
+                        }else{
+                            Toast.makeText(this.getContext(), R.string.error_exceso,Toast.LENGTH_LONG).show();
+
+                        }
+                    } else {
+                        //modificacion de la cantidad del producto en la lista del pedido
+                        if (Integer.parseInt(tvCantidad.getText().toString()) != currentProd.getCantidad()) {
+                            int prodIndex = getIndex(true, currentProdPedido.getProductoId());
+                            if (prodIndex < 0) {
+                                Toast.makeText(this.getContext(), R.string.error_cargar_datos, Toast.LENGTH_LONG).show();
+                            } else {
+                                if(Integer.parseInt(tvCantidad.getText().toString())>currentProd.getCantidad()) {
+                               // int suma = listaProductos.get(prodIndex).getCantidad() + currentProdPedido.getCantidad();
+                                    int diferencia = currentProd.getCantidad() - Integer.parseInt(tvCantidad.getText().toString());
+                                currentProdPedido.setCantidad(Integer.parseInt(tvCantidad.getText().toString()));
+                                listaProductos.get(prodIndex).setCantidad(diferencia);
+                                actualizaListas(0);
+                                }else{
+                                    Toast.makeText(this.getContext(), R.string.error_exceso,Toast.LENGTH_LONG).show();
+
+                                }
+
                         }
                     }
                 }
@@ -411,7 +422,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
                         android.R.layout.simple_list_item_1,
                         listaProductos);
                 lvDisponible.setAdapter(adapter);
-                lvDisponible.setOnItemClickListener(this);
+                actualizaListas(1);
                 if(esEdicion){
                     AccionesFirebaseRTDataBase.getListaProductosPedido(currentPedido.getPedidoID(),this);
                 }
@@ -434,7 +445,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
                         android.R.layout.simple_list_item_1,
                         listaPedido);
                 lvPedido.setAdapter(adapter);
-                lvPedido.setOnItemClickListener(this);
+                actualizaListas(2);
 
             }
             break;
@@ -505,77 +516,23 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
 
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        switch (view.getId()){
-            case R.id.lv_disponible:{
-                currentProd=listaProductos.get(position);
-                currentProdPedido=null;
-                String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentProd.getProductoId(),getContext());
-                File filePhoto = new File(localRef);
-                if (filePhoto.exists()) {
-                    showProduct(true);
-                } else {
-                    AccionesFireStorage.downloadImg(currentProd.getRemoteImg(),
-                            getActivity(),
-                            getContext(),
-                            this,
-                            currentProd.getProductoId());
-                }
-
-            }
-                break;
-            case R.id.lv_pedido:{
-                currentProdPedido=listaPedido.get(position);
-                currentProd=null;
-                String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentProdPedido.getProductoId(),getContext());
-                File filePhoto = new File(localRef);
-                if (filePhoto.exists()) {
-                    showProduct(false);
-                } else {
-                    AccionesFireStorage.downloadImg(currentProdPedido.getRemoteImg(),
-                            getActivity(),
-                            getContext(),
-                            this,
-                            currentProdPedido.getProductoId());
-                }
-
-
-            }
-            break;
-        }
-
-    }
 
     private void showProduct(boolean esProductodeListaDisp) {
         if(esProductodeListaDisp) {
             int prodIndex=getIndex(false,currentProd.getProductoId());
             if(prodIndex<0){
                 tvDisponible.setText(currentProd.getCantidad()+"");
-                String[] opciones=new String[currentProd.getCantidad()];
-                for(int i=0;i<currentProd.getCantidad();i++){
-                    opciones[i]=(i+1)+"";
-                }
-                ArrayAdapter<String> comboAdapter=new ArrayAdapter<String>(this.getActivity(),R.layout.support_simple_spinner_dropdown_item,opciones);
-                spCantidad.setAdapter(comboAdapter);
                 esAdicion=true;
             }else {
                 int suma=currentProd.getCantidad()+listaPedido.get(prodIndex).getCantidad();
                 tvDisponible.setText(suma+"");
-                String[] opciones=new String[suma];
-                for(int i=0;i<suma;i++){
-                    opciones[i]=(i+1)+"";
-                }
-                ArrayAdapter<String> comboAdapter=new ArrayAdapter<String>(this.getActivity(),R.layout.support_simple_spinner_dropdown_item,opciones);
-                spCantidad.setAdapter(comboAdapter);
                 esAdicion=false;
             }
-
-
             String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentProd.getProductoId(),getContext());
             ImageManager.loadImage(localRef,ivProducto,this.getContext());
             tvNombre.setText(currentProd.getNombreProducto());
             tvDescripcion.setText(currentProd.getDescripcion());
+            tvPrecio.setText("$"+currentProd.getPrecio());
             bttnAgregaProd.setText(R.string.agregar);
             bttnCancelarProducto.setText(R.string.cancelarBtn);
             hidePanel(false);
@@ -591,14 +548,8 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
                 ivProducto.setVisibility(View.GONE);
                 tvNombre.setText(currentProdPedido.getNombreProducto());
                 tvDescripcion.setText(currentProdPedido.getDescripcion());
+                tvPrecio.setText("$"+currentProdPedido.getPrecio());
                 tvDisponible.setText(suma);
-                String[] opciones = new String[suma];
-                for (int i = 0; i < suma; i++) {
-                    opciones[i] = (i + 1) + "";
-                }
-                ArrayAdapter<String> comboAdapter = new ArrayAdapter<String>(this.getActivity(), R.layout.support_simple_spinner_dropdown_item, opciones);
-                spCantidad.setAdapter(comboAdapter);
-                spCantidad.setSelection(currentProd.getCantidad() - 1);
                 bttnAgregaProd.setText(R.string.guardarBtn);
                 bttnCancelarProducto.setText(R.string.descartarBtn);
                 esAdicion=false;
@@ -616,26 +567,94 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
                         android.R.layout.simple_list_item_1,
                         listaProductos);
                 lvDisponible.setAdapter(adapter);
-                lvDisponible.setOnItemClickListener(this);
+                lvDisponible.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        currentProd=listaProductos.get(position);
+                        currentProdPedido=null;
+                        String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentProd.getProductoId(),getContext());
+                        File filePhoto = new File(localRef);
+                        if (filePhoto.exists()) {
+                            showProduct(true);
+                        } else {
+                            AccionesFireStorage.downloadImg(currentProd.getRemoteImg(),
+                                    getActivity(),
+                                    getContext(),
+                                    EditarPedidoFragment.this,
+                                    currentProd.getProductoId());
+                        }
+                    }
+                });
                 ArrayAdapter<ProductosPedidoModelo> adapter2 = new ArrayAdapter<>(this.getContext(),
                         android.R.layout.simple_list_item_1,
                         listaPedido);
                 lvPedido.setAdapter(adapter2);
-                lvPedido.setOnItemClickListener(this);
+                lvPedido.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        currentProdPedido=listaPedido.get(position);
+                        currentProd=null;
+                        String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentProdPedido.getProductoId(),getContext());
+                        File filePhoto = new File(localRef);
+                        if (filePhoto.exists()) {
+                            showProduct(false);
+                        } else {
+                            AccionesFireStorage.downloadImg(currentProdPedido.getRemoteImg(),
+                                    getActivity(),
+                                    getContext(),
+                                    EditarPedidoFragment.this,
+                                    currentProdPedido.getProductoId());
+                        }
+                    }
+                });
             }break;
             case 1: {
                 ArrayAdapter<ProductoModelo> adapter = new ArrayAdapter<>(this.getContext(),
                         android.R.layout.simple_list_item_1,
                         listaProductos);
                 lvDisponible.setAdapter(adapter);
-                lvDisponible.setOnItemClickListener(this);
+                lvDisponible.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        currentProd=listaProductos.get(position);
+                        currentProdPedido=null;
+                        String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentProd.getProductoId(),getContext());
+                        File filePhoto = new File(localRef);
+                        if (filePhoto.exists()) {
+                            showProduct(true);
+                        } else {
+                            AccionesFireStorage.downloadImg(currentProd.getRemoteImg(),
+                                    getActivity(),
+                                    getContext(),
+                                    EditarPedidoFragment.this,
+                                    currentProd.getProductoId());
+                        }
+                    }
+                });
             }break;
             case 2: {
                 ArrayAdapter<ProductosPedidoModelo> adapter2 = new ArrayAdapter<>(this.getContext(),
                         android.R.layout.simple_list_item_1,
                         listaPedido);
                 lvPedido.setAdapter(adapter2);
-                lvPedido.setOnItemClickListener(this);
+                lvPedido.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        currentProdPedido=listaPedido.get(position);
+                        currentProd=null;
+                        String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentProdPedido.getProductoId(),getContext());
+                        File filePhoto = new File(localRef);
+                        if (filePhoto.exists()) {
+                            showProduct(false);
+                        } else {
+                            AccionesFireStorage.downloadImg(currentProdPedido.getRemoteImg(),
+                                    getActivity(),
+                                    getContext(),
+                                    EditarPedidoFragment.this,
+                                    currentProdPedido.getProductoId());
+                        }
+                    }
+                });
             }break;
         }
 

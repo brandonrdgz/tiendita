@@ -45,6 +45,7 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
     private AlertDialog alertDialog;
 
     private boolean esNegocio;
+    private String nombreSucursal, idNegocio, idSucursal;
     private SucursalModelo sucursal;
 
     public static ListadoProductosFragment newInstance() {
@@ -62,6 +63,9 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
     private void recuperaDatosSucursal(Bundle datos, View root) {
         if (datos != null) {
             esNegocio = datos.getBoolean(Constantes.CONST_NEGOCIO_TYPE);
+            nombreSucursal = datos.getString("nombreSucursal");
+            idNegocio = datos.getString("idNegocio");
+            idSucursal = datos.getString("idSucursal");
             sucursal = datos.getParcelable(Constantes.LLAVE_SUCURSAL);
             initComp(root);
         }
@@ -94,6 +98,9 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
     @Override
     public void enExito(DataSnapshot respuesta, int accion) {
         listaProductos = new ArrayList<>();
+
+        textView.setVisibility(View.GONE);
+        listaProductos=new ArrayList<>();
         for (DataSnapshot dataSnapshot : respuesta.getChildren()) {
             ProductoModelo productoModelo = new ProductoModelo();
             productoModelo.setProductoId(dataSnapshot.child(Constantes.CONST_PRODUCTO_ID).getValue().toString());
@@ -116,7 +123,7 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
     @Override
     public void enFallo(Exception excepcion) {
         Dialogo.ocultaDialogoProceso(alertDialog);
-        Toast.makeText(this.getContext(), R.string.sin_productos_encontrados, Toast.LENGTH_LONG).show();
+        Toast.makeText(this.getContext(), R.string.sin_productos, Toast.LENGTH_LONG).show();
         textView.setVisibility(View.VISIBLE);
         listView.setVisibility(View.GONE);
     }
