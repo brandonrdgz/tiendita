@@ -204,6 +204,32 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
         }
         
     }
+            private void AddPanel(){
+                    ivProducto.setVisibility(View.VISIBLE);
+                    tvNombre.setVisibility(View.VISIBLE);
+                    tvPrecio.setVisibility(View.VISIBLE);
+                    tvDescripcion.setVisibility(View.VISIBLE);
+                    tvDisponible.setVisibility(View.VISIBLE);
+                    tvCantidad.setVisibility(View.VISIBLE);
+                    tfCantidad.setVisibility(View.VISIBLE);
+                    bttnAgregaProd.setVisibility(View.VISIBLE);
+                    bttnCancelarProducto.setVisibility(View.VISIBLE);
+
+
+
+            }
+            private void EditPanel(){
+                    ivProducto.setVisibility(View.VISIBLE);
+                    tvNombre.setVisibility(View.VISIBLE);
+                    tvPrecio.setVisibility(View.VISIBLE);
+                    tvDescripcion.setVisibility(View.VISIBLE);
+                    tvDisponible.setVisibility(View.VISIBLE);
+                    tvCantidad.setVisibility(View.VISIBLE);
+                    tfCantidad.setVisibility(View.VISIBLE);
+                    bttnAgregaProd.setVisibility(View.VISIBLE);
+                    bttnQuitarProducto.setVisibility(View.VISIBLE);
+
+            }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -290,16 +316,31 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
                         }
                     } else {
                         //modificacion de la cantidad del producto en la lista del pedido
-                        if (Integer.parseInt(tfCantidad.getText().toString()) != currentProd.getCantidad()) {
-                            int prodIndex = getIndex(true, currentProdPedido.getProductoId());
+
+
+
+                            int prodIndex =-1;
+                            if(currentProd==null){
+                                prodIndex = getIndex(true, currentProdPedido.getProductoId());
+                            }else if (currentProdPedido==null){
+                                prodIndex = getIndex(false, currentProd.getProductoId());
+                            }
+
                             if (prodIndex < 0) {
                                 Toast.makeText(this.getContext(), R.string.error_cargar_datos, Toast.LENGTH_LONG).show();
                             } else {
+                                if(currentProd==null){
+                                    currentProd=listaProductos.get(prodIndex);
+                                }else if (currentProdPedido==null){
+                                    currentProdPedido=listaPedido.get(prodIndex);
+                                }
+                                if (Integer.parseInt(tfCantidad.getText().toString()) != currentProd.getCantidad()) {
                                 if(Integer.parseInt(tfCantidad.getText().toString())<=currentProd.getCantidad()) {
                                // int suma = listaProductos.get(prodIndex).getCantidad() + currentProdPedido.getCantidad();
+                                    //
                                     int diferencia = currentProd.getCantidad() - Integer.parseInt(tfCantidad.getText().toString());
                                 currentProdPedido.setCantidad(Integer.parseInt(tfCantidad.getText().toString()));
-                                listaProductos.get(prodIndex).setCantidad(diferencia);
+                                currentProd.setCantidad(diferencia);
                                 actualizaListas(0);
                                     hidePanel(true);
                                 }else{
@@ -542,21 +583,22 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
             if(prodIndex<0){
                 tvDisponible.setText(currentProd.getCantidad()+"");
                 esAdicion=true;
+                AddPanel();
+                bttnAgregaProd.setText(R.string.agregar);
             }else {
                 int suma=currentProd.getCantidad()+listaPedido.get(prodIndex).getCantidad();
                 tvDisponible.setText(suma+"");
                 esAdicion=false;
+                EditPanel();
+                tfCantidad.setText(listaPedido.get(prodIndex).getCantidad());
+                bttnAgregaProd.setText(R.string.guardarBtn);
             }
             String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentProd.getProductoId(),getContext());
             ImageManager.loadImage(localRef,ivProducto,this.getContext());
             tvNombre.setText(currentProd.getNombreProducto());
             tvDescripcion.setText(currentProd.getDescripcion());
             tvPrecio.setText("$"+currentProd.getPrecio());
-            bttnAgregaProd.setText(R.string.agregar);
-            bttnCancelarProducto.setText(R.string.cancelarBtn);
-            tfCantidad.setText("");
-            hidePanel(false);
-            bttnQuitarProducto.setVisibility(View.GONE);
+
         }else{
             int prodIndex=getIndex(true,currentProdPedido.getProductoId());
             if(prodIndex<0){
@@ -570,10 +612,10 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
                 tvDescripcion.setText(currentProdPedido.getDescripcion());
                 tvPrecio.setText("$"+currentProdPedido.getPrecio());
                 tvDisponible.setText(suma+"");
+                tfCantidad.setText(currentProdPedido.getCantidad());
                 bttnAgregaProd.setText(R.string.guardarBtn);
-                bttnCancelarProducto.setText(R.string.descartarBtn);
                 esAdicion=false;
-                hidePanel(false);
+                EditPanel();
             }
 
         }

@@ -149,7 +149,8 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
                 if(localRef!=null) {
                     File filePhoto = new File(localRef);
                     if (filePhoto.exists()) {
-                        AccionesFirebaseRTDataBase.getListaProductosPedido(currentPedido.getPedidoID(), this);
+                        AccionesFirebaseRTDataBase.getSucursal(currentPedido.getNegocioID(),currentPedido.getSucursalID(),
+                                this);
                     } else {
                         AccionesFireStorage.downloadImg(currentUser.getRemoteImg(),
                                 this.getActivity(),
@@ -337,7 +338,8 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
         if(banDialogo){
             showDialog(currentProductosPedidoModelo);
         }else{
-            AccionesFirebaseRTDataBase.getListaProductosPedido(currentPedido.getPedidoID(),this);
+                AccionesFirebaseRTDataBase.getListaProductosPedido(currentPedido.getPedidoID(), this);
+
 
         }
 
