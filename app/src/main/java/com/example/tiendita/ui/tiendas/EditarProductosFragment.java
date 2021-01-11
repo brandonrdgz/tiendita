@@ -138,9 +138,14 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bttn_descartar_producto_editar:
-                llenarCampos(producto);
-                modificarCampos(false);
-                editarProducto();
+                if (producto.getNombreProducto() != null) {
+                    llenarCampos(producto);
+                    modificarCampos(false);
+                    editarProducto();
+                } else {
+                    limpiarCampos();
+                    agregarProducto();
+                }
                 break;
             case R.id.ib_imagen_producto_editar:
                 takePhoto();
@@ -442,7 +447,7 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
         guardar.setVisibility(View.GONE);
     }
 
-    private void modificarBotones(boolean trueORfalse){
+    private void modificarBotones(boolean trueORfalse) {
         eliminar.setEnabled(trueORfalse);
         descartar.setEnabled(trueORfalse);
         editar.setEnabled(trueORfalse);
