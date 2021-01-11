@@ -23,13 +23,17 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.tiendita.R;
+import com.example.tiendita.datos.firebase.AccionesFirebaseAuth;
 import com.example.tiendita.datos.firebase.AccionesFirebaseRTDataBase;
+import com.example.tiendita.datos.firebase.FirebaseCallback;
 import com.example.tiendita.utilidades.Constantes;
+import com.google.firebase.database.DataSnapshot;
+
 import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
 
 
-public class HomeFragment extends Fragment implements DialogInterface.OnClickListener, View.OnClickListener{
+public class HomeFragment extends Fragment implements DialogInterface.OnClickListener, View.OnClickListener {
 
     private HomeViewModel homeViewModel;
     private boolean esNegocio;
@@ -57,11 +61,11 @@ public class HomeFragment extends Fragment implements DialogInterface.OnClickLis
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                android.app.AlertDialog.Builder dialogo= new android.app.AlertDialog.Builder(getContext());
+                android.app.AlertDialog.Builder dialogo = new android.app.AlertDialog.Builder(getContext());
                 dialogo.setTitle(R.string.header_salir);
                 dialogo.setMessage(R.string.message_salir);
                 dialogo.setPositiveButton(R.string.action_salir, HomeFragment.this);
-                dialogo.setNegativeButton(R.string.action_cancelar,HomeFragment.this);
+                dialogo.setNegativeButton(R.string.action_cancelar, HomeFragment.this);
                 dialogo.show();
             }
         };
@@ -125,7 +129,7 @@ public class HomeFragment extends Fragment implements DialogInterface.OnClickLis
                 if (esNegocio) {
                     NavHostFragment.findNavController(this)
                             .navigate(R.id.action_nav_homen_to_nav_perfiln);
-                  } else {
+                } else {
                     NavHostFragment.findNavController(this)
                             .navigate(R.id.action_nav_homeu_to_nav_mapu);
                 }
@@ -134,19 +138,19 @@ public class HomeFragment extends Fragment implements DialogInterface.OnClickLis
                 if (esNegocio) {
                     NavHostFragment.findNavController(this)
                             .navigate(R.id.action_nav_homen_to_nav_pedidosn);
-                   } else {
+                } else {
                     NavHostFragment.findNavController(this)
                             .navigate(R.id.action_nav_homeu_to_nav_pedidosu);
-                     }
+                }
                 break;
             case R.id.imgBttnMiddle:
                 if (esNegocio) {
                     NavHostFragment.findNavController(this)
                             .navigate(R.id.action_nav_homen_to_nav_sucursales);
-                     } else {
+                } else {
                     NavHostFragment.findNavController(this)
                             .navigate(R.id.action_nav_homeu_to_nav_perfilu);
-                   }
+                }
                 break;
             case R.id.imgBttnBottom:
                 if (esNegocio) {
@@ -155,7 +159,8 @@ public class HomeFragment extends Fragment implements DialogInterface.OnClickLis
                 } else {
                     NavHostFragment.findNavController(this)
                             .navigate(R.id.action_nav_homeu_to_nav_info);
-                } break;
+                }
+                break;
         }
     }
 

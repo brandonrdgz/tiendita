@@ -40,8 +40,10 @@ import com.example.tiendita.utilidades.Dialogo;
 import com.example.tiendita.utilidades.ExcepcionUtilidades;
 import com.example.tiendita.utilidades.ImageManager;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.storage.FileDownloadTask;
 
 import java.io.File;
@@ -57,7 +59,7 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
     private EditarProductosViewModel mViewModel;
     private TextInputEditText nombre, cantidad, precio, presentacion;
     private ImageButton imageButton;
-    private Button descartar, guardar;
+    private Button descartar, guardar, eliminar, editar;
 
     public static final int REQUEST_TAKE_PHOTO = 1;
     public static String currentPath;
@@ -85,6 +87,7 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
             sucursal = datos.getParcelable(Constantes.LLAVE_SUCURSAL);
             producto = new ProductoModelo();
             producto.setProductoId(datos.getString("idProducto"));
+            producto.setSucursalId(sucursal.getSucursalID());
             producto.setNombreProducto(datos.getString("nombreProducto"));
             producto.setPrecio(datos.getFloat("precioProducto"));
             producto.setCantidad(datos.getInt("cantidadProducto"));
@@ -102,15 +105,24 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
         precio = root.findViewById(R.id.tf_precio_producto_editar);
         presentacion = root.findViewById(R.id.tf_presentacion_producto_editar);
         imageButton = root.findViewById(R.id.ib_imagen_producto_editar);
-        descartar = root.findViewById(R.id.bttn_descartar_producto_editar);//Borrar, Descartar
-        guardar = root.findViewById(R.id.bttn_guardar_producto_editar);//Guardar, Editar
+        descartar = root.findViewById(R.id.bttn_descartar_producto_editar);
+        guardar = root.findViewById(R.id.bttn_guardar_producto_editar);
+        eliminar = root.findViewById(R.id.bttn_eliminar_producto_editar);
+        editar = root.findViewById(R.id.bttn_editar_producto_editar);
 
         descartar.setOnClickListener(this::onClick);
         guardar.setOnClickListener(this::onClick);
+        eliminar.setOnClickListener(this::onClick);
+        editar.setOnClickListener(this::onClick);
         imageButton.setOnClickListener(this::onClick);
 
         if (producto.getNombreProducto() != null) { //si se va a editar un producto
             llenarCampos(producto);
+            editarProducto();
+            modificarCampos(false);
+        } else {
+            agregarProducto();
+            modificarCampos(true);
         }
 
     }
@@ -126,13 +138,27 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bttn_descartar_producto_editar:
-                limpiarCampos();
+                if (producto.getNombreProducto() != null) {
+                    llenarCampos(producto);
+                    modificarCampos(false);
+                    editarProducto();
+                } else {
+                    limpiarCampos();
+                    agregarProducto();
+                }
                 break;
             case R.id.ib_imagen_producto_editar:
                 takePhoto();
                 break;
             case R.id.bttn_guardar_producto_editar:
                 datosDeCampos();
+                break;
+            case R.id.bttn_editar_producto_editar:
+                modificarCampos(true);
+                agregarProducto();
+                break;
+            case R.id.bttn_eliminar_producto_editar:
+                eliminarDatosProducto();
                 break;
         }
     }
@@ -173,6 +199,7 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
                                 productoNuevo.setDescripcion(presentacion.getText().toString());
                                 AccionesFirebaseRTDataBase.insertLocalImgRef(productoNuevo.getProductoId(), currentPath, EditarProductosFragment.this.getContext());
                                 guardaDatosProducto(productoNuevo, R.string.msj_registro_exitoso);
+                                producto = productoNuevo;
                             }
 
                             @Override
@@ -210,6 +237,7 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
                                     productoNuevo.setDescripcion(presentacion.getText().toString());
                                     AccionesFirebaseRTDataBase.updateLocalImgRef(productoNuevo.getProductoId(), currentPath, EditarProductosFragment.this.getContext());
                                     guardaDatosProducto(productoNuevo, R.string.msj_registro_exitoso);
+                                    producto = productoNuevo;
                                 }
 
                                 @Override
@@ -230,6 +258,7 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
                     productoNuevo.setPrecio(Float.parseFloat(precio.getText().toString()));
                     productoNuevo.setDescripcion(presentacion.getText().toString());
                     guardaDatosProducto(productoNuevo, R.string.msj_registro_exitoso);
+                    producto = productoNuevo;
                 }
             }
         }
@@ -248,7 +277,8 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
                 Dialogo.ocultaDialogoProceso(alertDialog);
                 Snackbar.make(getView(), R.string.msj_guardado_datos_exitoso,
                         Snackbar.LENGTH_LONG).show();
-                limpiarCampos();
+                modificarCampos(false);
+                editarProducto();
             }
 
             @Override
@@ -258,6 +288,46 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
                         .msj_error_guardar_datos, Constantes.ETIQUETA_DETALLES_SUCURSAL);
             }
         });
+    }
+
+
+    private void eliminarDatosProducto() {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(getContext());
+        alertDialogBuilder.setMessage(R.string.msj_eliminar_producto);
+        alertDialogBuilder.setPositiveButton(R.string.action_aceptar, (dialog, which) -> {
+            //implementar la eliminación de producto
+            AccionesFirebaseRTDataBase.deleteProducto(producto.getProductoId(), producto.getSucursalId(),
+                    new FirebaseCallback<DataSnapshot>() {
+                        @Override
+                        public void enInicio() {
+                            alertDialog = Dialogo.dialogoProceso(getContext(), R.string.msj_eliminando_producto);
+                            Dialogo.muestraDialogoProceso(alertDialog);
+
+                        }
+
+                        @Override
+                        public void enExito(DataSnapshot respuesta, int accion) {
+                            Dialogo.ocultaDialogoProceso(alertDialog);
+                            Toast.makeText(EditarProductosFragment.this.getContext(), R.string.exito_eliminar, Toast.LENGTH_LONG).show();
+                            limpiarCampos();
+                            editarProducto();
+                            modificarCampos(false);
+                            modificarBotones(false);
+                        }
+
+                        @Override
+                        public void enFallo(Exception excepcion) {
+                            Dialogo.ocultaDialogoProceso(alertDialog);
+                            Toast.makeText(EditarProductosFragment.this.getContext(), R.string.error_eliminar, Toast.LENGTH_LONG).show();
+
+                        }
+                    }
+            );
+        })
+                .setNegativeButton(R.string.action_cancelar, null);
+
+        alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     private void limpiarCampos() {
@@ -359,6 +429,29 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
         cantidad.setEnabled(activoOinactivo);
         precio.setEnabled(activoOinactivo);
         presentacion.setEnabled(activoOinactivo);
+        imageButton.setEnabled(activoOinactivo);
+    }
+
+    //Para cambios de botones
+    private void agregarProducto() {
+        eliminar.setVisibility(View.GONE);
+        editar.setVisibility(View.GONE);
+        descartar.setVisibility(View.VISIBLE);
+        guardar.setVisibility(View.VISIBLE);
+    }
+
+    private void editarProducto() {
+        eliminar.setVisibility(View.VISIBLE);
+        editar.setVisibility(View.VISIBLE);
+        descartar.setVisibility(View.GONE);
+        guardar.setVisibility(View.GONE);
+    }
+
+    private void modificarBotones(boolean trueORfalse) {
+        eliminar.setEnabled(trueORfalse);
+        descartar.setEnabled(trueORfalse);
+        editar.setEnabled(trueORfalse);
+        guardar.setEnabled(trueORfalse);
     }
 
     //Para tomar imagen
@@ -395,4 +488,6 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
             imgHasChange = true;
         }
     }
+
+
 }

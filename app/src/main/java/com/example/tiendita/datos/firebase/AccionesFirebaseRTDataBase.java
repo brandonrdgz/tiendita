@@ -496,6 +496,28 @@ public class AccionesFirebaseRTDataBase {
     }
 
 
+    public static void deleteProducto(String productoID, String sucursalID, FirebaseCallback<DataSnapshot> firebaseCallback) {
+        firebaseCallback.enInicio();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference
+                .child(Constantes.NODO_PRODUCTOS)
+                .child(sucursalID)
+                .child(productoID)
+                .removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                firebaseCallback.enExito(null,DELETE_PRODUCTOS_ACCTION);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                firebaseCallback.enFallo(e);
+            }
+        });
+    }
+
+
 
     public static void guardaProducto(ProductoModelo productoModelo, FirebaseCallback<Void> firebaseCallback) {
         firebaseCallback.enInicio();

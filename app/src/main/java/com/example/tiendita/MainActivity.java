@@ -3,10 +3,14 @@ package com.example.tiendita;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.tiendita.datos.firebase.AccionesFirebaseAuth;
+import com.example.tiendita.datos.firebase.AccionesFirebaseRTDataBase;
+import com.example.tiendita.datos.firebase.FirebaseCallback;
 import com.example.tiendita.utilidades.Constantes;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
 
 import androidx.navigation.NavController;
 import androidx.navigation.NavGraph;
@@ -38,31 +42,31 @@ public class MainActivity extends AppCompatActivity {
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        if(esNegocio) {
+        if (esNegocio) {
             navigationView.getMenu().removeGroup(R.id.drawer_usuario);
             mAppBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.nav_homen, R.id.nav_perfiln, R.id.nav_pedidosn,R.id.nav_pedidon, R.id.nav_info,
-                    R.id.nav_sucursales,R.id.nav_detalle_sucursaln,R.id.nav_editar_productos,R.id.nav_mapn)
+                    R.id.nav_homen, R.id.nav_perfiln, R.id.nav_pedidosn, R.id.nav_pedidon, R.id.nav_info,
+                    R.id.nav_sucursales, R.id.nav_detalle_sucursaln, R.id.nav_editar_productos, R.id.nav_mapn)
                     .setDrawerLayout(drawer)
                     .build();
             NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-            NavInflater inflater= navHostFragment.getNavController().getNavInflater();
-            NavGraph graph= inflater.inflate(R.navigation.mobile_navigation);
+            NavInflater inflater = navHostFragment.getNavController().getNavInflater();
+            NavGraph graph = inflater.inflate(R.navigation.mobile_navigation);
             graph.setStartDestination(R.id.nav_homen);
             navHostFragment.getNavController().setGraph(graph);
             NavController navController = navHostFragment.getNavController();
             NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
             NavigationUI.setupWithNavController(navigationView, navController);
-        }else{
+        } else {
             navigationView.getMenu().removeGroup(R.id.drawer_negocio);
             mAppBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.nav_homeu, R.id.nav_perfilu, R.id.nav_pedidosu, R.id.nav_info,R.id.nav_editpedido,
-                    R.id.nav_pedidou,R.id.nav_detalle_sucursalu,R.id.nav_mapu)
+                    R.id.nav_homeu, R.id.nav_perfilu, R.id.nav_pedidosu, R.id.nav_info, R.id.nav_editpedido,
+                    R.id.nav_pedidou, R.id.nav_detalle_sucursalu, R.id.nav_mapu)
                     .setDrawerLayout(drawer)
                     .build();
             NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-            NavInflater inflater= navHostFragment.getNavController().getNavInflater();
-            NavGraph graph= inflater.inflate(R.navigation.mobile_navigation);
+            NavInflater inflater = navHostFragment.getNavController().getNavInflater();
+            NavGraph graph = inflater.inflate(R.navigation.mobile_navigation);
             graph.setStartDestination(R.id.nav_homeu);
             navHostFragment.getNavController().setGraph(graph);
             NavController navController = navHostFragment.getNavController();
@@ -71,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
@@ -92,6 +97,47 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
+        TextView tvNombre = findViewById(R.id.tvNavHeaderTitle);
+        TextView tvCorreo = findViewById(R.id.tvNavHeaderSub);
+
+        if (esNegocio) {
+            AccionesFirebaseRTDataBase.getNegocio(AccionesFirebaseAuth.getUID(), new FirebaseCallback<DataSnapshot>() {
+                @Override
+                public void enInicio() {
+
+                }
+
+                @Override
+                public void enExito(DataSnapshot respuesta, int accion) {
+                    tvNombre.setText(respuesta.child("nombreNegocio").getValue().toString());
+                    tvCorreo.setText(respuesta.child("correo").getValue().toString());
+                }
+
+                @Override
+                public void enFallo(Exception excepcion) {
+
+                }
+            });
+        } else {
+            AccionesFirebaseRTDataBase.getUser(AccionesFirebaseAuth.getUID(), new FirebaseCallback<DataSnapshot>() {
+                @Override
+                public void enInicio() {
+
+                }
+
+                @Override
+                public void enExito(DataSnapshot respuesta, int accion) {
+                    tvNombre.setText(respuesta.child("nombre").getValue().toString());
+                    tvCorreo.setText(respuesta.child("correo").getValue().toString());
+                }
+
+                @Override
+                public void enFallo(Exception excepcion) {
+
+                }
+            });
+        }
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
