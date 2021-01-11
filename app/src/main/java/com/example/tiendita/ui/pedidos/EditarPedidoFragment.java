@@ -246,7 +246,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
                     Toast.makeText(this.getContext(), R.string.pedido_vacio, Toast.LENGTH_LONG).show();
                 }else {
                     if (esEdicion) {
-                        AccionesFirebaseRTDataBase.insertPedido(currentPedido, this);
+                        AccionesFirebaseRTDataBase.updatePedido(currentPedido, this);
                     } else {
                         //guardado del nuevo pedido
                         currentPedido = new PedidoModelo();
@@ -338,7 +338,8 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
                                 if(Integer.parseInt(tfCantidad.getText().toString())<=currentProd.getCantidad()) {
                                // int suma = listaProductos.get(prodIndex).getCantidad() + currentProdPedido.getCantidad();
                                     //
-                                    int diferencia = currentProd.getCantidad() - Integer.parseInt(tfCantidad.getText().toString());
+                                    int total=currentProd.getCantidad()+currentProdPedido.getCantidad();
+                                    int diferencia = total-Integer.parseInt(tfCantidad.getText().toString());
                                 currentProdPedido.setCantidad(Integer.parseInt(tfCantidad.getText().toString()));
                                 currentProd.setCantidad(diferencia);
                                 actualizaListas(0);
@@ -505,6 +506,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
 
             }
             break;
+            case AccionesFirebaseRTDataBase.UPDATE_PEDIDO_ACCTION:
             case AccionesFirebaseRTDataBase.INSERT_PEDIDO_ACCTION: {
                 AccionesFirebaseRTDataBase.insertProductosPedido(listaPedido,currentPedido.getPedidoID(),this);
             }
@@ -527,7 +529,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
                         data.putFloat(Constantes.CONST_PEDIDO_PAGO, currentPedido.getPago());
                         data.putInt(Constantes.CONST_PEDIDO_TOTAL_PROD, currentPedido.getTotalProductos());
                         NavHostFragment.findNavController(this)
-                                .navigate(R.id.action_nav_pedidou_to_nav_editpedido, data);
+                                .navigate(R.id.action_nav_editpedido_to_nav_pedidou, data);
                     }
 
                 }else{
@@ -590,7 +592,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
                 tvDisponible.setText(suma+"");
                 esAdicion=false;
                 EditPanel();
-                tfCantidad.setText(listaPedido.get(prodIndex).getCantidad());
+                tfCantidad.setText(listaPedido.get(prodIndex).getCantidad()+"");
                 bttnAgregaProd.setText(R.string.guardarBtn);
             }
             String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentProd.getProductoId(),getContext());
@@ -612,7 +614,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
                 tvDescripcion.setText(currentProdPedido.getDescripcion());
                 tvPrecio.setText("$"+currentProdPedido.getPrecio());
                 tvDisponible.setText(suma+"");
-                tfCantidad.setText(currentProdPedido.getCantidad());
+                tfCantidad.setText(currentProdPedido.getCantidad()+"");
                 bttnAgregaProd.setText(R.string.guardarBtn);
                 esAdicion=false;
                 EditPanel();
@@ -623,6 +625,8 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
     }
 
     private void actualizaListas(int op){
+        currentProdPedido=null;
+        currentProd=null;
         switch (op){
             case 0: {
                 ArrayAdapter<ProductoModelo> adapter = new ArrayAdapter<>(this.getContext(),
