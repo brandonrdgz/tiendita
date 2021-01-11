@@ -62,7 +62,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
     private UsuarioModelo currentUser;
     private ArrayList<ProductosPedidoModelo> listaPedido;
     private AlertDialog alertDialog;
-    private Boolean done;
+    private Boolean done, entregado;
 
     public static DetallePedidoFragment newInstance() {
         return new DetallePedidoFragment();
@@ -108,7 +108,9 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
 
         if (esNegocio) {
             done=false;
-            bttnEditar.setVisibility(View.GONE);
+            entregado=false;
+            bttnEditar.setText(R.string.entregado);
+            bttnEditar.setOnClickListener(this);
             AccionesFirebaseRTDataBase.getUser(currentPedido.getClienteID(),
                     this);
 
@@ -372,20 +374,38 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.bttn_editar_detalle: {
-                Bundle data = new Bundle();
+                if (esNegocio) {
+                    android.app.AlertDialog.Builder dialogo= new android.app.AlertDialog.Builder(getContext());
+                    dialogo.setTitle(R.string.header_entregado);
+                    dialogo.setMessage(R.string.message_entrefar_pedido);
+                    dialogo.setPositiveButton(R.string.action_entregado, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            entregado=true;
+                                    AccionesFirebaseRTDataBase.getProductos(currentPedido.getSucursalID(),DetallePedidoFragment.this);
 
-                data.putBoolean(Constantes.CONST_EDICION_TYPE, true);
-                data.putString(Constantes.CONST_PEDIDO_ID, currentPedido.getPedidoID());
-                data.putString(Constantes.CONST_PEDIDO_NEGOCIO_ID, currentPedido.getNegocioID());
-                data.putString(Constantes.CONST_PEDIDO_SUCURSAL_ID, currentPedido.getSucursalID());
-                data.putString(Constantes.CONST_PEDIDO_CLIENTE_ID, currentPedido.getClienteID());
-                data.putString(Constantes.CONST_PEDIDO_FECHA, currentPedido.getFecha());
-                data.putString(Constantes.CONST_PEDIDO_HORA, currentPedido.getHora());
-                data.putFloat(Constantes.CONST_PEDIDO_PAGO, currentPedido.getPago());
-                data.putInt(Constantes.CONST_PEDIDO_TOTAL_PROD, currentPedido.getTotalProductos());
+                        }
+                    });
+                    dialogo.setNegativeButton(R.string.action_cancelar,null);
+                    dialogo.show();
+                } else {
+                    Bundle data = new Bundle();
 
-                NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_nav_pedidou_to_nav_editpedido, data);
+                    data.putBoolean(Constantes.CONST_EDICION_TYPE, true);
+                    data.putString(Constantes.CONST_PEDIDO_ID, currentPedido.getPedidoID());
+                    data.putString(Constantes.CONST_PEDIDO_NEGOCIO_ID, currentPedido.getNegocioID());
+                    data.putString(Constantes.CONST_PEDIDO_SUCURSAL_ID, currentPedido.getSucursalID());
+                    data.putString(Constantes.CONST_PEDIDO_CLIENTE_ID, currentPedido.getClienteID());
+                    data.putString(Constantes.CONST_PEDIDO_FECHA, currentPedido.getFecha());
+                    data.putString(Constantes.CONST_PEDIDO_HORA, currentPedido.getHora());
+                    data.putFloat(Constantes.CONST_PEDIDO_PAGO, currentPedido.getPago());
+                    data.putInt(Constantes.CONST_PEDIDO_TOTAL_PROD, currentPedido.getTotalProductos());
+
+                    NavHostFragment.findNavController(this)
+                            .navigate(R.id.action_nav_pedidou_to_nav_editpedido, data);
+
+                }
             }
                 break;
             case R.id.bttn_cancelar_detalle:{

@@ -320,12 +320,10 @@ public class AccionesFirebaseRTDataBase {
     public static void insertPedido(PedidoModelo pedidoModelo,
                                     FirebaseCallback<DataSnapshot> firebaseCallback){
         firebaseCallback.enInicio();
-        String id=UUID.randomUUID().toString();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        pedidoModelo.setPedidoID(id);
         databaseReference
                 .child(Constantes.NODO_PEDIDOS)
-                .child(id)
+                .child(pedidoModelo.getPedidoID())
                 .setValue(pedidoModelo).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {

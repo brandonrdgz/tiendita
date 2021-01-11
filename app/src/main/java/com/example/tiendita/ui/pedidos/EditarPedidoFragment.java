@@ -48,6 +48,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.UUID;
 
 import static android.content.DialogInterface.BUTTON_POSITIVE;
 
@@ -143,7 +144,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
         listaProductos=new ArrayList<>();
         listaProductosTotales=new ArrayList<>();
 
-        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+       OnBackPressedCallback callback = new OnBackPressedCallback(false) {
             @Override
             public void handleOnBackPressed() {
                 if(esEdicion) {
@@ -170,10 +171,10 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
                             .navigate(R.id.action_nav_editpedido_to_nav_detalle_sucursalu, data);
 
                 }
-
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+
 
         AccionesFirebaseRTDataBase.getProductos(sucursalId,this);
     }
@@ -258,6 +259,11 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
                         currentPedido.setFecha(getFecha());
                         currentPedido.setNegocioID(sucursal.getNegocioID());
                         currentPedido.setClienteID(AccionesFirebaseAuth.getUID());
+                        String id= UUID.randomUUID().toString();
+                        currentPedido.setPedidoID(id);
+                        for(ProductosPedidoModelo productosPedidoModelo:listaPedido){
+                            productosPedidoModelo.setPedidoID(id);
+                        }
                         AccionesFirebaseRTDataBase.insertPedido(currentPedido, this);
                     }
                 }
@@ -548,6 +554,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
 
                 }else{
                     Toast.makeText(this.getContext(), R.string.pedido_guardado, Toast.LENGTH_LONG).show();
+                    this.getActivity().finish();
                     Bundle datos = new Bundle();
                     datos.putBoolean(Constantes.CONST_EDICION_TYPE, false);
                     datos.putString(Constantes.CONST_SUCURSAL_ID, sucursal.getSucursalID());

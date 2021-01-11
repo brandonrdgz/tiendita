@@ -250,6 +250,9 @@
         <action
             android:id="@+id/action_nav_editpedido_to_nav_detalle_sucursalu"
             app:destination="@id/nav_detalle_sucursalu" />
+        <action
+            android:id="@+id/action_nav_editpedido_to_nav_homeu"
+            app:destination="@id/nav_homeu" />
     </fragment>
 
     <!--Fragments para información de app-->
