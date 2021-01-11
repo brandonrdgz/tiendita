@@ -5,6 +5,16 @@ public class ProductoModelo {
     private String sucursalId;
     private String nombreProducto;
     private String descripcion;
+
+    public String getNegocioId() {
+        return negocioId;
+    }
+
+    public void setNegocioId(String negocioId) {
+        this.negocioId = negocioId;
+    }
+
+    private String negocioId;
     private float precio;
     private int cantidad;
     private String remoteImg;

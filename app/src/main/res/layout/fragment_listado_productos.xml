@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_color"
     android:padding="20dp"
-    tools:context=".ui.tiendas.ListadoProductosFragment">
+    tools:context=".ui.tiendas.ListadoProductosFragment"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tv_sin_tiendas_label"
+        android:id="@+id/tv_sin_productos_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -19,11 +20,14 @@
         android:textColor="@color/font_color"
         android:textSize="30sp"
         android:textStyle="bold" />
-
-
     <ListView
         android:id="@+id/lv_productos"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/bttn_agregar_producto_sucursal"
+        android:text="@string/agregar"></com.google.android.material.button.MaterialButton>
 
-</FrameLayout>
+</LinearLayout>

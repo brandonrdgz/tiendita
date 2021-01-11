@@ -479,5 +479,20 @@ public class AccionesFirebaseRTDataBase {
 
 
 
+    public static void guardaProducto(ProductoModelo productoModelo, FirebaseCallback<Void> firebaseCallback) {
+        firebaseCallback.enInicio();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference
+                .child(Constantes.NODO_PRODUCTOS)
+                .child(productoModelo.getSucursalId())
+                .child(productoModelo.getProductoId())
+                .setValue(productoModelo)
+                .addOnSuccessListener(aVoid -> {
+                    firebaseCallback.enExito(null, 0);
+                })
+                .addOnFailureListener(exception -> {
+                    firebaseCallback.enFallo(exception);
+                });
+    }
 
 }
