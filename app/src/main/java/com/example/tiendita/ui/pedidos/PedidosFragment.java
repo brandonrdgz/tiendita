@@ -72,7 +72,7 @@ public class PedidosFragment extends Fragment implements FirebaseCallback<DataSn
                     PedidosFragment.this);
         }else{
             AccionesFirebaseRTDataBase.getListaPedidos(AccionesFirebaseAuth.getUID(),
-                    !esNegocio,
+                    esNegocio,
                     PedidosFragment.this);
         }
     }
