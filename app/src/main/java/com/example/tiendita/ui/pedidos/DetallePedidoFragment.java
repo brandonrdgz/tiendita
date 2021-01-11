@@ -66,7 +66,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
     private UsuarioModelo currentUser;
     private ArrayList<ProductosPedidoModelo> listaPedido;
     private AlertDialog alertDialog;
-    private Boolean done, entregado;
+    private Boolean done, entregado,poped;
 
     public static DetallePedidoFragment newInstance() {
         return new DetallePedidoFragment();
@@ -80,6 +80,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
         if (data != null) {
             esNegocio=data.getBoolean(Constantes.CONST_NEGOCIO_TYPE);
             currentPedido= new PedidoModelo();
+            poped=false;
             currentPedido.setClienteID(data.getString(Constantes.CONST_PEDIDO_CLIENTE_ID));
             currentPedido.setFecha(data.getString(Constantes.CONST_PEDIDO_FECHA));
             currentPedido.setHora(data.getString(Constantes.CONST_PEDIDO_HORA));
@@ -237,20 +238,24 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
 
                     listaProductosTotales.add(productoModelo);
                 }
-                restock();
+                if(!entregado) {
+                    restock();
+                }
                 AccionesFirebaseRTDataBase.deletePedido(currentPedido.getPedidoID(),this);
             }
             case AccionesFirebaseRTDataBase.UPDATE_PRODUCTOS_ACCTION: {
-
-
-              /*  lista fragment*/
-                if(esNegocio) {
-                    NavHostFragment.findNavController(this)
-                            .navigate(R.id.action_nav_pedidon_to_nav_pedidosn);
-                }else{
-                    NavHostFragment.findNavController(this)
-                            .navigate(R.id.action_nav_pedidou_to_nav_pedidosu);
+                if(poped) {
+                    NavHostFragment.findNavController(DetallePedidoFragment.this).popBackStack();
                 }
+
+               /*if (esNegocio) {
+                            NavHostFragment.findNavController(DetallePedidoFragment.this)
+                                    .navigate(R.id.action_nav_pedidon_to_nav_pedidosn);
+                        } else {
+                            NavHostFragment.findNavController(DetallePedidoFragment.this)
+                                    .navigate(R.id.action_nav_pedidou_to_nav_pedidosu);
+                        }*/
+
             }
             break;
             case AccionesFirebaseRTDataBase.DELETE_PEDIDO_ACCTION: {
@@ -258,7 +263,9 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
             }
             break;
             case AccionesFirebaseRTDataBase.DELETE_PRODUCTOS_PEDIDO_ACCTION: {
+                poped=true;
                 AccionesFirebaseRTDataBase.updateProductos(listaProductosTotales,currentPedido.getSucursalID(),this);
+
             }
         }
 

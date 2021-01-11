@@ -222,7 +222,6 @@
         <action
             android:id="@+id/action_nav_pedidou_to_nav_editpedido"
             app:popUpTo="@id/nav_pedidou"
-
             app:destination="@id/nav_editpedido" />
         <action
             android:id="@+id/action_nav_pedidou_to_nav_pedidosu"
