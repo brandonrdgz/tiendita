@@ -228,6 +228,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
                     tfCantidad.setVisibility(View.VISIBLE);
                     bttnAgregaProd.setVisibility(View.VISIBLE);
                     bttnQuitarProducto.setVisibility(View.VISIBLE);
+                bttnCancelarProducto.setVisibility(View.VISIBLE);
 
             }
 
@@ -356,6 +357,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
             }
                 break;
             case R.id.bttn_cancelar_producto_pedido:{
+                actualizaListas(0);
                 hidePanel(true);
             }
             break;
@@ -389,13 +391,24 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
             }
                 break;
             case R.id.bttn_quitar_producto_pedido:{
-                    int prodIndex = getIndex(true,currentProdPedido.getProductoId());
+                int prodIndex =-1;
+                if(currentProd==null){
+                    prodIndex = getIndex(true, currentProdPedido.getProductoId());
+                }else if (currentProdPedido==null){
+                    prodIndex = getIndex(false, currentProd.getProductoId());
+                }
                     if (prodIndex<0) {
                         Toast.makeText(this.getContext(), R.string.error_cargar_datos, Toast.LENGTH_LONG).show();
                     } else {
-                        int suma = listaProductos.get(prodIndex).getCantidad() + currentProdPedido.getCantidad();
-                        listaProductos.get(prodIndex).setCantidad(suma);
+                        if(currentProd==null){
+                            currentProd=listaProductos.get(prodIndex);
+                        }else if (currentProdPedido==null){
+                            currentProdPedido=listaPedido.get(prodIndex);
+                        }
+                        int suma = currentProd.getCantidad() + currentProdPedido.getCantidad();
+                        currentProd.setCantidad(suma);
                         listaPedido.remove(currentProdPedido);
+                        hidePanel(true);
                         actualizaListas(0);
                     }
             }
@@ -470,6 +483,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
                     productoModelo.setRemoteImg(dataSnapshot.child(Constantes.CONST_BASE_REMOTEIMG).getValue().toString());
                     productoModelo.setProductoId(dataSnapshot.child(Constantes.CONST_PRODUCTO_ID).getValue().toString());
                     productoModelo.setSucursalId(dataSnapshot.child(Constantes.CONST_PRODUCTO_SUCURSAL_ID).getValue().toString());
+                    productoModelo.setNegocioId(dataSnapshot.child(Constantes.CONST_PRODUCTO_NEGOCIO_ID).getValue().toString());
                     listaProductosTotales.add(productoModelo);
                     listaProductos.add(productoModelo);
                 }
@@ -637,6 +651,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         currentProd=listaProductos.get(position);
+                        currentProdPedido=null;
                         String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentProd.getProductoId(),getContext());
                         File filePhoto = new File(localRef);
                         if (filePhoto.exists()) {
@@ -658,6 +673,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         currentProdPedido=listaPedido.get(position);
+                        currentProd=null;
                         String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentProdPedido.getProductoId(),getContext());
                         File filePhoto = new File(localRef);
                         if (filePhoto.exists()) {
@@ -681,6 +697,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         currentProd=listaProductos.get(position);
+                        currentProdPedido=null;
                         String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentProd.getProductoId(),getContext());
                         File filePhoto = new File(localRef);
                         if (filePhoto.exists()) {
@@ -704,6 +721,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         currentProdPedido=listaPedido.get(position);
+                        currentProd=null;
                         String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentProdPedido.getProductoId(),getContext());
                         File filePhoto = new File(localRef);
                         if (filePhoto.exists()) {

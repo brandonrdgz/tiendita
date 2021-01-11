@@ -227,6 +227,8 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
                     productoModelo.setRemoteImg(dataSnapshot.child(Constantes.CONST_BASE_REMOTEIMG).getValue().toString());
                     productoModelo.setProductoId(dataSnapshot.child(Constantes.CONST_PRODUCTO_ID).getValue().toString());
                     productoModelo.setSucursalId(dataSnapshot.child(Constantes.CONST_PRODUCTO_SUCURSAL_ID).getValue().toString());
+                    productoModelo.setNegocioId(dataSnapshot.child(Constantes.CONST_PRODUCTO_NEGOCIO_ID).getValue().toString());
+
                     listaProductosTotales.add(productoModelo);
                 }
                 restock();
