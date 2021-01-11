@@ -53,6 +53,7 @@
             android:defaultValue="true" />
         <action
             android:id="@+id/action_nav_sucursales_to_nav_detalle_sucursaln"
+            app:popUpTo="@id/nav_sucursales"
             app:destination="@id/nav_detalle_sucursaln" />
     </fragment>
 
@@ -67,9 +68,11 @@
             android:defaultValue="true" />
         <action
             android:id="@+id/action_nav_detalle_sucursaln_to_nav_editar_productos"
+            app:popUpTo="@id/nav_detalle_sucursaln"
             app:destination="@id/nav_editar_productos" />
         <action
         android:id="@+id/action_nav_detalle_sucursaln_to_nav_listado_productos"
+            app:popUpTo="@id/nav_detalle_sucursaln"
         app:destination="@id/nav_listado_productos" />
     </fragment>
 
@@ -94,6 +97,7 @@
             android:defaultValue="true" />
         <action
             android:id="@+id/action_nav_listado_producto_to_nav_editar_productos"
+            app:popUpTo="@id/nav_listado_productos"
             app:destination="@id/nav_editar_productos" />
     </fragment>
 

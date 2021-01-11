@@ -80,6 +80,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
         if (data != null) {
             esNegocio=data.getBoolean(Constantes.CONST_NEGOCIO_TYPE);
             currentPedido= new PedidoModelo();
+            entregado=false;
             poped=false;
             currentPedido.setClienteID(data.getString(Constantes.CONST_PEDIDO_CLIENTE_ID));
             currentPedido.setFecha(data.getString(Constantes.CONST_PEDIDO_FECHA));
