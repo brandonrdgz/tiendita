@@ -74,6 +74,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
         Bundle data = this.getArguments();
         if (data != null) {
             esNegocio=data.getBoolean(Constantes.CONST_NEGOCIO_TYPE);
+            currentPedido= new PedidoModelo();
             currentPedido.setClienteID(data.getString(Constantes.CONST_PEDIDO_CLIENTE_ID));
             currentPedido.setFecha(data.getString(Constantes.CONST_PEDIDO_FECHA));
             currentPedido.setHora(data.getString(Constantes.CONST_PEDIDO_HORA));
@@ -202,6 +203,8 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
                     productosPedidoModelo.setRemoteImg(dataSnapshot.child(Constantes.CONST_BASE_REMOTEIMG).getValue().toString());
                     productosPedidoModelo.setProductoId(dataSnapshot.child(Constantes.CONST_PRODUCTO_ID).getValue().toString());
                     productosPedidoModelo.setSucursalId(dataSnapshot.child(Constantes.CONST_PRODUCTO_SUCURSAL_ID).getValue().toString());
+                    productosPedidoModelo.setNegocioId(dataSnapshot.child(Constantes.CONST_PRODUCTO_NEGOCIO_ID).getValue().toString());
+
                     listaPedido.add(productosPedidoModelo);
                 }
                 showData();
@@ -300,7 +303,7 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
 
     private void showDialog(ProductosPedidoModelo productosPedidoModelo) {
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialogo_layout,null);
-        ((TextView) dialogView.findViewById(R.id.info_producto_lista)).setText(productosPedidoModelo.getDescripcion());
+        ((TextView) dialogView.findViewById(R.id.info_producto_lista)).setText(productosPedidoModelo.getDetalle());
         ImageView imagen = dialogView.findViewById(R.id.foto_producto_lista);
         String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(productosPedidoModelo.getProductoId(),getContext());
 

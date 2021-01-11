@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.pedidos.DetallePedidoFragment"
+    android:orientation="vertical"
     android:background="@color/background_color">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,29 +54,35 @@
                 android:orientation="horizontal">
                 <TextView
                     android:id="@+id/tv_id_pedido_detalle"
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:paddingLeft="20dp"
-                    android:textSize="18sp"
+                    android:textSize="10dp"
                     android:gravity="center_vertical"
                     android:text="Pedido: #Pedido"/>
                 <Button
                     android:id="@+id/bttn_editar_detalle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_width="0dp"
+                    android:textSize="10dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:layout_margin="5dp"
                     android:text="@string/editarBtn"/>
                 <Button
                     android:id="@+id/bttn_cancelar_detalle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="10dp"
                     android:layout_margin="5dp"
                     android:text="@string/cancelarBtn"/>
             </LinearLayout>
             <ListView
                 android:id="@+id/lv_productos_detalle"
                 android:layout_width="match_parent"
-                android:layout_height="482dp" />
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
             <TextView
                 android:id="@+id/tv_total_detalle"
                 android:layout_gravity="bottom"
@@ -86,6 +91,6 @@
                 android:gravity="right"
                 android:padding="20dp"
                 android:text="Total: mxn"/>
-        </LinearLayout>
 
-</ScrollView>
+
+</LinearLayout>

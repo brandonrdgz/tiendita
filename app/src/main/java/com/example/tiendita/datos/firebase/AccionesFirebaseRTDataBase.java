@@ -265,7 +265,7 @@ public class AccionesFirebaseRTDataBase {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()) {
-                            firebaseCallback.enExito(snapshot,GET_PEDIDO_ACCTION);
+                            firebaseCallback.enExito(snapshot,GET_SUCURSAL_ACCTION);
                         }else{
                             firebaseCallback.enFallo(null);
                         }

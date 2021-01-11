@@ -7,6 +7,7 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="match_parent">
+
         <ImageView
             android:id="@+id/foto_producto_lista"
             android:layout_width="196dp"
@@ -14,14 +15,14 @@
             android:layout_gravity="center"
             app:srcCompat="@drawable/ic_baseline_local_grocery_store_24"
             android:contentDescription="@string/imagen_desc"></ImageView>
-
         <TextView
             android:id="@+id/info_producto_lista"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:textSize="15sp"
-            android:gravity="start"
+            android:layout_weight="1"
             android:padding="20dp"/>
+
     </LinearLayout>
 
 </ScrollView>
