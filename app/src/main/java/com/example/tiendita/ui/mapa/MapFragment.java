@@ -1,11 +1,13 @@
 package com.example.tiendita.ui.mapa;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +20,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.tiendita.R;
@@ -31,8 +33,6 @@ import com.example.tiendita.datos.modelos.SucursalModelo;
 import com.example.tiendita.utilidades.Constantes;
 import com.example.tiendita.utilidades.Dialogo;
 import com.example.tiendita.utilidades.ImageManager;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -40,7 +40,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.storage.FileDownloadTask;
@@ -50,24 +49,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback,
-                                                    GoogleMap.OnMarkerClickListener,
-                                                    FirebaseCallback<DataSnapshot>,
-        DownloadCallback<Task<FileDownloadTask.TaskSnapshot>>,
-                                                    View.OnClickListener,
-                                                    GoogleMap.OnMarkerDragListener,
-        DialogInterface.OnClickListener,
-        OnSuccessListener<Location>
-{
+   GoogleMap.OnMarkerClickListener,
+   GoogleMap.OnMyLocationButtonClickListener,
+   FirebaseCallback<DataSnapshot>,
+   DownloadCallback<Task<FileDownloadTask.TaskSnapshot>>,
+   View.OnClickListener,
+   GoogleMap.OnMarkerDragListener,
+   DialogInterface.OnClickListener {
 
-    private MapViewModel mapViewModel;
-    private Location currentLocation;
-    private FusedLocationProviderClient fusedLocationProviderClient;
     private ArrayList<SucursalModelo> list;
     private SucursalModelo sucursalModelo;
     private GoogleMap googleMap;
     private LatLng latLng;
     private Boolean esNegocio;
-    private TextView tvLatitud,tvLongitud;
+    private TextView tvLatitud, tvLongitud;
     private Button bttnAceptar;
     private static final int REQUEST_CODE = 101;
     private AlertDialog alertDialog;
@@ -79,23 +74,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         Bundle data = this.getArguments();
         if (data != null) {
 
-            esNegocio=data.getBoolean(Constantes.CONST_NEGOCIO_TYPE);
+            esNegocio = data.getBoolean(Constantes.CONST_NEGOCIO_TYPE);
             initComps(root);
-        }else{
-            esNegocio=false;
+        }
+        else {
+            esNegocio = false;
         }
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.getActivity());
-        fetchLastLocation();
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.google_map);
+        mapFragment.getMapAsync(this);
 
         return root;
     }
 
     private void initComps(View root) {
-        tvLatitud=root.findViewById(R.id.text_latitud);
-        tvLongitud=root.findViewById(R.id.text_longitud);
-        bttnAceptar=root.findViewById(R.id.bttn_aceptar_localizacion);
-        if(esNegocio) {
+        tvLatitud = root.findViewById(R.id.text_latitud);
+        tvLongitud = root.findViewById(R.id.text_longitud);
+        bttnAceptar = root.findViewById(R.id.bttn_aceptar_localizacion);
+        if (esNegocio) {
             bttnAceptar.setOnClickListener(this);
         }
         else {
@@ -105,27 +101,55 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
-    private void fetchLastLocation() {
-        if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this.getActivity(),new String[]{
-                    Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
-            return;
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
+        this.googleMap.setOnMyLocationButtonClickListener(this);
+        habilitarLocalizacionDispositivo();
+    }
+
+    private void habilitarLocalizacionDispositivo() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED) {
+            if (this.googleMap != null) {
+                this.googleMap.setMyLocationEnabled(true);
+
+                LocationManager locationManager = (LocationManager) this.getActivity()
+                   .getSystemService(Context.LOCATION_SERVICE);
+                Criteria criteria = new Criteria();
+                Location location = locationManager
+                   .getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+                this.latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
+
+                if (esNegocio) {
+                    negocioConfig(googleMap);
+                }
+                else{
+                    clientConfig(googleMap);
+                }
+            }
         }
-        Task<Location> task = fusedLocationProviderClient.getLastLocation();
-        task.addOnSuccessListener(this);
+        else {
+            ActivityCompat.requestPermissions(this.getActivity(), new String[]{
+               Manifest.permission.ACCESS_FINE_LOCATION
+            }, REQUEST_CODE);
+        }
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        //latLng= new LatLng(19.265172, -99.634658);
-        latLng= new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-        googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-        if(esNegocio){
-            negocioConfig(googleMap);
-        }else{
-            clientConfig(googleMap);
+    public boolean onMyLocationButtonClick() {
+        this.latLng = this.googleMap.getCameraPosition().target;
+        return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode != REQUEST_CODE) {
+            return;
         }
+
+        habilitarLocalizacionDispositivo();
     }
 
     private void negocioConfig(GoogleMap googleMap){
@@ -134,7 +158,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void clientConfig(GoogleMap googleMap){
-        list= new ArrayList<>();
+        this.list= new ArrayList<>();
         this.googleMap=googleMap;
         AccionesFirebaseRTDataBase.getNearSucursales(this);
     }
@@ -149,7 +173,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     public void enExito(DataSnapshot respuesta, int accion) {
         for (DataSnapshot dataSnapshot : respuesta.getChildren()) {
             for(DataSnapshot datas:dataSnapshot.getChildren()){
-            HashMap data = (HashMap)datas.getValue();
+            HashMap data = datas.getValue(HashMap.class);
             String  lat =data.get(Constantes.CONST_SUCURSAL_LAT).toString();
             String lon =data.get(Constantes.CONST_SUCURSAL_LONG).toString();
             if(isInRange(Double.parseDouble(lat), Double.parseDouble(lon))) {
@@ -188,7 +212,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 +Math.cos(Math.toRadians(lon-latLng.longitude))
                 *Math.cos(Math.toRadians(lat))
                 *Math.cos(Math.toRadians(latLng.latitude)));
-        return distancia<1.0;
+        return distancia<10.0;
     }
 
     @Override
@@ -298,15 +322,5 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
 
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_nav_mapu_to_nav_detalle_sucursalu, data);
-    }
-
-    @Override
-    public void onSuccess(Location location) {
-        if(location!=null){
-            currentLocation= location;
-            SupportMapFragment supportMapFragment=(SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.google_map);
-            supportMapFragment.getMapAsync(MapFragment.this);
-        }
-
     }
 }
