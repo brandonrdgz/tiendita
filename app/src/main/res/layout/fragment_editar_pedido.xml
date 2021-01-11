@@ -1,32 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_color"
-    tools:context=".ui.pedidos.EditarPedidoFragment">
+    tools:context=".ui.pedidos.EditarPedidoFragment"
+    android:orientation="vertical">
 
     <!--Parte superior-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/myriadproregular"
-            android:gravity="center"
-            android:text="@string/disponible"
-            android:textColor="@color/font_color"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+
         <LinearLayout
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:gravity="left"
             android:orientation="horizontal">
@@ -55,8 +43,9 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_height="0dp"
+            android:layout_weight="2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
@@ -169,25 +158,40 @@
 
 
         </LinearLayout>
+
         <TextView
             android:id="@+id/tv_sin_productos_label"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginBottom="10dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:fontFamily="@font/myriadproregular"
             android:gravity="center"
             android:text="@string/sin_productos"
             android:textColor="@color/font_color"
             android:textSize="30sp"
             android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tv_disponibles_productos_label"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/myriadproregular"
+        android:gravity="center"
+        android:text="@string/disponible"
+        android:textColor="@color/font_color"
+        android:textSize="30sp"
+        android:textStyle="bold" />
         <ListView
             android:id="@+id/lv_disponible"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="0dp"
+            android:layout_weight="2" />
         <TextView
+            android:id="@+id/tv_pedido_productos_label"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginBottom="10dp"
             android:layout_weight="1"
             android:fontFamily="@font/myriadproregular"
@@ -200,10 +204,12 @@
         <ListView
             android:id="@+id/lv_pedido"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="0dp"
+            android:layout_weight="2" />
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
         <Button
@@ -223,7 +229,6 @@
 
         </LinearLayout>
 
-    </LinearLayout>
 
 
-</ScrollView>
+</LinearLayout>

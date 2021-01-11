@@ -35,6 +35,7 @@ import com.example.tiendita.datos.firebase.FirebaseCallback;
 import com.example.tiendita.datos.modelos.PedidoModelo;
 import com.example.tiendita.datos.modelos.ProductoModelo;
 import com.example.tiendita.datos.modelos.ProductosPedidoModelo;
+import com.example.tiendita.datos.modelos.SucursalModelo;
 import com.example.tiendita.ui.home.HomeFragment;
 import com.example.tiendita.utilidades.Constantes;
 import com.example.tiendita.utilidades.Dialogo;
@@ -59,7 +60,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
     private ImageView ivBuscar,ivProducto;
     private EditText tfBusqueda;
     private ListView lvDisponible,lvPedido;
-    private TextView tvNombre,tvDescripcion,tvPrecio,tvDisponible,tvCantidad,tvSinProductos;
+    private TextView tvNombre,tvDescripcion,tvPrecio,tvDisponible,tvCantidad,tvSinProductos,tvProductos,tvPedido;
     private Spinner spCantidad; 
     private Button bttnAgregaProd, bttnGuardarPedido, bttnCancelarEdicionPedido, bttnCancelarProducto, bttnQuitarProducto;
     private String sucursalId;
@@ -72,6 +73,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
 
     private ProductoModelo currentProd;
     private ProductosPedidoModelo currentProdPedido;
+    private SucursalModelo sucursal;
 
     private EditarPedidoViewModel mViewModel;
 
@@ -97,6 +99,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
                 currentPedido.setTotalProductos(data.getInt(Constantes.CONST_PEDIDO_TOTAL_PROD));
             }
             sucursalId=data.getString(Constantes.CONST_SUCURSAL_ID);
+            sucursal = data.getParcelable(Constantes.LLAVE_SUCURSAL);
             init(root);
         }
         return root;
@@ -116,6 +119,8 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
         tvDisponible=root.findViewById(R.id.tv_disponible_producto_pedido);
         tvCantidad=root.findViewById(R.id.tv_cantidad_label);
         tvSinProductos=root.findViewById(R.id.tv_sin_productos_label);
+        tvProductos=root.findViewById(R.id.tv_disponibles_productos_label);
+        tvPedido=root.findViewById(R.id.tv_pedido_productos_label);
         spCantidad=root.findViewById(R.id.sp_cantidad_producto_pedido);
         bttnGuardarPedido =root.findViewById(R.id.bttn_guardar_pedido_editar);
         bttnCancelarEdicionPedido =root.findViewById(R.id.bttn_cancelar_pedido_editar);
@@ -141,18 +146,30 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                Bundle data = new Bundle();
-                data.putString(Constantes.CONST_PEDIDO_ID, currentPedido.getPedidoID());
-                data.putString(Constantes.CONST_PEDIDO_NEGOCIO_ID,currentPedido.getNegocioID());
-                data.putString(Constantes.CONST_PEDIDO_SUCURSAL_ID, currentPedido.getSucursalID());
-                data.putString(Constantes.CONST_PEDIDO_CLIENTE_ID, currentPedido.getClienteID());
-                data.putString(Constantes.CONST_PEDIDO_FECHA, currentPedido.getFecha());
-                data.putString(Constantes.CONST_PEDIDO_HORA, currentPedido.getHora());
-                data.putFloat(Constantes.CONST_PEDIDO_PAGO, currentPedido.getPago());
-                data.putInt(Constantes.CONST_PEDIDO_TOTAL_PROD, currentPedido.getTotalProductos());
+                if(esEdicion) {
+                    Bundle data = new Bundle();
 
-                NavHostFragment.findNavController(EditarPedidoFragment.this)
-                        .navigate(R.id.action_nav_editpedido_to_nav_pedidou, data);
+                    data.putBoolean(Constantes.CONST_EDICION_TYPE, true);
+                    data.putString(Constantes.CONST_PEDIDO_ID, currentPedido.getPedidoID());
+                    data.putString(Constantes.CONST_PEDIDO_NEGOCIO_ID, currentPedido.getNegocioID());
+                    data.putString(Constantes.CONST_PEDIDO_SUCURSAL_ID, currentPedido.getSucursalID());
+                    data.putString(Constantes.CONST_PEDIDO_CLIENTE_ID, currentPedido.getClienteID());
+                    data.putString(Constantes.CONST_PEDIDO_FECHA, currentPedido.getFecha());
+                    data.putString(Constantes.CONST_PEDIDO_HORA, currentPedido.getHora());
+                    data.putFloat(Constantes.CONST_PEDIDO_PAGO, currentPedido.getPago());
+                    data.putInt(Constantes.CONST_PEDIDO_TOTAL_PROD, currentPedido.getTotalProductos());
+
+                    NavHostFragment.findNavController(EditarPedidoFragment.this)
+                            .navigate(R.id.action_nav_editpedido_to_nav_pedidou, data);
+                }else{
+                    Bundle data = new Bundle();
+                    data.putBoolean(Constantes.CONST_EDICION_TYPE, false);
+                    data.putString(Constantes.CONST_SUCURSAL_ID, sucursal.getSucursalID());
+                    data.putParcelable(Constantes.LLAVE_SUCURSAL, sucursal);
+                    NavHostFragment.findNavController(EditarPedidoFragment.this)
+                            .navigate(R.id.action_nav_editpedido_to_nav_detalle_sucursalu, data);
+
+                }
 
             }
         };
@@ -164,6 +181,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
         if(ban){
             ivProducto.setVisibility(View.GONE);
             tvNombre.setVisibility(View.GONE);
+            tvPrecio.setVisibility(View.GONE);
             tvDescripcion.setVisibility(View.GONE);
             tvDisponible.setVisibility(View.GONE);
             spCantidad.setVisibility(View.GONE);
@@ -174,6 +192,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
         }else{
             ivProducto.setVisibility(View.VISIBLE);
             tvNombre.setVisibility(View.VISIBLE);
+            tvPrecio.setVisibility(View.VISIBLE);
             tvDescripcion.setVisibility(View.VISIBLE);
             tvDisponible.setVisibility(View.VISIBLE);
             spCantidad.setVisibility(View.VISIBLE);
@@ -232,6 +251,12 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
                 }else{
                     //descarte del nuevo pedido
                     //redirect a vista de sucursal
+                    Bundle data = new Bundle();
+                    data.putBoolean(Constantes.CONST_EDICION_TYPE, false);
+                    data.putString(Constantes.CONST_SUCURSAL_ID, sucursal.getSucursalID());
+                    data.putParcelable(Constantes.LLAVE_SUCURSAL, sucursal);
+                    NavHostFragment.findNavController(EditarPedidoFragment.this)
+                            .navigate(R.id.action_nav_editpedido_to_nav_detalle_sucursalu, data);
 
                 }
 
@@ -465,8 +490,15 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
         if(excepcion.getMessage().equals("Sin productos")) {
             tvSinProductos.setText(R.string.sin_productos);
             tvSinProductos.setVisibility(View.VISIBLE);
+            tvPedido.setVisibility(View.GONE);
+            tvProductos.setVisibility(View.GONE);
             lvDisponible.setVisibility(View.GONE);
-            Toast.makeText(this.getContext(), R.string.fallo_pedido, Toast.LENGTH_LONG).show();
+            lvPedido.setVisibility(View.GONE);
+            ivBuscar.setEnabled(false);
+            tfBusqueda.setEnabled(false);
+            bttnGuardarPedido.setVisibility(View.GONE);
+            bttnCancelarEdicionPedido.setVisibility(View.GONE);
+            Toast.makeText(this.getContext(), R.string.sin_productos, Toast.LENGTH_LONG).show();
         }else{
             Toast.makeText(this.getContext(), R.string.error_datos, Toast.LENGTH_LONG).show();
         }

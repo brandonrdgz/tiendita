@@ -182,7 +182,7 @@
         <argument
             android:name="esNegocio"
             app:argType="boolean"
-            android:defaultValue="true" />
+            android:defaultValue="false" />
         <action
             android:id="@+id/action_nav_detalle_sucursalu_to_nav_editpedido"
             app:destination="@id/nav_editpedido" />

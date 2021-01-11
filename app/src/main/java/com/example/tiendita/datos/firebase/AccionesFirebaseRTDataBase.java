@@ -362,7 +362,7 @@ public class AccionesFirebaseRTDataBase {
                                               FirebaseCallback<DataSnapshot> firebaseCallback){
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference
-                .child(Constantes.NODO_PRODUCTOS_DE_PEDIDOS)
+                .child(Constantes.NODO_PRODUCTOS)
                 .child(sucursalID)
                 .setValue(lista).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

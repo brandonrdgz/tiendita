@@ -50,7 +50,7 @@ public boolean insertRef(
              if(cursor.moveToFirst()) {
                  return cursor.getString(0);
              }else{
-                 return null;
+                 return "";
              }
          }
 

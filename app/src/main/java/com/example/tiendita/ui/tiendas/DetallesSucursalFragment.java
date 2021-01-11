@@ -324,7 +324,7 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
         Bundle datos = new Bundle();
         datos.putBoolean(Constantes.CONST_EDICION_TYPE, false);
         datos.putString(Constantes.CONST_SUCURSAL_ID, sucursal.getSucursalID());
-
+        datos.putParcelable(Constantes.LLAVE_SUCURSAL, sucursal);
         NavHostFragment.findNavController(this)
            .navigate(R.id.action_nav_detalle_sucursalu_to_nav_editpedido, datos);
     }

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -147,7 +148,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void enExito(DataSnapshot respuesta, int accion) {
         for (DataSnapshot dataSnapshot : respuesta.getChildren()) {
-            HashMap data = (HashMap) dataSnapshot.getValue();
+            for(DataSnapshot datas:dataSnapshot.getChildren()){
+            HashMap data = (HashMap)datas.getValue();
             String  lat =data.get(Constantes.CONST_SUCURSAL_LAT).toString();
             String lon =data.get(Constantes.CONST_SUCURSAL_LONG).toString();
             if(isInRange(Double.parseDouble(lat), Double.parseDouble(lon))) {
@@ -162,6 +164,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 sucursalModelo.setLatitud(Double.parseDouble(lat));
                 sucursalModelo.setLongitud(Double.parseDouble(lon));
                 list.add(sucursalModelo);
+            }
+
+
             }
         }
 
@@ -215,24 +220,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     public boolean onMarkerClick(final Marker marker) {
            sucursalModelo=(SucursalModelo)marker.getTag();
         String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(sucursalModelo.getSucursalID(),getContext());
-
-        File filePhoto= new File(localRef);
-            if(filePhoto.exists()) {
+        if(localRef!=null) {
+            File filePhoto = new File(localRef);
+            if (filePhoto.exists()) {
                 showDialog(sucursalModelo);
-            }
-            else {
+            } else {
                 AccionesFireStorage.downloadImg(sucursalModelo.getRemoteImg(),
                         this.getActivity(),
                         this.getContext(),
                         this,
                         sucursalModelo.getSucursalID());
             }
+        }else{
+            AccionesFireStorage.downloadImg(sucursalModelo.getRemoteImg(),
+                    this.getActivity(),
+                    this.getContext(),
+                    this,
+                    sucursalModelo.getSucursalID());
+        }
         return false;
     }
 
     private void showDialog(final SucursalModelo sucursalModelo){
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.marker_layout,null);
-        ((TextView) dialogView.findViewById(R.id.info_tiendita)).setText(sucursalModelo.getNombre()+"\nDireccion:"+sucursalModelo.getDireccion());
+        ((TextView) dialogView.findViewById(R.id.info_tiendita)).setText(sucursalModelo.getNombre()+"\nDireccion:"+sucursalModelo.getDireccion()+"\nHorario:"+sucursalModelo.getHoraAper()+"-"+sucursalModelo.getHoraCierre());
         ImageView imagen = dialogView.findViewById(R.id.foto_tiendita);
         String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(sucursalModelo.getSucursalID(),getContext());
         ImageManager.loadImage(localRef,imagen,this.getContext());
@@ -283,6 +294,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         Bundle data = new Bundle();
         data.putBoolean(Constantes.CONST_EDICION_TYPE,false);
         data.putString(Constantes.CONST_SUCURSAL_ID,sucursalModelo.getSucursalID());
+        data.putParcelable(Constantes.LLAVE_SUCURSAL, sucursalModelo);
+
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_nav_mapu_to_nav_detalle_sucursalu, data);
     }
