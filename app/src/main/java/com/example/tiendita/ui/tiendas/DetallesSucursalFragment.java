@@ -572,6 +572,8 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
                                     });
                                 }
                                 else {
+                                    sucursalEditada.setLatitud(sucursal.getLatitud());
+                                    sucursalEditada.setLongitud(sucursal.getLongitud());
                                     guardaDatosSucursal(sucursalEditada, R.string.msj_guardando_datos);
                                 }
 
@@ -624,6 +626,8 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
                         }
                     });
                 } else {
+                    sucursalEditada.setLatitud(sucursal.getLatitud());
+                    sucursalEditada.setLongitud(sucursal.getLongitud());
                     guardaDatosSucursal(sucursalEditada, R.string.msj_guardando_datos);
                 }
             }
