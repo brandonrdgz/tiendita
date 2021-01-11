@@ -180,5 +180,7 @@
     <string name="msj_cargando_lista_productos">Cargando Productos</string>
     <string name="msj_datos_vacios">Campos Vacios</string>
     <string name="error_exceso">Ingrese una cantidad valida</string>
+    <string name="msj_eliminar_producto">¿Deseas eliminar definitivamente este producto?</string>
+    <string name="msj_eliminando_producto">El producto está siendo eliminado, por favor, espere.</string>
 
 </resources>
