@@ -2,8 +2,6 @@ package com.example.tiendita.ui.tiendas;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
@@ -24,7 +22,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -39,7 +36,6 @@ import com.example.tiendita.datos.firebase.UploadCallback;
 import com.example.tiendita.datos.modelos.SucursalModelo;
 import com.example.tiendita.datos.operaciones.CallbackGeneral;
 import com.example.tiendita.text_watcher.CampoTextWatcher;
-import com.example.tiendita.ui.pedidos.EditarPedidoFragment;
 import com.example.tiendita.utilidades.Constantes;
 import com.example.tiendita.utilidades.Dialogo;
 import com.example.tiendita.utilidades.ExcepcionUtilidades;
@@ -60,8 +56,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class DetallesSucursalFragment extends Fragment implements View.OnClickListener {
     /*El gramento se utiliza en 3 formas:
@@ -638,8 +632,7 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
     private void latitudLongitudDeDireccion(String direccion, CallbackGeneral<Address> callbackGeneral) {
         callbackGeneral.enInicio();
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(() -> {
+        getActivity().runOnUiThread(() -> {
             Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
             List<Address> addressList;
 
@@ -647,8 +640,8 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
                 addressList = geocoder.getFromLocationName(direccion, 1);
                 callbackGeneral.enExito(addressList.get(0));
             }
-            catch (IOException | IndexOutOfBoundsException exception) {
-                callbackGeneral.enFallo(exception);
+            catch (IOException | IndexOutOfBoundsException ex) {
+                callbackGeneral.enFallo(ex);
             }
         });
     }
@@ -666,6 +659,10 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
                 Dialogo.ocultaDialogoProceso(alertDialog);
                 Snackbar.make(getView(), R.string.msj_guardado_datos_exitoso,
                    Snackbar.LENGTH_LONG).show();
+
+                if (esSucursalNueva) {
+                    esSucursalNueva = false;
+                }
 
                 sucursal = sucursalModelo;
                 llDescartarGuardar.setVisibility(View.GONE);
