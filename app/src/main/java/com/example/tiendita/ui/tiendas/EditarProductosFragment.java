@@ -102,13 +102,14 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
         precio = root.findViewById(R.id.tf_precio_producto_editar);
         presentacion = root.findViewById(R.id.tf_presentacion_producto_editar);
         imageButton = root.findViewById(R.id.ib_imagen_producto_editar);
-        descartar = root.findViewById(R.id.bttn_descartar_producto_editar);
-        guardar = root.findViewById(R.id.bttn_guardar_producto_editar);
+        descartar = root.findViewById(R.id.bttn_descartar_producto_editar);//Borrar, Descartar
+        guardar = root.findViewById(R.id.bttn_guardar_producto_editar);//Guardar, Editar
 
         descartar.setOnClickListener(this::onClick);
         guardar.setOnClickListener(this::onClick);
         imageButton.setOnClickListener(this::onClick);
-        if (producto.getNombreProducto() != null) {
+
+        if (producto.getNombreProducto() != null) { //si se va a editar un producto
             llenarCampos(producto);
         }
 
@@ -218,7 +219,7 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
 
                                 }
                             });
-                }else{
+                } else {
                     ProductoModelo productoNuevo = new ProductoModelo();
                     productoNuevo.setSucursalId(sucursal.getSucursalID());
                     productoNuevo.setNegocioId(sucursal.getNegocioID());
@@ -273,7 +274,7 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
         cantidad.setText(producto.getCantidad() + "");
         precio.setText(producto.getCantidad() + "");
         presentacion.setText(producto.getDescripcion() + "");
-        imgHasChange=false;
+        imgHasChange = false;
 
         String localRef = AccionesFirebaseRTDataBase.getLocalImgRef(this.producto.getProductoId(), getContext());
         if (localRef != null) {
@@ -286,7 +287,7 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
                 presentacion.setText(this.producto.getDescripcion() + "");
                 descartar.setVisibility(View.GONE);
             } else {
-                AccionesFireStorage.downloadImg(this.sucursal.getRemoteImg(),
+                AccionesFireStorage.downloadImg(this.producto.getRemoteImg(),
                         getActivity(),
                         getContext(),
                         new DownloadCallback<Task<FileDownloadTask.TaskSnapshot>>() {
@@ -299,7 +300,7 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
                             @Override
                             public void enExitoDesc(Task<FileDownloadTask.TaskSnapshot> respuesta, File localFile) {
                                 Dialogo.ocultaDialogoProceso(alertDialog);
-                                String localRef = AccionesFirebaseRTDataBase.getLocalImgRef(sucursal.getSucursalID(), getContext());
+                                String localRef = AccionesFirebaseRTDataBase.getLocalImgRef(producto.getProductoId(), getContext());
                                 ImageManager.loadImage(localRef, imageButton, EditarProductosFragment.this.getContext());
                                 nombre.setText(producto.getNombreProducto() + "");
                                 precio.setText(producto.getPrecio() + "");
@@ -317,10 +318,10 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
 
                             }
                         },
-                        this.sucursal.getSucursalID());
+                        this.producto.getProductoId());
             }
         } else {
-            AccionesFireStorage.downloadImg(this.sucursal.getRemoteImg(),
+            AccionesFireStorage.downloadImg(this.producto.getRemoteImg(),
                     getActivity(),
                     getContext(),
                     new DownloadCallback<Task<FileDownloadTask.TaskSnapshot>>() {
@@ -328,21 +329,18 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
                         public void enInicioDesc() {
                             alertDialog = Dialogo.dialogoProceso(EditarProductosFragment.this.getContext(), R.string.msj_operacion_datos);
                             Dialogo.muestraDialogoProceso(alertDialog);
-
-
                         }
 
                         @Override
                         public void enExitoDesc(Task<FileDownloadTask.TaskSnapshot> respuesta, File localFile) {
                             Dialogo.ocultaDialogoProceso(alertDialog);
-                            String localRef = AccionesFirebaseRTDataBase.getLocalImgRef(sucursal.getSucursalID(), getContext());
+                            String localRef = AccionesFirebaseRTDataBase.getLocalImgRef(producto.getProductoId(), getContext());
                             ImageManager.loadImage(localRef, imageButton, EditarProductosFragment.this.getContext());
                             nombre.setText(producto.getNombreProducto() + "");
                             precio.setText(producto.getPrecio() + "");
                             cantidad.setText(producto.getCantidad() + "");
                             presentacion.setText(producto.getDescripcion() + "");
                             descartar.setVisibility(View.GONE);
-
                         }
 
                         @Override
@@ -350,14 +348,17 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
                             Dialogo.ocultaDialogoProceso(alertDialog);
                             Toast.makeText(EditarProductosFragment.this.getContext(), R.string.error_cargar_img, Toast.LENGTH_LONG).show();
                             Log.d("Descargar imagen", "Error al descargar imagen\n Causa: " + excepcion.getCause());
-
                         }
                     },
-                    this.sucursal.getSucursalID());
-
+                    this.producto.getProductoId());
         }
+    }
 
-
+    private void modificarCampos(boolean activoOinactivo) {
+        nombre.setEnabled(activoOinactivo);
+        cantidad.setEnabled(activoOinactivo);
+        precio.setEnabled(activoOinactivo);
+        presentacion.setEnabled(activoOinactivo);
     }
 
     //Para tomar imagen
@@ -391,7 +392,7 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
             ImageManager.loadImage(currentPath, imageButton, this.getContext());
-            imgHasChange=true;
+            imgHasChange = true;
         }
     }
 }

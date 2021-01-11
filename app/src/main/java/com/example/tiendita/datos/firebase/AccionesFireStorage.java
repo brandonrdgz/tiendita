@@ -38,7 +38,7 @@ public class AccionesFireStorage {
             imgRef.getFile(localFile).addOnCompleteListener(new OnCompleteListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<FileDownloadTask.TaskSnapshot> task) {
-                        if(AccionesFirebaseRTDataBase.getLocalImgRef(id,context)!=null) {
+                        if(!AccionesFirebaseRTDataBase.getLocalImgRef(id,context).isEmpty()) {
                             AccionesFirebaseRTDataBase.updateLocalImgRef(id, localFile.getAbsolutePath(), context);
                         }else{
                             AccionesFirebaseRTDataBase.insertLocalImgRef(id, localFile.getAbsolutePath(), context);
