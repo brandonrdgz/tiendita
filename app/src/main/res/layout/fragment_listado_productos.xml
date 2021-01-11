@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background_color"
     android:padding="20dp"
     tools:context=".ui.tiendas.ListadoProductosFragment"
@@ -11,9 +12,9 @@
     <TextView
         android:id="@+id/tv_sin_productos_label"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_height="0dp"
         android:layout_weight="1"
+        android:layout_marginBottom="10dp"
         android:fontFamily="@font/myriadproregular"
         android:gravity="center"
         android:text="@string/sin_productos"
@@ -23,11 +24,17 @@
     <ListView
         android:id="@+id/lv_productos"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_gravity="top"
+        android:layout_weight="1"/>
+
     <com.google.android.material.button.MaterialButton
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
         android:id="@+id/bttn_agregar_producto_sucursal"
-        android:text="@string/agregar"></com.google.android.material.button.MaterialButton>
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
+        android:text="@string/action_agregar"
+        app:cornerRadius="40dp"/>
 
 </LinearLayout>

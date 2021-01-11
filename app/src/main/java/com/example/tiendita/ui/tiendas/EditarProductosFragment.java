@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import com.example.tiendita.R;
 import com.example.tiendita.datos.firebase.AccionesFireStorage;
 import com.example.tiendita.datos.firebase.AccionesFirebaseAuth;
 import com.example.tiendita.datos.firebase.AccionesFirebaseRTDataBase;
+import com.example.tiendita.datos.firebase.DownloadCallback;
 import com.example.tiendita.datos.firebase.FirebaseCallback;
 import com.example.tiendita.datos.firebase.UploadCallback;
 import com.example.tiendita.datos.modelos.ProductoModelo;
@@ -40,6 +42,7 @@ import com.example.tiendita.utilidades.ImageManager;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.storage.FileDownloadTask;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,6 +65,9 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
     public static Uri photoUri;
     private AlertDialog alertDialog;
 
+    ProductoModelo producto;
+    private boolean esNuevo, imgHasChange;
+
     public static EditarProductosFragment newInstance() {
         return new EditarProductosFragment();
     }
@@ -77,6 +83,15 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
     private void recuperaDatosSucursal(Bundle datos, View root) {
         if (datos != null) {
             sucursal = datos.getParcelable(Constantes.LLAVE_SUCURSAL);
+            producto = new ProductoModelo();
+            producto.setProductoId(datos.getString("idProducto"));
+            producto.setNombreProducto(datos.getString("nombreProducto"));
+            producto.setPrecio(datos.getFloat("precioProducto"));
+            producto.setCantidad(datos.getInt("cantidadProducto"));
+            producto.setDescripcion(datos.getString("descripcionProducto"));
+            producto.setRemoteImg(datos.getString("remoteImg"));
+            currentPath = producto.getRemoteImg();
+            esNuevo = datos.getBoolean("esNuevo");
             initComp(root);
         }
     }
@@ -93,6 +108,9 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
         descartar.setOnClickListener(this::onClick);
         guardar.setOnClickListener(this::onClick);
         imageButton.setOnClickListener(this::onClick);
+        if (producto.getNombreProducto() != null) {
+            llenarCampos(producto);
+        }
 
     }
 
@@ -119,51 +137,102 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
     }
 
     private void datosDeCampos() {
-        if(nombre.getText().toString().trim().isEmpty()||
-        cantidad.getText().toString().trim().isEmpty()||
-        precio.getText().toString().trim().isEmpty()||
-                currentPath.trim().isEmpty()||
-        presentacion.getText().toString().trim().isEmpty()){
+        if (nombre.getText().toString().trim().isEmpty() ||
+                cantidad.getText().toString().trim().isEmpty() ||
+                precio.getText().toString().trim().isEmpty() ||
+                currentPath.trim().isEmpty() ||
+                presentacion.getText().toString().trim().isEmpty()) {
             Snackbar.make(getView(), R.string.msj_datos_vacios,
                     Snackbar.LENGTH_LONG).show();
-        }else {
-            AccionesFireStorage.loadImage(AccionesFirebaseAuth.getUID(),
-                    currentPath,
-                    this.getContext(),
-                    new UploadCallback<Task<Uri>>() {
-                        @Override
-                        public void enInicioCar() {
-                            alertDialog = Dialogo.dialogoProceso(getContext(), R.string.actualizando_img);
-                            Dialogo.muestraDialogoProceso(alertDialog);
-                        }
-                        @Override
-                        public void enExitoCar(Task<Uri> respuesta) {
-                            Dialogo.ocultaDialogoProceso(alertDialog);
-                            //se actualiza imagen remota y se actualiza el usuario
-                            List<String> segments = respuesta.getResult().getPathSegments();
-                            ProductoModelo productoNuevo = new ProductoModelo();
-                            productoNuevo.setSucursalId(sucursal.getSucursalID());
-                            productoNuevo.setNegocioId(sucursal.getNegocioID());
-                            productoNuevo.setProductoId(UUID.randomUUID().toString());
-                            productoNuevo.setRemoteImg(segments.get(segments.size() - 1));
-                            productoNuevo.setNombreProducto(nombre.getText().toString());
-                            productoNuevo.setCantidad(Integer.valueOf(cantidad.getText().toString()));
-                            productoNuevo.setPrecio(Float.parseFloat(precio.getText().toString()));
-                            productoNuevo.setDescripcion(presentacion.getText().toString());
-                            AccionesFirebaseRTDataBase.insertLocalImgRef(productoNuevo.getProductoId(), currentPath, EditarProductosFragment.this.getContext());
-                            guardaDatosProducto(productoNuevo, R.string.msj_registro_exitoso);
-                        }
+        } else {
+            if (esNuevo == true) {
+                AccionesFireStorage.loadImage(AccionesFirebaseAuth.getUID(),
+                        currentPath,
+                        this.getContext(),
+                        new UploadCallback<Task<Uri>>() {
+                            @Override
+                            public void enInicioCar() {
+                                alertDialog = Dialogo.dialogoProceso(getContext(), R.string.actualizando_img);
+                                Dialogo.muestraDialogoProceso(alertDialog);
+                            }
 
-                        @Override
-                        public void enFalloCar(Exception excepcion) {
-                            Dialogo.ocultaDialogoProceso(alertDialog);
-                            Toast.makeText(EditarProductosFragment.this.getContext(), R.string.error_actualiza_img, Toast.LENGTH_LONG).show();
+                            @Override
+                            public void enExitoCar(Task<Uri> respuesta) {
+                                Dialogo.ocultaDialogoProceso(alertDialog);
+                                //se actualiza imagen remota y se actualiza el usuario
+                                List<String> segments = respuesta.getResult().getPathSegments();
+                                ProductoModelo productoNuevo = new ProductoModelo();
+                                productoNuevo.setSucursalId(sucursal.getSucursalID());
+                                productoNuevo.setNegocioId(sucursal.getNegocioID());
+                                productoNuevo.setProductoId(UUID.randomUUID().toString());
+                                productoNuevo.setRemoteImg(segments.get(segments.size() - 1));
+                                productoNuevo.setNombreProducto(nombre.getText().toString());
+                                productoNuevo.setCantidad(Integer.valueOf(cantidad.getText().toString()));
+                                productoNuevo.setPrecio(Float.parseFloat(precio.getText().toString()));
+                                productoNuevo.setDescripcion(presentacion.getText().toString());
+                                AccionesFirebaseRTDataBase.insertLocalImgRef(productoNuevo.getProductoId(), currentPath, EditarProductosFragment.this.getContext());
+                                guardaDatosProducto(productoNuevo, R.string.msj_registro_exitoso);
+                            }
 
-                        }
-                    });
+                            @Override
+                            public void enFalloCar(Exception excepcion) {
+                                Dialogo.ocultaDialogoProceso(alertDialog);
+                                Toast.makeText(EditarProductosFragment.this.getContext(), R.string.error_actualiza_img, Toast.LENGTH_LONG).show();
+
+                            }
+                        });
+            } else {
+                if (imgHasChange) {
+                    AccionesFireStorage.updateImage(AccionesFirebaseAuth.getUID(), producto.getRemoteImg(),
+                            currentPath,
+                            this.getContext(),
+                            new UploadCallback<Task<Uri>>() {
+                                @Override
+                                public void enInicioCar() {
+                                    alertDialog = Dialogo.dialogoProceso(getContext(), R.string.actualizando_img);
+                                    Dialogo.muestraDialogoProceso(alertDialog);
+                                }
+
+                                @Override
+                                public void enExitoCar(Task<Uri> respuesta) {
+                                    Dialogo.ocultaDialogoProceso(alertDialog);
+                                    //se actualiza imagen remota y se actualiza el usuario
+                                    List<String> segments = respuesta.getResult().getPathSegments();
+                                    ProductoModelo productoNuevo = new ProductoModelo();
+                                    productoNuevo.setSucursalId(sucursal.getSucursalID());
+                                    productoNuevo.setNegocioId(sucursal.getNegocioID());
+                                    productoNuevo.setProductoId(producto.getProductoId());
+                                    productoNuevo.setRemoteImg(segments.get(segments.size() - 1));
+                                    productoNuevo.setNombreProducto(nombre.getText().toString());
+                                    productoNuevo.setCantidad(Integer.valueOf(cantidad.getText().toString()));
+                                    productoNuevo.setPrecio(Float.parseFloat(precio.getText().toString()));
+                                    productoNuevo.setDescripcion(presentacion.getText().toString());
+                                    AccionesFirebaseRTDataBase.updateLocalImgRef(productoNuevo.getProductoId(), currentPath, EditarProductosFragment.this.getContext());
+                                    guardaDatosProducto(productoNuevo, R.string.msj_registro_exitoso);
+                                }
+
+                                @Override
+                                public void enFalloCar(Exception excepcion) {
+                                    Dialogo.ocultaDialogoProceso(alertDialog);
+                                    Toast.makeText(EditarProductosFragment.this.getContext(), R.string.error_actualiza_img, Toast.LENGTH_LONG).show();
+
+                                }
+                            });
+                }else{
+                    ProductoModelo productoNuevo = new ProductoModelo();
+                    productoNuevo.setSucursalId(sucursal.getSucursalID());
+                    productoNuevo.setNegocioId(sucursal.getNegocioID());
+                    productoNuevo.setProductoId(producto.getProductoId());
+                    productoNuevo.setRemoteImg(producto.getRemoteImg());
+                    productoNuevo.setNombreProducto(nombre.getText().toString());
+                    productoNuevo.setCantidad(Integer.valueOf(cantidad.getText().toString()));
+                    productoNuevo.setPrecio(Float.parseFloat(precio.getText().toString()));
+                    productoNuevo.setDescripcion(presentacion.getText().toString());
+                    guardaDatosProducto(productoNuevo, R.string.msj_registro_exitoso);
+                }
+            }
         }
     }
-
 
     private void guardaDatosProducto(ProductoModelo productoModelo, int idRecursoMensaje) {
         AccionesFirebaseRTDataBase.guardaProducto(productoModelo, new FirebaseCallback<Void>() {
@@ -178,7 +247,6 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
                 Dialogo.ocultaDialogoProceso(alertDialog);
                 Snackbar.make(getView(), R.string.msj_guardado_datos_exitoso,
                         Snackbar.LENGTH_LONG).show();
-
                 limpiarCampos();
             }
 
@@ -192,12 +260,104 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
     }
 
     private void limpiarCampos() {
-        currentPath="";
+        currentPath = "";
         nombre.setText("");
         cantidad.setText("");
         precio.setText("");
         presentacion.setText("");
         imageButton.setImageResource(R.drawable.img_businness);
+    }
+
+    private void llenarCampos(ProductoModelo producto) {
+        nombre.setText(producto.getNombreProducto() + "");
+        cantidad.setText(producto.getCantidad() + "");
+        precio.setText(producto.getCantidad() + "");
+        presentacion.setText(producto.getDescripcion() + "");
+        imgHasChange=false;
+
+        String localRef = AccionesFirebaseRTDataBase.getLocalImgRef(this.producto.getProductoId(), getContext());
+        if (localRef != null) {
+            File filePhoto = new File(localRef);
+            if (filePhoto.exists()) {
+                ImageManager.loadImage(localRef, imageButton, this.getContext());
+                nombre.setText(this.producto.getNombreProducto() + "");
+                precio.setText(this.producto.getPrecio() + "");
+                cantidad.setText(this.producto.getCantidad() + "");
+                presentacion.setText(this.producto.getDescripcion() + "");
+                descartar.setVisibility(View.GONE);
+            } else {
+                AccionesFireStorage.downloadImg(this.sucursal.getRemoteImg(),
+                        getActivity(),
+                        getContext(),
+                        new DownloadCallback<Task<FileDownloadTask.TaskSnapshot>>() {
+                            @Override
+                            public void enInicioDesc() {
+                                alertDialog = Dialogo.dialogoProceso(EditarProductosFragment.this.getContext(), R.string.msj_operacion_datos);
+                                Dialogo.muestraDialogoProceso(alertDialog);
+                            }
+
+                            @Override
+                            public void enExitoDesc(Task<FileDownloadTask.TaskSnapshot> respuesta, File localFile) {
+                                Dialogo.ocultaDialogoProceso(alertDialog);
+                                String localRef = AccionesFirebaseRTDataBase.getLocalImgRef(sucursal.getSucursalID(), getContext());
+                                ImageManager.loadImage(localRef, imageButton, EditarProductosFragment.this.getContext());
+                                nombre.setText(producto.getNombreProducto() + "");
+                                precio.setText(producto.getPrecio() + "");
+                                cantidad.setText(producto.getCantidad() + "");
+                                presentacion.setText(producto.getDescripcion() + "");
+                                descartar.setVisibility(View.GONE);
+
+                            }
+
+                            @Override
+                            public void enFalloDesc(Exception excepcion) {
+                                Dialogo.ocultaDialogoProceso(alertDialog);
+                                Toast.makeText(EditarProductosFragment.this.getContext(), R.string.error_cargar_img, Toast.LENGTH_LONG).show();
+                                Log.d("Descargar imagen", "Error al descargar imagen\n Causa: " + excepcion.getCause());
+
+                            }
+                        },
+                        this.sucursal.getSucursalID());
+            }
+        } else {
+            AccionesFireStorage.downloadImg(this.sucursal.getRemoteImg(),
+                    getActivity(),
+                    getContext(),
+                    new DownloadCallback<Task<FileDownloadTask.TaskSnapshot>>() {
+                        @Override
+                        public void enInicioDesc() {
+                            alertDialog = Dialogo.dialogoProceso(EditarProductosFragment.this.getContext(), R.string.msj_operacion_datos);
+                            Dialogo.muestraDialogoProceso(alertDialog);
+
+
+                        }
+
+                        @Override
+                        public void enExitoDesc(Task<FileDownloadTask.TaskSnapshot> respuesta, File localFile) {
+                            Dialogo.ocultaDialogoProceso(alertDialog);
+                            String localRef = AccionesFirebaseRTDataBase.getLocalImgRef(sucursal.getSucursalID(), getContext());
+                            ImageManager.loadImage(localRef, imageButton, EditarProductosFragment.this.getContext());
+                            nombre.setText(producto.getNombreProducto() + "");
+                            precio.setText(producto.getPrecio() + "");
+                            cantidad.setText(producto.getCantidad() + "");
+                            presentacion.setText(producto.getDescripcion() + "");
+                            descartar.setVisibility(View.GONE);
+
+                        }
+
+                        @Override
+                        public void enFalloDesc(Exception excepcion) {
+                            Dialogo.ocultaDialogoProceso(alertDialog);
+                            Toast.makeText(EditarProductosFragment.this.getContext(), R.string.error_cargar_img, Toast.LENGTH_LONG).show();
+                            Log.d("Descargar imagen", "Error al descargar imagen\n Causa: " + excepcion.getCause());
+
+                        }
+                    },
+                    this.sucursal.getSucursalID());
+
+        }
+
+
     }
 
     //Para tomar imagen
@@ -231,6 +391,7 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
             ImageManager.loadImage(currentPath, imageButton, this.getContext());
+            imgHasChange=true;
         }
     }
 }

@@ -223,7 +223,8 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
                         },
                         this.sucursal.getSucursalID());
             }
-        }else{
+        }
+        else{
             AccionesFireStorage.downloadImg(this.sucursal.getRemoteImg(),
                     getActivity(),
                     getContext(),
