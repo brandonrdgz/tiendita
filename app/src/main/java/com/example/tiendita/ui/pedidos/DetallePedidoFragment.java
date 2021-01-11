@@ -9,6 +9,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
+import androidx.navigation.NavHost;
+import androidx.navigation.NavHostController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
@@ -237,8 +241,9 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
                 AccionesFirebaseRTDataBase.deletePedido(currentPedido.getPedidoID(),this);
             }
             case AccionesFirebaseRTDataBase.UPDATE_PRODUCTOS_ACCTION: {
-                /*redirect
-                lista fragment*/
+
+
+              /*  lista fragment*/
                 if(esNegocio) {
                     NavHostFragment.findNavController(this)
                             .navigate(R.id.action_nav_pedidon_to_nav_pedidosn);

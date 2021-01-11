@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             navigationView.getMenu().removeGroup(R.id.drawer_usuario);
             mAppBarConfiguration = new AppBarConfiguration.Builder(
                     R.id.nav_homen, R.id.nav_perfiln, R.id.nav_pedidosn, R.id.nav_pedidon, R.id.nav_info,
-                    R.id.nav_sucursales, R.id.nav_detalle_sucursaln, R.id.nav_editar_productos, R.id.nav_mapn)
+                    R.id.nav_sucursales, R.id.nav_detalle_sucursaln, R.id.nav_editar_productos,R.id.nav_listado_productos)
                     .setDrawerLayout(drawer)
                     .build();
             NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);

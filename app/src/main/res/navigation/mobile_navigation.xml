@@ -20,6 +20,7 @@
             app:destination="@id/nav_info" />
         <action
             android:id="@+id/action_nav_homen_to_nav_perfiln"
+            app:popUpTo="@+id/nav_homen"
             app:destination="@id/nav_perfiln" />
         <action
             android:id="@+id/action_nav_homen_to_nav_pedidosn"
@@ -40,16 +41,6 @@
             android:defaultValue="true" />
     </fragment>
 
-    <fragment
-        android:id="@+id/nav_mapn"
-        android:name="com.example.tiendita.ui.mapa.MapFragment"
-        android:label="@string/mapa_negocio"
-        tools:layout="@layout/fragment_map">
-        <argument
-            android:name="esNegocio"
-            app:argType="boolean"
-            android:defaultValue="true" />
-    </fragment>
 
     <fragment
         android:id="@+id/nav_sucursales"
@@ -80,9 +71,6 @@
         <action
         android:id="@+id/action_nav_detalle_sucursaln_to_nav_listado_productos"
         app:destination="@id/nav_listado_productos" />
-        <action
-            android:id="@+id/action_nav_detalle_sucursaln_to_nav_mapn"
-            app:destination="@id/nav_mapn" />
     </fragment>
 
     <fragment
@@ -200,6 +188,8 @@
             android:defaultValue="false" />
         <action
             android:id="@+id/action_nav_detalle_sucursalu_to_nav_editpedido"
+            app:popUpTo="@id/nav_detalle_sucursalu"
+            app:popUpToInclusive="true"
             app:destination="@id/nav_editpedido" />
     </fragment>
 
@@ -231,9 +221,13 @@
             android:defaultValue="false" />
         <action
             android:id="@+id/action_nav_pedidou_to_nav_editpedido"
+            app:popUpTo="@id/nav_pedidou"
+
             app:destination="@id/nav_editpedido" />
         <action
             android:id="@+id/action_nav_pedidou_to_nav_pedidosu"
+            app:popUpTo="@id/nav_pedidou"
+            app:popUpToInclusive="true"
             app:destination="@id/nav_pedidosu" />
     </fragment>
     <fragment
@@ -243,15 +237,23 @@
         tools:layout="@layout/fragment_editar_pedido" >
         <action
             android:id="@+id/action_nav_editpedido_to_nav_pedidou"
+            app:popUpTo="@id/nav_editpedido"
+            app:popUpToInclusive="true"
             app:destination="@id/nav_pedidou" />
         <action
             android:id="@+id/action_nav_editpedido_to_nav_pedidosu"
+            app:popUpTo="@id/nav_editpedido"
+            app:popUpToInclusive="true"
             app:destination="@id/nav_pedidosu" />
         <action
             android:id="@+id/action_nav_editpedido_to_nav_detalle_sucursalu"
+            app:popUpTo="@id/nav_editpedido"
+            app:popUpToInclusive="true"
             app:destination="@id/nav_detalle_sucursalu" />
         <action
             android:id="@+id/action_nav_editpedido_to_nav_homeu"
+            app:popUpTo="@id/nav_editpedido"
+            app:popUpToInclusive="true"
             app:destination="@id/nav_homeu" />
     </fragment>
 

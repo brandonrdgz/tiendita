@@ -147,7 +147,7 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
        OnBackPressedCallback callback = new OnBackPressedCallback(false) {
             @Override
             public void handleOnBackPressed() {
-                if(esEdicion) {
+            if(esEdicion) {
                     Bundle data = new Bundle();
 
                     data.putBoolean(Constantes.CONST_EDICION_TYPE, true);
@@ -554,7 +554,6 @@ public class EditarPedidoFragment extends Fragment implements View.OnClickListen
 
                 }else{
                     Toast.makeText(this.getContext(), R.string.pedido_guardado, Toast.LENGTH_LONG).show();
-                    this.getActivity().finish();
                     Bundle datos = new Bundle();
                     datos.putBoolean(Constantes.CONST_EDICION_TYPE, false);
                     datos.putString(Constantes.CONST_SUCURSAL_ID, sucursal.getSucursalID());
