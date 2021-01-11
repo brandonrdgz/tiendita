@@ -180,14 +180,11 @@
     <string name="msj_cargando_lista_productos">Cargando Productos</string>
     <string name="msj_datos_vacios">Campos Vacios</string>
     <string name="error_exceso">Ingrese una cantidad valida</string>
-<<<<<<< HEAD
     <string name="entregado">Entregado</string>
     <string name="header_entregado">Entregado</string>
     <string name="message_entrefar_pedido">¿Pedido entregado?</string>
     <string name="action_entregado">Entregado</string>
-=======
     <string name="msj_eliminar_producto">¿Deseas eliminar definitivamente este producto?</string>
     <string name="msj_eliminando_producto">El producto está siendo eliminado, por favor, espere.</string>
->>>>>>> e68c73ba6158e328b2e791eafd195147313f96c6
 
 </resources>
