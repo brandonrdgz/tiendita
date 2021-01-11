@@ -63,6 +63,7 @@ public class Constantes {
    public static final String CONST_PRODUCTO_DESCRIPCION="descripcion";
    public static final String CONST_PRODUCTO_PRECIO="precio";
    public static final String CONST_PRODUCTO_CANTIDAD="cantidad";
+   public static final String CONST_PRODUCTO_REMOTE_IMG="remoteImg";
    //Constantes para control de flujo
    //Constantes para Tipo de vista
    public static final String CONST_NEGOCIO_TYPE ="esNegocio";

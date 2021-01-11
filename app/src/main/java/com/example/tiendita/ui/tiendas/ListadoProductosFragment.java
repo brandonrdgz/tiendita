@@ -35,7 +35,7 @@ import java.util.ArrayList;
 
 public class ListadoProductosFragment extends Fragment implements FirebaseCallback<DataSnapshot>,
         AdapterView.OnItemClickListener,
-        View.OnClickListener  {
+        View.OnClickListener {
 
     private ListadoProductosViewModel mViewModel;
     private ListView listView;
@@ -45,6 +45,7 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
     private AlertDialog alertDialog;
 
     private boolean esNegocio;
+    private String nombreSucursal, idNegocio, idSucursal;
     private SucursalModelo sucursal;
 
     public static ListadoProductosFragment newInstance() {
@@ -55,26 +56,29 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_listado_productos, container, false);
-        recuperaDatosSucursal(this.getArguments(),root);
+        recuperaDatosSucursal(this.getArguments(), root);
         return root;
     }
 
-    private void recuperaDatosSucursal(Bundle datos,View root) {
+    private void recuperaDatosSucursal(Bundle datos, View root) {
         if (datos != null) {
             esNegocio = datos.getBoolean(Constantes.CONST_NEGOCIO_TYPE);
+            nombreSucursal = datos.getString("nombreSucursal");
+            idNegocio = datos.getString("idNegocio");
+            idSucursal = datos.getString("idSucursal");
             sucursal = datos.getParcelable(Constantes.LLAVE_SUCURSAL);
             initComp(root);
         }
     }
 
-    private void initComp(View root){
+    private void initComp(View root) {
         listView = root.findViewById(R.id.lv_productos);
         textView = root.findViewById(R.id.tv_sin_productos_label);
         button = root.findViewById(R.id.bttn_agregar_producto_sucursal);
 
         button.setOnClickListener(this::onClick);
 
-        AccionesFirebaseRTDataBase.getProductos(sucursal.getSucursalID(),this);
+        AccionesFirebaseRTDataBase.getProductos(sucursal.getSucursalID(), this);
     }
 
 
@@ -93,14 +97,18 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
 
     @Override
     public void enExito(DataSnapshot respuesta, int accion) {
+        listaProductos = new ArrayList<>();
+
         textView.setVisibility(View.GONE);
         listaProductos=new ArrayList<>();
         for (DataSnapshot dataSnapshot : respuesta.getChildren()) {
             ProductoModelo productoModelo = new ProductoModelo();
+            productoModelo.setProductoId(dataSnapshot.child(Constantes.CONST_PRODUCTO_ID).getValue().toString());
             productoModelo.setNombreProducto(dataSnapshot.child(Constantes.CONST_PRODUCTO_NOMBRE).getValue().toString());
             productoModelo.setCantidad(Integer.valueOf(dataSnapshot.child(Constantes.CONST_PRODUCTO_CANTIDAD).getValue().toString()));
             productoModelo.setDescripcion(dataSnapshot.child(Constantes.CONST_PRODUCTO_DESCRIPCION).getValue().toString());
             productoModelo.setPrecio(Float.valueOf(dataSnapshot.child(Constantes.CONST_PRODUCTO_PRECIO).getValue().toString()));
+            productoModelo.setRemoteImg(dataSnapshot.child(Constantes.CONST_PRODUCTO_REMOTE_IMG).getValue().toString());
             listaProductos.add(productoModelo);
         }
         ArrayAdapter<ProductoModelo> adapter = new ArrayAdapter<>(this.getContext(),
@@ -108,6 +116,7 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
                 listaProductos);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
+        textView.setVisibility(View.GONE);
         Dialogo.ocultaDialogoProceso(alertDialog);
     }
 
@@ -121,7 +130,17 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        Bundle data = new Bundle();
+        data.putParcelable(Constantes.LLAVE_SUCURSAL, sucursal);
+        data.putString("idProducto",listaProductos.get(position).getProductoId());
+        data.putString("nombreProducto",listaProductos.get(position).getNombreProducto());
+        data.putInt("cantidadProducto",listaProductos.get(position).getCantidad());
+        data.putFloat("precioProducto",listaProductos.get(position).getPrecio());
+        data.putString("descripcionProducto",listaProductos.get(position).getDescripcion());
+        data.putString("remoteImg",listaProductos.get(position).getRemoteImg());
+        data.putBoolean("esNuevo",false);
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_nav_listado_producto_to_nav_editar_productos, data);
     }
 
     @Override
@@ -129,6 +148,7 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
         Bundle data = new Bundle();
         data.putBoolean(Constantes.CONST_NUEVA_TYPE, true);
         data.putParcelable(Constantes.LLAVE_SUCURSAL, sucursal);
+        data.putBoolean("esNuevo",true);
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_nav_listado_producto_to_nav_editar_productos, data);
     }
