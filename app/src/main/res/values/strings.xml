@@ -176,5 +176,7 @@
     <string name="direccion">Dirección</string>
     <string name="hora_apertura">Hora Apertura</string>
     <string name="hora_cierre">Hora de Cierre</string>
+    <string name="msj_cargando_lista_productos">Cargando Productos</string>
+    <string name="msj_datos_vacios">Campos Vacios</string>
 
 </resources>

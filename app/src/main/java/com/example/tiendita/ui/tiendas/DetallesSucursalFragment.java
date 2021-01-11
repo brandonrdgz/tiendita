@@ -100,8 +100,6 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
     private SucursalModelo sucursal;
     private TextInputLayout[] textInputLayouts;
 
-    private String nombreSucursal, idNegocio, idSucursal;
-
     public static DetallesSucursalFragment newInstance() {
         return new DetallesSucursalFragment();
     }
@@ -121,9 +119,6 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
         if (datos != null) {
             esNegocio = datos.getBoolean(Constantes.CONST_NEGOCIO_TYPE);
             esSucursalNueva = datos.getBoolean(Constantes.CONST_NUEVA_TYPE);
-            nombreSucursal = datos.getString("nombreSucursal");
-            idNegocio = datos.getString("idNegocio");
-            idSucursal = datos.getString("idSucursal");
             sucursal = datos.getParcelable(Constantes.LLAVE_SUCURSAL);
             esUsuario = !esNegocio;
             iniComponentes(root);
@@ -338,9 +333,7 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
     private void mbAdminProductosClic() {
         //Implementar la acción para administrar los productos de la sucursal
         Bundle data = new Bundle();
-        data.putString("nombreSucursal",nombreSucursal);
-        data.putString("idSucursal",idSucursal);
-        data.putString("idNegocio",idNegocio);
+        data.putParcelable(Constantes.LLAVE_SUCURSAL, sucursal);
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_nav_detalle_sucursaln_to_nav_listado_productos, data);
     }

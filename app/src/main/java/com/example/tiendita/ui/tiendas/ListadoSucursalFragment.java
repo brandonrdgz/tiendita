@@ -123,9 +123,6 @@ public class ListadoSucursalFragment extends Fragment implements FirebaseCallbac
         Bundle data = new Bundle();
         data.putBoolean(Constantes.CONST_NUEVA_TYPE,false);
         data.putParcelable(Constantes.LLAVE_SUCURSAL, listaSucursales.get(position));
-        data.putString("nombreSucursal",listaSucursales.get(position).getNombre());
-        data.putString("idSucursal",listaSucursales.get(position).getSucursalID());
-        data.putString("idNegocio",listaSucursales.get(position).getNegocioID());
 
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_nav_sucursales_to_nav_detalle_sucursaln, data);

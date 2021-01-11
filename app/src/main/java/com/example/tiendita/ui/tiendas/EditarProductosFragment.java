@@ -58,8 +58,7 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
 
     public static final int REQUEST_TAKE_PHOTO = 1;
     public static String currentPath;
-    private String nombreNegocio, nombreSucursal;
-    private String idSucursal, idNegocio;
+    private SucursalModelo sucursal;
     public static Uri photoUri;
     private AlertDialog alertDialog;
 
@@ -77,11 +76,7 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
 
     private void recuperaDatosSucursal(Bundle datos, View root) {
         if (datos != null) {
-            idSucursal = datos.getString("idSucursal");
-            idNegocio = datos.getString("idNegocio");
-            nombreNegocio = datos.getString("nombreNegocio");
-            nombreSucursal = datos.getString("nombreSucursal");
-            Toast.makeText(getContext(), nombreSucursal, Toast.LENGTH_LONG).show();
+            sucursal = datos.getParcelable(Constantes.LLAVE_SUCURSAL);
             initComp(root);
         }
     }
@@ -124,46 +119,49 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
     }
 
     private void datosDeCampos() {
-        String nombree = nombre.getText().toString();
-        int cantidadd = Integer.valueOf(cantidad.getText().toString());
-        int precioo = Integer.valueOf(precio.getText().toString());
-        String presentacionn = presentacion.getText().toString();
+        if(nombre.getText().toString().trim().isEmpty()||
+        cantidad.getText().toString().trim().isEmpty()||
+        precio.getText().toString().trim().isEmpty()||
+                currentPath.trim().isEmpty()||
+        presentacion.getText().toString().trim().isEmpty()){
+            Snackbar.make(getView(), R.string.msj_datos_vacios,
+                    Snackbar.LENGTH_LONG).show();
+        }else {
+            AccionesFireStorage.loadImage(AccionesFirebaseAuth.getUID(),
+                    currentPath,
+                    this.getContext(),
+                    new UploadCallback<Task<Uri>>() {
+                        @Override
+                        public void enInicioCar() {
+                            alertDialog = Dialogo.dialogoProceso(getContext(), R.string.actualizando_img);
+                            Dialogo.muestraDialogoProceso(alertDialog);
+                        }
+                        @Override
+                        public void enExitoCar(Task<Uri> respuesta) {
+                            Dialogo.ocultaDialogoProceso(alertDialog);
+                            //se actualiza imagen remota y se actualiza el usuario
+                            List<String> segments = respuesta.getResult().getPathSegments();
+                            ProductoModelo productoNuevo = new ProductoModelo();
+                            productoNuevo.setSucursalId(sucursal.getSucursalID());
+                            productoNuevo.setNegocioId(sucursal.getNegocioID());
+                            productoNuevo.setProductoId(UUID.randomUUID().toString());
+                            productoNuevo.setRemoteImg(segments.get(segments.size() - 1));
+                            productoNuevo.setNombreProducto(nombre.getText().toString());
+                            productoNuevo.setCantidad(Integer.valueOf(cantidad.getText().toString()));
+                            productoNuevo.setPrecio(Float.parseFloat(precio.getText().toString()));
+                            productoNuevo.setDescripcion(presentacion.getText().toString());
+                            AccionesFirebaseRTDataBase.insertLocalImgRef(productoNuevo.getProductoId(), currentPath, EditarProductosFragment.this.getContext());
+                            guardaDatosProducto(productoNuevo, R.string.msj_registro_exitoso);
+                        }
 
-        AccionesFireStorage.loadImage(AccionesFirebaseAuth.getUID(),
-                currentPath,
-                this.getContext(),
-                new UploadCallback<Task<Uri>>() {
-                    @Override
-                    public void enInicioCar() {
-                        alertDialog = Dialogo.dialogoProceso(getContext(), R.string.actualizando_img);
-                        Dialogo.muestraDialogoProceso(alertDialog);
-                    }
+                        @Override
+                        public void enFalloCar(Exception excepcion) {
+                            Dialogo.ocultaDialogoProceso(alertDialog);
+                            Toast.makeText(EditarProductosFragment.this.getContext(), R.string.error_actualiza_img, Toast.LENGTH_LONG).show();
 
-                    @Override
-                    public void enExitoCar(Task<Uri> respuesta) {
-                        Dialogo.ocultaDialogoProceso(alertDialog);
-                        //se actualiza imagen remota y se actualiza el usuario
-                        List<String> segments = respuesta.getResult().getPathSegments();
-                        ProductoModelo productoNuevo = new ProductoModelo();
-                        productoNuevo.setSucursalId(idSucursal);
-                        productoNuevo.setNegocioId(idNegocio);
-                        productoNuevo.setProductoId(UUID.randomUUID().toString());
-                        productoNuevo.setRemoteImg(segments.get(segments.size() - 1));
-                        productoNuevo.setNombreProducto(nombree);
-                        productoNuevo.setCantidad(cantidadd);
-                        productoNuevo.setPrecio(precioo);
-                        productoNuevo.setDescripcion(presentacionn);
-                        AccionesFirebaseRTDataBase.insertLocalImgRef(productoNuevo.getProductoId(), currentPath, EditarProductosFragment.this.getContext());
-                        guardaDatosProducto(productoNuevo,R.string.msj_registro_exitoso);
-                    }
-
-                    @Override
-                    public void enFalloCar(Exception excepcion) {
-                        Dialogo.ocultaDialogoProceso(alertDialog);
-                        Toast.makeText(EditarProductosFragment.this.getContext(), R.string.error_actualiza_img, Toast.LENGTH_LONG).show();
-
-                    }
-                });
+                        }
+                    });
+        }
     }
 
 
@@ -171,7 +169,7 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
         AccionesFirebaseRTDataBase.guardaProducto(productoModelo, new FirebaseCallback<Void>() {
             @Override
             public void enInicio() {
-                alertDialog = Dialogo.dialogoProceso(getContext(), idRecursoMensaje);
+                alertDialog = Dialogo.dialogoProceso(getContext(), R.string.msj_guardando_datos);
                 Dialogo.muestraDialogoProceso(alertDialog);
             }
 
@@ -194,6 +192,7 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
     }
 
     private void limpiarCampos() {
+        currentPath="";
         nombre.setText("");
         cantidad.setText("");
         precio.setText("");

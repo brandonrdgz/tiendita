@@ -45,7 +45,7 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
     private AlertDialog alertDialog;
 
     private boolean esNegocio;
-    private String nombreSucursal, idNegocio, idSucursal;
+    private SucursalModelo sucursal;
 
     public static ListadoProductosFragment newInstance() {
         return new ListadoProductosFragment();
@@ -62,9 +62,7 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
     private void recuperaDatosSucursal(Bundle datos,View root) {
         if (datos != null) {
             esNegocio = datos.getBoolean(Constantes.CONST_NEGOCIO_TYPE);
-            nombreSucursal = datos.getString("nombreSucursal");
-            idNegocio = datos.getString("idNegocio");
-            idSucursal = datos.getString("idSucursal");
+            sucursal = datos.getParcelable(Constantes.LLAVE_SUCURSAL);
             initComp(root);
         }
     }
@@ -76,7 +74,7 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
 
         button.setOnClickListener(this::onClick);
 
-        AccionesFirebaseRTDataBase.getProductos(idSucursal,this);
+        AccionesFirebaseRTDataBase.getProductos(sucursal.getSucursalID(),this);
     }
 
 
@@ -131,9 +129,7 @@ public class ListadoProductosFragment extends Fragment implements FirebaseCallba
     public void onClick(View v) {
         Bundle data = new Bundle();
         data.putBoolean(Constantes.CONST_NUEVA_TYPE, true);
-        data.putString("nombreSucursal",nombreSucursal);
-        data.putString("idSucursal",idSucursal);
-        data.putString("idNegocio",idNegocio);
+        data.putParcelable(Constantes.LLAVE_SUCURSAL, sucursal);
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_nav_listado_producto_to_nav_editar_productos, data);
     }
