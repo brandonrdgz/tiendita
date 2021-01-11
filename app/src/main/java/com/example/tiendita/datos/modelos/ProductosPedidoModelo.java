@@ -4,6 +4,15 @@ public class ProductosPedidoModelo {
     private String pedidoID;
     private String productoId;
     private String sucursalId;
+    public String getNegocioId() {
+        return negocioId;
+    }
+
+    public void setNegocioId(String negocioId) {
+        this.negocioId = negocioId;
+    }
+
+    private String negocioId;
     private String nombreProducto;
     private String descripcion;
     private float precio;
@@ -83,7 +92,7 @@ public class ProductosPedidoModelo {
                 "cantidad="+cantidad+"";
     }
     public String getDetalle(){
-        return "Producto:"+nombreProducto+ "\n"+
+        return nombreProducto+ "\n"+
                 "descripcion:"+descripcion+"\n"+
                 "precio:$" + precio+ "\n"+
                 "cantidad:"+cantidad+"\n"+

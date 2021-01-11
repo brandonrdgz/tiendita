@@ -58,6 +58,7 @@ public class Constantes {
    //Atributos Producto
    public static final String CONST_PRODUCTO_ID="productoId";
    public static final String CONST_PRODUCTO_SUCURSAL_ID="sucursalId";
+   public static final String CONST_PRODUCTO_NEGOCIO_ID="negocioId";
    public static final String CONST_PRODUCTO_NOMBRE="nombreProducto";
    public static final String CONST_PRODUCTO_DESCRIPCION="descripcion";
    public static final String CONST_PRODUCTO_PRECIO="precio";
