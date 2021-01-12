@@ -199,7 +199,6 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
                                 productoNuevo.setDescripcion(presentacion.getText().toString());
                                 AccionesFirebaseRTDataBase.insertLocalImgRef(productoNuevo.getProductoId(), currentPath, EditarProductosFragment.this.getContext());
                                 guardaDatosProducto(productoNuevo, R.string.msj_registro_exitoso);
-                                producto = productoNuevo;
                             }
 
                             @Override
@@ -237,7 +236,6 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
                                     productoNuevo.setDescripcion(presentacion.getText().toString());
                                     AccionesFirebaseRTDataBase.updateLocalImgRef(productoNuevo.getProductoId(), currentPath, EditarProductosFragment.this.getContext());
                                     guardaDatosProducto(productoNuevo, R.string.msj_registro_exitoso);
-                                    producto = productoNuevo;
                                 }
 
                                 @Override
@@ -258,7 +256,6 @@ public class EditarProductosFragment extends Fragment implements View.OnClickLis
                     productoNuevo.setPrecio(Float.parseFloat(precio.getText().toString()));
                     productoNuevo.setDescripcion(presentacion.getText().toString());
                     guardaDatosProducto(productoNuevo, R.string.msj_registro_exitoso);
-                    producto = productoNuevo;
                 }
             }
         }

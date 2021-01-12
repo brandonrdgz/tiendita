@@ -386,7 +386,15 @@ public class DetallesSucursalFragment extends Fragment implements View.OnClickLi
 
                                 }
                             });
-
+                            ibImgSucursal.setImageResource(R.drawable.img_businness);
+                            tilNombre.getEditText().setText("");
+                            tilNombre.setError("");
+                            tilDireccion.getEditText().setText("");
+                            tilDireccion.setError("");
+                            tilHoraApertura.getEditText().setText("");
+                            tilHoraApertura.setError("");
+                            tilHoraCierre.getEditText().setText("");
+                            tilHoraCierre.setError("");
                         }
 
                         @Override
