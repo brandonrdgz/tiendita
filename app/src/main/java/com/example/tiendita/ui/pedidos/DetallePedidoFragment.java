@@ -3,6 +3,7 @@ package com.example.tiendita.ui.pedidos;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -154,20 +155,25 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
                 currentUser.setNombre(cliente.get(Constantes.CONST_BASE_NOMBRE).toString());
                 currentUser.setApellido(cliente.get(Constantes.CONST_BASE_APELLIDO).toString());
                 currentUser.setContrasenia(cliente.get(Constantes.CONST_BASE_CONTRASENIA).toString());
-                currentUser.setRemoteImg(cliente.get(Constantes.CONST_BASE_REMOTEIMG).toString());
-                String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentUser.getId(),getContext());
-                if(localRef!=null) {
-                    File filePhoto = new File(localRef);
-                    if (filePhoto.exists()) {
-                        AccionesFirebaseRTDataBase.getSucursal(currentPedido.getNegocioID(),currentPedido.getSucursalID(),
-                                this);
-                    } else {
-                        AccionesFireStorage.downloadImg(currentUser.getRemoteImg(),
-                                this.getActivity(),
-                                this.getContext(),
-                                this,
-                                currentUser.getId());
+                if(cliente.get(Constantes.CONST_BASE_REMOTEIMG)!=null) {
+                    currentUser.setRemoteImg(cliente.get(Constantes.CONST_BASE_REMOTEIMG).toString());
+                    String localRef = AccionesFirebaseRTDataBase.getLocalImgRef(currentUser.getId(), getContext());
+                    if (localRef != null) {
+                        File filePhoto = new File(localRef);
+                        if (filePhoto.exists()) {
+                            AccionesFirebaseRTDataBase.getSucursal(currentPedido.getNegocioID(), currentPedido.getSucursalID(),
+                                    this);
+                        } else {
+                            AccionesFireStorage.downloadImg(currentUser.getRemoteImg(),
+                                    this.getActivity(),
+                                    this.getContext(),
+                                    this,
+                                    currentUser.getId());
+                        }
                     }
+                }else{
+                    AccionesFirebaseRTDataBase.getSucursal(currentPedido.getNegocioID(), currentPedido.getSucursalID(),
+                            this);
                 }
 
             }
@@ -275,7 +281,11 @@ public class DetallePedidoFragment extends Fragment implements FirebaseCallback<
     private void showData() {
         if(esNegocio){
             String localRef=AccionesFirebaseRTDataBase.getLocalImgRef(currentUser.getId(),getContext());
-            ImageManager.loadImage(localRef,ivImagen,this.getContext());
+            if(!localRef.isEmpty()) {
+                ImageManager.loadImage(localRef, ivImagen, this.getContext());
+            }else{
+                ivImagen.setImageResource(R.drawable.ic_action_name);
+            }
             tvNombre.setText("Cliente: "+currentUser.getNombre()+" "+currentUser.getApellido());
             tvDireccion.setText("Sucursal:"+currentSucursal.getNombre());
         }else{

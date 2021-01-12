@@ -22,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -134,10 +135,9 @@ public class AccionesFirebaseRTDataBase {
     public static void getNearSucursales(FirebaseCallback<DataSnapshot> firebaseCallback){
         firebaseCallback.enInicio();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child(Constantes.NODO_SUCURSAL)
-                .orderByKey()
-                .getRef()
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference prods = databaseReference.child(Constantes.NODO_SUCURSAL);
+        Query query  = prods.orderByChild(Constantes.CONST_SUCURSAL_ID);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()) {
@@ -183,21 +183,16 @@ public class AccionesFirebaseRTDataBase {
     public static void getListaPedidos(String UID,boolean esNegocio,FirebaseCallback<DataSnapshot> firebaseCallback){
         firebaseCallback.enInicio();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference ref ;
+        DatabaseReference prods = databaseReference.child(Constantes.NODO_PEDIDOS);
+        Query query =null;
         if(esNegocio) {
-            ref = databaseReference
-                    .child(Constantes.NODO_PEDIDOS)
-                    .orderByChild(Constantes.CONST_PEDIDO_NEGOCIO_ID)
-                    .equalTo(UID)
-                    .getRef();
+             query = prods.orderByChild(Constantes.CONST_PEDIDO_NEGOCIO_ID)
+                    .equalTo(UID);
         }else {
-            ref = databaseReference
-                    .child(Constantes.NODO_PEDIDOS)
-                    .orderByChild(Constantes.CONST_PEDIDO_CLIENTE_ID)
-                    .equalTo(UID)
-                    .getRef();
+            query = prods.orderByChild(Constantes.CONST_PEDIDO_CLIENTE_ID)
+                    .equalTo(UID);
         }
-                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()) {

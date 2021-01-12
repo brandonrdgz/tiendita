@@ -173,7 +173,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     public void enExito(DataSnapshot respuesta, int accion) {
         for (DataSnapshot dataSnapshot : respuesta.getChildren()) {
             for(DataSnapshot datas:dataSnapshot.getChildren()){
-            HashMap data = datas.getValue(HashMap.class);
+            HashMap data = (HashMap) datas.getValue();
             String  lat =data.get(Constantes.CONST_SUCURSAL_LAT).toString();
             String lon =data.get(Constantes.CONST_SUCURSAL_LONG).toString();
             if(isInRange(Double.parseDouble(lat), Double.parseDouble(lon))) {
