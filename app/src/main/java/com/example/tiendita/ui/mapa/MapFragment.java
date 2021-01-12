@@ -174,8 +174,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
         for (DataSnapshot dataSnapshot : respuesta.getChildren()) {
             for(DataSnapshot datas:dataSnapshot.getChildren()){
             HashMap<String, String> data = (HashMap<String, String>) datas.getValue();
-            String lat = data.get(Constantes.CONST_SUCURSAL_LAT);
-            String lon = data.get(Constantes.CONST_SUCURSAL_LONG);
+            String lat = String.valueOf(data.get(Constantes.CONST_SUCURSAL_LAT));
+            String lon = String.valueOf(data.get(Constantes.CONST_SUCURSAL_LONG));
             if(isInRange(Double.parseDouble(lat), Double.parseDouble(lon))) {
                 SucursalModelo sucursalModelo = new SucursalModelo();
                 sucursalModelo.setNombre(data.get(Constantes.CONST_SUCURSAL_NOMBRE));
