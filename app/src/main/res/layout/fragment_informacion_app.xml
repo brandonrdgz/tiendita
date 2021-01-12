@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.infodeapp.informacionApp"
     android:background="@color/background_color">
 
@@ -92,12 +93,114 @@
             android:text="@string/nombreProfesor"
             android:textSize="20dp"
             android:gravity="center"></TextView>
-        <WebView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="600dp"
-            android:id="@+id/webview"
-            android:layout_margin="20dp"
-            tools:ignore="WebViewLayout"></WebView>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:id="@+id/card">
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCardContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+                    <com.google.android.material.appbar.MaterialToolbar
+                        android:layout_height="wrap_content"
+                        android:layout_width="200dp"
+                        android:layout_weight=".5"
+                        android:id="@+id/toolbarCard"
+                        app:title="Video"/>
+                    <ImageButton
+                        android:id="@+id/imageViewExpand"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="Detalles"
+                        android:background="?attr/selectableItemBackground"
+                        android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                        android:tint="?attr/colorOnSurface"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="16dp"
+                    android:visibility="gone">
+
+                    <VideoView
+                        android:id="@+id/videoview"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp">
+                    </VideoView>
+                </LinearLayout>
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:id="@+id/cardWeb">
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCardContentWeb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+                    <com.google.android.material.appbar.MaterialToolbar
+                        android:layout_height="wrap_content"
+                        android:layout_width="200dp"
+                        android:layout_weight=".5"
+                        android:id="@+id/toolbarCardWeb"
+                        app:title="Web"/>
+                    <ImageButton
+                        android:id="@+id/imageViewExpandWeb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="Detalles"
+                        android:background="?attr/selectableItemBackground"
+                        android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                        android:tint="?attr/colorOnSurface"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutDetailsWeb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="16dp"
+                    android:visibility="gone">
+
+                    <WebView
+                        android:layout_width="match_parent"
+                        android:layout_height="600dp"
+                        android:id="@+id/webview"
+                        android:layout_margin="5dp"
+                        tools:ignore="WebViewLayout"></WebView>
+                </LinearLayout>
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
 </ScrollView>
