@@ -173,18 +173,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     public void enExito(DataSnapshot respuesta, int accion) {
         for (DataSnapshot dataSnapshot : respuesta.getChildren()) {
             for(DataSnapshot datas:dataSnapshot.getChildren()){
-            HashMap data = (HashMap) datas.getValue();
-            String  lat =data.get(Constantes.CONST_SUCURSAL_LAT).toString();
-            String lon =data.get(Constantes.CONST_SUCURSAL_LONG).toString();
+            HashMap<String, String> data = (HashMap<String, String>) datas.getValue();
+            String lat = data.get(Constantes.CONST_SUCURSAL_LAT);
+            String lon = data.get(Constantes.CONST_SUCURSAL_LONG);
             if(isInRange(Double.parseDouble(lat), Double.parseDouble(lon))) {
                 SucursalModelo sucursalModelo = new SucursalModelo();
-                sucursalModelo.setNombre(data.get(Constantes.CONST_SUCURSAL_NOMBRE).toString());
-                sucursalModelo.setDireccion(data.get(Constantes.CONST_SUCURSAL_DIRECCION).toString());
-                sucursalModelo.setHoraAper(data.get(Constantes.CONST_SUCURSAL_HORAAPER).toString());
-                sucursalModelo.setHoraCierre(data.get(Constantes.CONST_SUCURSAL_HORACIERRE).toString());
-                sucursalModelo.setSucursalID(data.get(Constantes.CONST_SUCURSAL_ID).toString());
-                sucursalModelo.setNegocioID(data.get(Constantes.CONST_NEGOCIO_ID).toString());
-                sucursalModelo.setRemoteImg(data.get(Constantes.CONST_BASE_REMOTEIMG).toString());
+                sucursalModelo.setNombre(data.get(Constantes.CONST_SUCURSAL_NOMBRE));
+                sucursalModelo.setDireccion(data.get(Constantes.CONST_SUCURSAL_DIRECCION));
+                sucursalModelo.setHoraAper(data.get(Constantes.CONST_SUCURSAL_HORAAPER));
+                sucursalModelo.setHoraCierre(data.get(Constantes.CONST_SUCURSAL_HORACIERRE));
+                sucursalModelo.setSucursalID(data.get(Constantes.CONST_SUCURSAL_ID));
+                sucursalModelo.setNegocioID(data.get(Constantes.CONST_NEGOCIO_ID));
+                sucursalModelo.setRemoteImg(data.get(Constantes.CONST_BASE_REMOTEIMG));
                 sucursalModelo.setLatitud(Double.parseDouble(lat));
                 sucursalModelo.setLongitud(Double.parseDouble(lon));
                 list.add(sucursalModelo);
