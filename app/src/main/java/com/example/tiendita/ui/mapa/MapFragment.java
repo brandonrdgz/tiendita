@@ -212,7 +212,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 +Math.cos(Math.toRadians(lon-latLng.longitude))
                 *Math.cos(Math.toRadians(lat))
                 *Math.cos(Math.toRadians(latLng.latitude)));
-        return distancia<10.0;
+        return distancia<20.0;
     }
 
     @Override

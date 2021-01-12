@@ -82,6 +82,11 @@ public class informacionApp extends Fragment {
                 transition.setDuration(1);
                 TransitionManager.beginDelayedTransition(cardViewWeb, transition);
                 linearLayoutDetailsWeb.setVisibility(linearLayoutDetailsWeb.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+                if(linearLayoutDetailsWeb.getVisibility() == View.GONE){
+                    buttonWeb.setImageResource(R.drawable.ic_baseline_keyboard_arrow_down_24);
+                }else{
+                    buttonWeb.setImageResource(R.drawable.ic_baseline_keyboard_arrow_up_24);
+                }
             }
         });
         return root;
