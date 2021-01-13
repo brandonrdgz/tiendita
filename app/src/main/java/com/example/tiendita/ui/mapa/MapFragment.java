@@ -41,12 +41,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.storage.FileDownloadTask;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback,
    GoogleMap.OnMarkerClickListener,
@@ -117,9 +119,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
                 LocationManager locationManager = (LocationManager) this.getActivity()
                    .getSystemService(Context.LOCATION_SERVICE);
                 Criteria criteria = new Criteria();
-                Location location = locationManager
-                   .getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-                this.latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+
+                if (location != null) {
+                    this.latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                }
+                else {
+                    Snackbar.make(this.getView(), "Active su ubicación", Snackbar.LENGTH_LONG).show();
+                    this.latLng = new LatLng(Math.random(), Math.random());
+                }
+
                 this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
 
                 if (esNegocio) {
