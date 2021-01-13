@@ -149,6 +149,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public boolean onMyLocationButtonClick() {
         this.latLng = this.googleMap.getCameraPosition().target;
+
+        if (esNegocio) {
+            negocioConfig(googleMap);
+        }
+        else{
+            clientConfig(googleMap);
+        }
+
         return false;
     }
 
